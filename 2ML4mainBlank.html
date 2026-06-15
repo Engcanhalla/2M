@@ -1,0 +1,222 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>2ML4mainBlank</title>
+<style>*{margin:0;padding:0;box-sizing:border-box;}body{font-family:"Segoe UI","Malgun Gothic",sans-serif;background:#f5f6fa;color:#222;font-size:16px;line-height:1.8;}
+.header{background:linear-gradient(135deg,#1a237e,#3949ab);color:#fff;padding:14px 18px;text-align:center;position:sticky;top:0;z-index:100;}.header h1{font-size:17px;font-weight:700;}.header .level-info{font-size:13px;opacity:.85;margin-top:3px;}
+.progress-bar{height:5px;background:rgba(255,255,255,.2);border-radius:3px;margin-top:7px;overflow:hidden;}.progress-fill{height:100%;background:#81c784;border-radius:3px;transition:width .3s;}
+.content{max-width:680px;margin:0 auto;padding:18px 14px;}.passage{background:#fff;border-radius:10px;padding:18px;box-shadow:0 2px 10px rgba(0,0,0,.06);line-height:2.4;font-size:15px;margin-bottom:14px;}
+.blank-select{display:inline-block;}.blank-select select{background:#e3f2fd;border:2px solid #90caf9;border-radius:5px;padding:3px 8px;font-size:14px;font-weight:600;color:#1565c0;cursor:pointer;min-width:90px;font-family:inherit;}
+.blank-select.correct select{background:#c8e6c9;border-color:#66bb6a;color:#2e7d32;}.blank-select.wrong select{background:#ffcdd2;border-color:#ef5350;color:#c62828;}
+.blank-input{display:inline-block;}.blank-input input{background:#fff;border:none;border-bottom:2px solid #90caf9;border-radius:0;padding:3px 4px;font-size:14px;font-weight:600;color:#1565c0;font-family:inherit;min-width:35px;outline:none;}
+.blank-input.correct input{background:#c8e6c9;border-bottom-color:#66bb6a;color:#2e7d32;}.blank-input.wrong input{background:#ffcdd2;border-bottom-color:#ef5350;color:#c62828;}
+.action-bar{text-align:center;padding:14px;position:sticky;bottom:0;background:#f5f6fa;}
+.btn{padding:11px 24px;border:none;border-radius:9px;font-size:15px;font-weight:700;cursor:pointer;}.btn-retry{background:#f57c00;color:#fff;}.btn-next{background:#2e7d32;color:#fff;}
+.result-card{background:#fff;border-radius:10px;padding:22px;text-align:center;box-shadow:0 4px 18px rgba(0,0,0,.1);margin:18px 0;}.result-card h2{font-size:20px;margin-bottom:7px;}.score{font-size:46px;font-weight:800;margin:10px 0;}.pass{color:#2e7d32;}.fail{color:#c62828;}
+.congrats{background:linear-gradient(135deg,#1a237e,#3949ab);color:#fff;border-radius:10px;padding:28px;text-align:center;margin:18px 0;}
+.level-selector{text-align:center;margin:18px 0;}.level-btn{padding:12px 22px;margin:5px;border:none;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;min-width:110px;}
+.easy-btn{background:#e8f5e9;color:#2e7d32;border:2px solid #a5d6a7;}.med-btn{background:#fff3e0;color:#e65100;border:2px solid #ffcc80;}.hard-btn{background:#fce4ec;color:#c62828;border:2px solid #ef9a9a;}
+.locked{opacity:.4;cursor:not-allowed;}.done::after{content:"✓";margin-left:5px;}.retry-badge{display:inline-block;background:#fff3e0;color:#e65100;font-size:11px;padding:2px 7px;border-radius:9px;margin-left:5px;}
+.hint-prefix{font-weight:700;color:#1565c0;font-size:15px;font-family:Georgia,serif;margin-right:1px;display:inline;}
+.input-wrap{display:inline-flex;align-items:center;gap:2px;flex-wrap:nowrap;}
+.blank-input input{max-width:calc(100vw - 140px);}
+@media(max-width:480px){.passage{font-size:15px;padding:14px 12px;line-height:2.2;}.blank-select select{font-size:13px;min-width:80px;padding:4px 6px;}.blank-input input{font-size:13px;padding:4px 6px;}.btn{padding:13px 22px;font-size:15px;min-height:48px;touch-action:manipulation;}}
+</style></head><body>
+<div class="header"><h1 id="headerTitle">2ML4mainBlank</h1><div class="level-info" id="levelInfo"></div><div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div></div>
+<div class="content" id="content"></div><div class="action-bar" id="actionBar"></div>
+<script>
+var DATA={"words":[{"i":0,"t":"**Hula,","c":"**Hula,","ld":"","tr":""},{"i":1,"t":"More","c":"More","ld":"","tr":""},{"i":2,"t":"than","c":"than","ld":"","tr":""},{"i":3,"t":"Just","c":"Just","ld":"","tr":""},{"i":4,"t":"a","c":"a","ld":"","tr":""},{"i":5,"t":"Dance**","c":"Dance**","ld":"","tr":""},{"i":6,"t":"Aloha!","c":"Aloha","ld":"","tr":"!"},{"i":7,"t":"Welcome","c":"Welcome","ld":"","tr":"","b":{"medium":{"choices":["Welcoming to","Welcomed to","Welcome to","Welcome at"],"correct":2,"answer":"Welcome to","_gLen":2,"_gTrail":""},"hard":{"answer":"Welcome to","_gLen":2,"_gTrail":""}}},{"i":8,"t":"to","c":"to","ld":"","tr":"","_gSkip":{"medium":true,"hard":true},"b":{}},{"i":9,"t":"Hawaii!","c":"Hawaii","ld":"","tr":"!"},{"i":10,"t":"Aloha","c":"Aloha","ld":"","tr":""},{"i":11,"t":"means","c":"means","ld":"","tr":""},{"i":12,"t":"\"hello\"","c":"hello","ld":"\"","tr":"\""},{"i":13,"t":"or","c":"or","ld":"","tr":""},{"i":14,"t":"\"goodbye\"","c":"goodbye","ld":"\"","tr":"\""},{"i":15,"t":"in","c":"in","ld":"","tr":""},{"i":16,"t":"the","c":"the","ld":"","tr":""},{"i":17,"t":"Hawaiian","c":"Hawaiian","ld":"","tr":""},{"i":18,"t":"language.","c":"language","ld":"","tr":"."},{"i":19,"t":"I'm","c":"I'm","ld":"","tr":""},{"i":20,"t":"Malia,","c":"Malia","ld":"","tr":","},{"i":21,"t":"and","c":"and","ld":"","tr":""},{"i":22,"t":"I'm","c":"I'm","ld":"","tr":""},{"i":23,"t":"your","c":"your","ld":"","tr":""},{"i":24,"t":"hula","c":"hula","ld":"","tr":""},{"i":25,"t":"teacher","c":"teacher","ld":"","tr":""},{"i":26,"t":"for","c":"for","ld":"","tr":""},{"i":27,"t":"today.","c":"today","ld":"","tr":"."},{"i":28,"t":"Have","c":"Have","ld":"","tr":"","b":{"hard":{"answer":"Have"}}},{"i":29,"t":"you","c":"you","ld":"","tr":""},{"i":30,"t":"heard","c":"heard","ld":"","tr":"","b":{"easy":{"choices":["unaware of","heard of","heard off"],"correct":1,"_gLen":2,"_gTrail":""},"medium":{"choices":["hear of","have heard of","heard of","hearing of"],"correct":2,"answer":"heard of","_gLen":2,"_gTrail":""},"hard":{"answer":"heard of","_gLen":2,"_gTrail":""}}},{"i":31,"t":"of","c":"of","ld":"","tr":"","_gSkip":{"easy":true,"medium":true,"hard":true},"b":{}},{"i":32,"t":"hula","c":"hula","ld":"","tr":""},{"i":33,"t":"before?","c":"before","ld":"","tr":"?"},{"i":34,"t":"How","c":"How","ld":"","tr":"","b":{"easy":{"choices":["How much","How little","How match"],"correct":0,"_gLen":2,"_gTrail":""},"medium":{"choices":["How many","How often","How more","How much"],"correct":3,"answer":"How much","_gLen":2,"_gTrail":""},"hard":{"answer":"How much","_gLen":2,"_gTrail":""}}},{"i":35,"t":"much","c":"much","ld":"","tr":"","_gSkip":{"easy":true,"medium":true,"hard":true},"b":{}},{"i":36,"t":"do","c":"do","ld":"","tr":""},{"i":37,"t":"you","c":"you","ld":"","tr":""},{"i":38,"t":"know","c":"know","ld":"","tr":""},{"i":39,"t":"about","c":"about","ld":"","tr":""},{"i":40,"t":"hula?","c":"hula","ld":"","tr":"?"},{"i":41,"t":"Before","c":"Before","ld":"","tr":""},{"i":42,"t":"we","c":"we","ld":"","tr":""},{"i":43,"t":"start","c":"start","ld":"","tr":""},{"i":44,"t":"our","c":"our","ld":"","tr":""},{"i":45,"t":"lesson,","c":"lesson","ld":"","tr":","},{"i":46,"t":"I","c":"I","ld":"","tr":""},{"i":47,"t":"want","c":"want","ld":"","tr":""},{"i":48,"t":"to","c":"to","ld":"","tr":""},{"i":49,"t":"tell","c":"tell","ld":"","tr":""},{"i":50,"t":"you","c":"you","ld":"","tr":""},{"i":51,"t":"about","c":"about","ld":"","tr":""},{"i":52,"t":"it.","c":"it","ld":"","tr":"."},{"i":53,"t":"Hula","c":"Hula","ld":"","tr":""},{"i":54,"t":"is","c":"is","ld":"","tr":""},{"i":55,"t":"a","c":"a","ld":"","tr":""},{"i":56,"t":"traditional","c":"traditional","ld":"","tr":"","b":{"hard":{"answer":"traditional"}}},{"i":57,"t":"dance","c":"dance","ld":"","tr":""},{"i":58,"t":"from","c":"from","ld":"","tr":"","b":{"easy":{"choices":["from","to","form"],"correct":0},"medium":{"choices":["of","in","from","by"],"correct":2,"answer":"from"},"hard":{"answer":"from"}}},{"i":59,"t":"Hawaii,","c":"Hawaii","ld":"","tr":","},{"i":60,"t":"and","c":"and","ld":"","tr":""},{"i":61,"t":"it","c":"it","ld":"","tr":""},{"i":62,"t":"has","c":"has","ld":"","tr":"","b":{"easy":{"choices":["has never been","has bean","has been"],"correct":2,"_gLen":2,"_gTrail":""},"medium":{"choices":["have been","had been","was been","has been"],"correct":3,"answer":"has been","_gLen":2,"_gTrail":""},"hard":{"answer":"has been","_gLen":2,"_gTrail":""}}},{"i":63,"t":"been","c":"been","ld":"","tr":"","_gSkip":{"easy":true,"medium":true,"hard":true},"b":{}},{"i":64,"t":"a","c":"a","ld":"","tr":""},{"i":65,"t":"part","c":"part","ld":"","tr":""},{"i":66,"t":"of","c":"of","ld":"","tr":""},{"i":67,"t":"Hawaiian","c":"Hawaiian","ld":"","tr":""},{"i":68,"t":"life","c":"life","ld":"","tr":""},{"i":69,"t":"for","c":"for","ld":"","tr":"","b":{"easy":{"choices":["for a short time","for a long time","for a long lime"],"correct":1,"_gLen":4,"_gTrail":"."},"medium":{"choices":["for a long time","since a long time","during a long time","in a long time"],"correct":0,"answer":"for a long time","_gLen":4,"_gTrail":"."},"hard":{"answer":"for a long time","_gLen":4,"_gTrail":"."}}},{"i":70,"t":"a","c":"a","ld":"","tr":"","_gSkip":{"easy":true,"medium":true,"hard":true},"b":{}},{"i":71,"t":"long","c":"long","ld":"","tr":"","_gSkip":{"easy":true,"medium":true,"hard":true},"b":{}},{"i":72,"t":"time.","c":"time","ld":"","tr":".","_gSkip":{"easy":true,"medium":true,"hard":true},"b":{}},{"i":73,"t":"The","c":"The","ld":"","tr":""},{"i":74,"t":"early","c":"early","ld":"","tr":"","b":{"hard":{"answer":"early Hawaiians","_gLen":2,"_gTrail":""}}},{"i":75,"t":"Hawaiians","c":"Hawaiians","ld":"","tr":"","_gSkip":{"hard":true},"b":{}},{"i":76,"t":"didn't","c":"didn't","ld":"","tr":""},{"i":77,"t":"have","c":"have","ld":"","tr":""},{"i":78,"t":"a","c":"a","ld":"","tr":""},{"i":79,"t":"writing","c":"writing","ld":"","tr":"","b":{"hard":{"answer":"writing system","_gLen":2,"_gTrail":","}}},{"i":80,"t":"system,","c":"system","ld":"","tr":",","_gSkip":{"hard":true},"b":{}},{"i":81,"t":"so","c":"so","ld":"","tr":""},{"i":82,"t":"they","c":"they","ld":"","tr":""},{"i":83,"t":"used","c":"used","ld":"","tr":""},{"i":84,"t":"hula","c":"hula","ld":"","tr":""},{"i":85,"t":"to","c":"to","ld":"","tr":""},{"i":86,"t":"tell","c":"tell","ld":"","tr":""},{"i":87,"t":"stories.","c":"stories","ld":"","tr":"."},{"i":88,"t":"Hula","c":"Hula","ld":"","tr":""},{"i":89,"t":"is","c":"is","ld":"","tr":""},{"i":90,"t":"a","c":"a","ld":"","tr":""},{"i":91,"t":"language","c":"language","ld":"","tr":""},{"i":92,"t":"through","c":"through","ld":"","tr":"","b":{"easy":{"choices":["through","around","though"],"correct":0},"medium":{"choices":["throughout","through","by","with"],"correct":1,"answer":"through"},"hard":{"answer":"through"}}},{"i":93,"t":"body","c":"body","ld":"","tr":""},{"i":94,"t":"movements,","c":"movements","ld":"","tr":","},{"i":95,"t":"and","c":"and","ld":"","tr":""},{"i":96,"t":"it","c":"it","ld":"","tr":""},{"i":97,"t":"has","c":"has","ld":"","tr":"","b":{"easy":{"choices":["has passed up","has passed down","has past down"],"correct":1,"_gLen":3,"_gTrail":""},"medium":{"choices":["have passed down","has pass down","has been passed down","has passed down"],"correct":3,"answer":"has passed down","_gLen":3,"_gTrail":""},"hard":{"answer":"has passed down","_gLen":3,"_gTrail":""}}},{"i":98,"t":"passed","c":"passed","ld":"","tr":"","_gSkip":{"easy":true,"medium":true,"hard":true},"b":{}},{"i":99,"t":"down","c":"down","ld":"","tr":"","_gSkip":{"easy":true,"medium":true,"hard":true},"b":{}},{"i":100,"t":"stories","c":"stories","ld":"","tr":""},{"i":101,"t":"from","c":"from","ld":"","tr":"","b":{"medium":{"choices":["from","since","by","of"],"correct":0,"answer":"from"},"hard":{"answer":"from"}}},{"i":102,"t":"one","c":"one","ld":"","tr":""},{"i":103,"t":"generation","c":"generation","ld":"","tr":""},{"i":104,"t":"to","c":"to","ld":"","tr":"","b":{"medium":{"choices":["to","for","into","at"],"correct":0,"answer":"to"},"hard":{"answer":"to"}}},{"i":105,"t":"the","c":"the","ld":"","tr":""},{"i":106,"t":"next.","c":"next","ld":"","tr":"."},{"i":107,"t":"Now","c":"Now","ld":"","tr":""},{"i":108,"t":"it's","c":"it's","ld":"","tr":""},{"i":109,"t":"time","c":"time","ld":"","tr":""},{"i":110,"t":"to","c":"to","ld":"","tr":""},{"i":111,"t":"dance!","c":"dance","ld":"","tr":"!"},{"i":112,"t":"Remember","c":"Remember","ld":"","tr":""},{"i":113,"t":"that","c":"that","ld":"","tr":""},{"i":114,"t":"you","c":"you","ld":"","tr":""},{"i":115,"t":"become","c":"become","ld":"","tr":""},{"i":116,"t":"a","c":"a","ld":"","tr":""},{"i":117,"t":"storyteller","c":"storyteller","ld":"","tr":"","b":{"hard":{"answer":"storyteller"}}},{"i":118,"t":"when","c":"when","ld":"","tr":""},{"i":119,"t":"you","c":"you","ld":"","tr":""},{"i":120,"t":"dance","c":"dance","ld":"","tr":""},{"i":121,"t":"hula.","c":"hula","ld":"","tr":"."},{"i":122,"t":"You","c":"You","ld":"","tr":""},{"i":123,"t":"tell","c":"tell","ld":"","tr":""},{"i":124,"t":"a","c":"a","ld":"","tr":""},{"i":125,"t":"story","c":"story","ld":"","tr":""},{"i":126,"t":"with","c":"with","ld":"","tr":""},{"i":127,"t":"your","c":"your","ld":"","tr":""},{"i":128,"t":"hands,","c":"hands","ld":"","tr":","},{"i":129,"t":"feet,","c":"feet","ld":"","tr":","},{"i":130,"t":"and","c":"and","ld":"","tr":""},{"i":131,"t":"hips.","c":"hips","ld":"","tr":"."},{"i":132,"t":"Oh,","c":"Oh","ld":"","tr":","},{"i":133,"t":"you","c":"you","ld":"","tr":""},{"i":134,"t":"need","c":"need","ld":"","tr":""},{"i":135,"t":"to","c":"to","ld":"","tr":""},{"i":136,"t":"take","c":"take","ld":"","tr":"","b":{"easy":{"choices":["take off","put on","tale off"],"correct":0,"_gLen":2,"_gTrail":""},"medium":{"choices":["took off","taking off","take off","take out"],"correct":2,"answer":"take off","_gLen":2,"_gTrail":""},"hard":{"answer":"take off","_gLen":2,"_gTrail":""}}},{"i":137,"t":"off","c":"off","ld":"","tr":"","_gSkip":{"easy":true,"medium":true,"hard":true},"b":{}},{"i":138,"t":"your","c":"your","ld":"","tr":""},{"i":139,"t":"shoes","c":"shoes","ld":"","tr":""},{"i":140,"t":"and","c":"and","ld":"","tr":""},{"i":141,"t":"socks!","c":"socks","ld":"","tr":"!"},{"i":142,"t":"Hula","c":"Hula","ld":"","tr":""},{"i":143,"t":"is","c":"is","ld":"","tr":""},{"i":144,"t":"always","c":"always","ld":"","tr":""},{"i":145,"t":"done","c":"done","ld":"","tr":"","b":{"medium":{"choices":["done","do","doing","did"],"correct":0,"answer":"done"},"hard":{"answer":"done"}}},{"i":146,"t":"barefoot.","c":"barefoot","ld":"","tr":".","b":{"easy":{"choices":["shod","barefoot","barfoot"],"correct":1},"medium":{"choices":["barefoot","barefeet","bare footing","barefooted"],"correct":0,"answer":"barefoot"},"hard":{"answer":"barefoot"}}},{"i":147,"t":"Let's","c":"Let's","ld":"","tr":""},{"i":148,"t":"start","c":"start","ld":"","tr":"","b":{"easy":{"choices":["end with","start with","stark with"],"correct":1,"_gLen":2,"_gTrail":""},"medium":{"choices":["start from","starting with","start with","started with"],"correct":2,"answer":"start with","_gLen":2,"_gTrail":""},"hard":{"answer":"start with","_gLen":2,"_gTrail":""}}},{"i":149,"t":"with","c":"with","ld":"","tr":"","_gSkip":{"easy":true,"medium":true,"hard":true},"b":{}},{"i":150,"t":"the","c":"the","ld":"","tr":""},{"i":151,"t":"hand","c":"hand","ld":"","tr":""},{"i":152,"t":"gestures.","c":"gestures","ld":"","tr":"."},{"i":153,"t":"Every","c":"Every","ld":"","tr":""},{"i":154,"t":"gesture","c":"gesture","ld":"","tr":""},{"i":155,"t":"in","c":"in","ld":"","tr":""},{"i":156,"t":"hula","c":"hula","ld":"","tr":""},{"i":157,"t":"has","c":"has","ld":"","tr":""},{"i":158,"t":"a","c":"a","ld":"","tr":""},{"i":159,"t":"meaning.","c":"meaning","ld":"","tr":"."},{"i":160,"t":"Wave","c":"Wave","ld":"","tr":""},{"i":161,"t":"your","c":"your","ld":"","tr":""},{"i":162,"t":"fingers","c":"fingers","ld":"","tr":""},{"i":163,"t":"while","c":"while","ld":"","tr":"","b":{"easy":{"choices":["until","while","whale"],"correct":1},"medium":{"choices":["while","during","when","as soon as"],"correct":0,"answer":"while"},"hard":{"answer":"while"}}},{"i":164,"t":"you","c":"you","ld":"","tr":""},{"i":165,"t":"move","c":"move","ld":"","tr":""},{"i":166,"t":"your","c":"your","ld":"","tr":""},{"i":167,"t":"arms","c":"arms","ld":"","tr":""},{"i":168,"t":"up","c":"up","ld":"","tr":"","b":{"hard":{"answer":"up and down","_gLen":3,"_gTrail":"."}}},{"i":169,"t":"and","c":"and","ld":"","tr":"","_gSkip":{"hard":true},"b":{}},{"i":170,"t":"down.","c":"down","ld":"","tr":".","_gSkip":{"hard":true},"b":{}},{"i":171,"t":"This","c":"This","ld":"","tr":""},{"i":172,"t":"gesture","c":"gesture","ld":"","tr":""},{"i":173,"t":"is","c":"is","ld":"","tr":"","b":{"easy":{"choices":["is called","is unnamed","is celled"],"correct":0,"_gLen":2,"_gTrail":""},"medium":{"choices":["was called","is called","has called","is calling"],"correct":1,"answer":"is called","_gLen":2,"_gTrail":""},"hard":{"answer":"is called","_gLen":2,"_gTrail":""}}},{"i":174,"t":"called","c":"called","ld":"","tr":"","_gSkip":{"easy":true,"medium":true,"hard":true},"b":{}},{"i":175,"t":"*ua*","c":"*ua*","ld":"","tr":""},{"i":176,"t":"in","c":"in","ld":"","tr":""},{"i":177,"t":"the","c":"the","ld":"","tr":""},{"i":178,"t":"Hawaiian","c":"Hawaiian","ld":"","tr":""},{"i":179,"t":"language,","c":"language","ld":"","tr":","},{"i":180,"t":"and","c":"and","ld":"","tr":""},{"i":181,"t":"it","c":"it","ld":"","tr":""},{"i":182,"t":"means","c":"means","ld":"","tr":""},{"i":183,"t":"\"rain.\"","c":"rain","ld":"\"","tr":".\""},{"i":184,"t":"What","c":"What","ld":"","tr":""},{"i":185,"t":"about","c":"about","ld":"","tr":""},{"i":186,"t":"the","c":"the","ld":"","tr":""},{"i":187,"t":"sun?","c":"sun","ld":"","tr":"?"},{"i":188,"t":"Hawaiians","c":"Hawaiians","ld":"","tr":""},{"i":189,"t":"make","c":"make","ld":"","tr":"","b":{"medium":{"choices":["making a circle","made a circle","to making a circle","make a circle"],"correct":3,"answer":"make a circle","_gLen":3,"_gTrail":""},"hard":{"answer":"make a circle","_gLen":3,"_gTrail":""}}},{"i":190,"t":"a","c":"a","ld":"","tr":"","_gSkip":{"medium":true,"hard":true},"b":{}},{"i":191,"t":"circle","c":"circle","ld":"","tr":"","_gSkip":{"medium":true,"hard":true},"b":{}},{"i":192,"t":"with","c":"with","ld":"","tr":""},{"i":193,"t":"their","c":"their","ld":"","tr":""},{"i":194,"t":"arms","c":"arms","ld":"","tr":""},{"i":195,"t":"above","c":"above","ld":"","tr":"","b":{"hard":{"answer":"above their heads","_gLen":3,"_gTrail":"."}}},{"i":196,"t":"their","c":"their","ld":"","tr":"","_gSkip":{"hard":true},"b":{}},{"i":197,"t":"heads.","c":"heads","ld":"","tr":".","_gSkip":{"hard":true},"b":{}},{"i":198,"t":"That's","c":"That's","ld":"","tr":""},{"i":199,"t":"*ka","c":"*ka","ld":"","tr":""},{"i":200,"t":"lā*,","c":"lā*,","ld":"","tr":""},{"i":201,"t":"the","c":"the","ld":"","tr":""},{"i":202,"t":"\"sun.\"","c":"sun","ld":"\"","tr":".\""},{"i":203,"t":"These","c":"These","ld":"","tr":""},{"i":204,"t":"gestures","c":"gestures","ld":"","tr":""},{"i":205,"t":"are","c":"are","ld":"","tr":""},{"i":206,"t":"so","c":"so","ld":"","tr":"","b":{"easy":{"choices":["not","do","so"],"correct":2},"medium":{"choices":["such","very much","so","too"],"correct":2,"answer":"so"},"hard":{"answer":"so"}}},{"i":207,"t":"simple","c":"simple","ld":"","tr":""},{"i":208,"t":"that","c":"that","ld":"","tr":"","b":{"easy":{"choices":["neither","that","than"],"correct":1},"medium":{"choices":["which","that","what","so that"],"correct":1,"answer":"that"},"hard":{"answer":"that"}}},{"i":209,"t":"you","c":"you","ld":"","tr":""},{"i":210,"t":"can","c":"can","ld":"","tr":""},{"i":211,"t":"easily","c":"easily","ld":"","tr":""},{"i":212,"t":"remember","c":"remember","ld":"","tr":""},{"i":213,"t":"them.","c":"them","ld":"","tr":"."},{"i":214,"t":"Next,","c":"Next","ld":"","tr":","},{"i":215,"t":"bend","c":"bend","ld":"","tr":""},{"i":216,"t":"your","c":"your","ld":"","tr":""},{"i":217,"t":"knees","c":"knees","ld":"","tr":""},{"i":218,"t":"a","c":"a","ld":"","tr":""},{"i":219,"t":"little","c":"little","ld":"","tr":""},{"i":220,"t":"and","c":"and","ld":"","tr":""},{"i":221,"t":"step","c":"step","ld":"","tr":""},{"i":222,"t":"from","c":"from","ld":"","tr":"","b":{"hard":{"answer":"from side to side","_gLen":4,"_gTrail":"."}}},{"i":223,"t":"side","c":"side","ld":"","tr":"","_gSkip":{"hard":true},"b":{}},{"i":224,"t":"to","c":"to","ld":"","tr":"","_gSkip":{"hard":true},"b":{}},{"i":225,"t":"side.","c":"side","ld":"","tr":".","_gSkip":{"hard":true},"b":{}},{"i":226,"t":"While","c":"While","ld":"","tr":""},{"i":227,"t":"you","c":"you","ld":"","tr":""},{"i":228,"t":"step","c":"step","ld":"","tr":""},{"i":229,"t":"to","c":"to","ld":"","tr":""},{"i":230,"t":"the","c":"the","ld":"","tr":""},{"i":231,"t":"side,","c":"side","ld":"","tr":","},{"i":232,"t":"move","c":"move","ld":"","tr":""},{"i":233,"t":"your","c":"your","ld":"","tr":""},{"i":234,"t":"hips","c":"hips","ld":"","tr":""},{"i":235,"t":"naturally.","c":"naturally","ld":"","tr":"."},{"i":236,"t":"Now","c":"Now","ld":"","tr":""},{"i":237,"t":"move","c":"move","ld":"","tr":""},{"i":238,"t":"your","c":"your","ld":"","tr":""},{"i":239,"t":"hands","c":"hands","ld":"","tr":""},{"i":240,"t":"with","c":"with","ld":"","tr":""},{"i":241,"t":"your","c":"your","ld":"","tr":""},{"i":242,"t":"hips","c":"hips","ld":"","tr":""},{"i":243,"t":"and","c":"and","ld":"","tr":""},{"i":244,"t":"feet!","c":"feet","ld":"","tr":"!"},{"i":245,"t":"Well,","c":"Well","ld":"","tr":","},{"i":246,"t":"time's","c":"time's","ld":"","tr":""},{"i":247,"t":"up!","c":"up","ld":"","tr":"!","b":{"easy":{"choices":["down","cup","up"],"correct":2},"medium":{"choices":["out","over","up","off"],"correct":2,"answer":"up"},"hard":{"answer":"up"}}},{"i":248,"t":"That's","c":"That's","ld":"","tr":""},{"i":249,"t":"all","c":"all","ld":"","tr":""},{"i":250,"t":"for","c":"for","ld":"","tr":""},{"i":251,"t":"today.","c":"today","ld":"","tr":"."},{"i":252,"t":"Remember","c":"Remember","ld":"","tr":""},{"i":253,"t":"that","c":"that","ld":"","tr":""},{"i":254,"t":"hula","c":"hula","ld":"","tr":""},{"i":255,"t":"is","c":"is","ld":"","tr":""},{"i":256,"t":"not","c":"not","ld":"","tr":""},{"i":257,"t":"just","c":"just","ld":"","tr":""},{"i":258,"t":"a","c":"a","ld":"","tr":""},{"i":259,"t":"dance.","c":"dance","ld":"","tr":"."},{"i":260,"t":"Hula","c":"Hula","ld":"","tr":""},{"i":261,"t":"is","c":"is","ld":"","tr":""},{"i":262,"t":"a","c":"a","ld":"","tr":""},{"i":263,"t":"language","c":"language","ld":"","tr":""},{"i":264,"t":"and","c":"and","ld":"","tr":""},{"i":265,"t":"a","c":"a","ld":"","tr":""},{"i":266,"t":"way","c":"way","ld":"","tr":""},{"i":267,"t":"of","c":"of","ld":"","tr":""},{"i":268,"t":"storytelling,","c":"storytelling","ld":"","tr":",","b":{"easy":{"choices":["storytelling","fact-reporting","storyelling"],"correct":0},"medium":{"choices":["told story","storytelling","story told","to storytell"],"correct":1,"answer":"storytelling"},"hard":{"answer":"storytelling"}}},{"i":269,"t":"so","c":"so","ld":"","tr":""},{"i":270,"t":"it","c":"it","ld":"","tr":""},{"i":271,"t":"is","c":"is","ld":"","tr":""},{"i":272,"t":"important","c":"important","ld":"","tr":""},{"i":273,"t":"to","c":"to","ld":"","tr":""},{"i":274,"t":"Hawaiians.","c":"Hawaiians","ld":"","tr":"."},{"i":275,"t":"As","c":"As","ld":"","tr":"","b":{"hard":{"answer":"As"}}},{"i":276,"t":"a","c":"a","ld":"","tr":""},{"i":277,"t":"hula","c":"hula","ld":"","tr":""},{"i":278,"t":"teacher,","c":"teacher","ld":"","tr":","},{"i":279,"t":"I","c":"I","ld":"","tr":""},{"i":280,"t":"always","c":"always","ld":"","tr":""},{"i":281,"t":"try","c":"try","ld":"","tr":"","b":{"hard":{"answer":"try to","_gLen":2,"_gTrail":""}}},{"i":282,"t":"to","c":"to","ld":"","tr":"","_gSkip":{"hard":true},"b":{}},{"i":283,"t":"continue","c":"continue","ld":"","tr":"","b":{"medium":{"choices":["continuing","continued","continue","to continuing"],"correct":2,"answer":"continue"},"hard":{"answer":"continue"}}},{"i":284,"t":"the","c":"the","ld":"","tr":""},{"i":285,"t":"history","c":"history","ld":"","tr":""},{"i":286,"t":"and","c":"and","ld":"","tr":""},{"i":287,"t":"culture","c":"culture","ld":"","tr":""},{"i":288,"t":"of","c":"of","ld":"","tr":""},{"i":289,"t":"Hawaii.","c":"Hawaii","ld":"","tr":"."},{"i":290,"t":"If","c":"If","ld":"","tr":""},{"i":291,"t":"you","c":"you","ld":"","tr":""},{"i":292,"t":"want","c":"want","ld":"","tr":""},{"i":293,"t":"to","c":"to","ld":"","tr":""},{"i":294,"t":"learn","c":"learn","ld":"","tr":""},{"i":295,"t":"more,","c":"more","ld":"","tr":","},{"i":296,"t":"come","c":"come","ld":"","tr":""},{"i":297,"t":"to","c":"to","ld":"","tr":""},{"i":298,"t":"my","c":"my","ld":"","tr":""},{"i":299,"t":"next","c":"next","ld":"","tr":""},{"i":300,"t":"class.","c":"class","ld":"","tr":"."},{"i":301,"t":"Everyone","c":"Everyone","ld":"","tr":""},{"i":302,"t":"is","c":"is","ld":"","tr":""},{"i":303,"t":"welcome.","c":"welcome","ld":"","tr":"."},{"i":304,"t":"*Aloha!*","c":"*Aloha!*","ld":"","tr":""}],"thresholds":{"easy":90,"medium":90,"hard":90},"sentenceBreak":false};
+
+var levels=['easy','medium','hard'];
+var levelNames={easy:'쉬움',medium:'중간',hard:'심화'};
+var currentLevel=null,blankStates={};
+var unlockedLevels={easy:true,medium:true,hard:true};
+var completedLevels={easy:false,medium:false,hard:false};
+var levelScores={};
+
+function init(){showLevelSelector();}
+
+function showLevelSelector(){
+  currentLevel=null;
+  document.getElementById('levelInfo').textContent='단계를 선택하세요';
+  document.getElementById('progressFill').style.width='0%';
+  var c=document.getElementById('content');
+  var h='<div class="level-selector"><h2 style="margin-bottom:18px;font-size:17px;">학습 단계 선택</h2>';
+  for(var x=0;x<levels.length;x++){
+    var lv=levels[x];var done=completedLevels[lv];
+    var cls=lv==='medium'?'med':lv;
+    h+='<button class="level-btn '+cls+'-btn'+(done?' done':'')+'" onclick="startLevel(\''+lv+'\')">';
+    h+=levelNames[lv]+'</button><br>';
+  }
+  h+='</div>';c.innerHTML=h;
+  document.getElementById('actionBar').innerHTML='';
+}
+
+function startLevel(level){
+  currentLevel=level;blankStates={};
+  document.getElementById('levelInfo').textContent=levelNames[level]+' 단계';
+  renderPassage();
+}
+
+function getBlanksForLevel(level){
+  return DATA.words.filter(function(w){return w.b&&w.b[level]&&!(w._gSkip&&w._gSkip[level]);});
+}
+
+function renderPassage(){
+  var c=document.getElementById('content');
+  var blanks=getBlanksForLevel(currentLevel);
+  var total=blanks.length;
+  var answered=0;
+  for(var k in blankStates){if(blankStates[k].answered)answered++;}
+  document.getElementById('progressFill').style.width=(answered/total*100)+'%';
+  var sentEndRe=/[.!?][”“"'’‘)\]]*$/;
+  var h='<div class="passage">';
+  DATA.words.forEach(function(w,wi){
+    // Skip group members for current level
+    if(w._gSkip&&w._gSkip[currentLevel])return;
+    var bd=w.b&&w.b[currentLevel];
+    if(bd){
+      var st=blankStates[w.i]||{answered:false,correct:false,attempts:0};
+      h+=(w.ld||'');
+      if(currentLevel==='hard') h+=renderTypingBlank(w,bd,st);
+      else h+=renderSelectBlank(w,bd,st);
+      // Use group trailing if available
+      var trail=bd._gTrail!==undefined?bd._gTrail:(w.tr||'');
+      h+=trail;
+    }else{
+      h+=(w.ld||'')+w.c+(w.tr||'');
+    }
+    h+=' ';
+    var trForBreak=(bd&&bd._gTrail!==undefined)?bd._gTrail:(w.tr||'');
+    if(DATA.sentenceBreak && trForBreak && sentEndRe.test(trForBreak) && wi<DATA.words.length-1) h+='<br>';
+  });
+  h+='</div>';c.innerHTML=h;
+  if(answered===total) showResults();
+  else document.getElementById('actionBar').innerHTML='<button class="btn" style="background:#eee;color:#333;font-size:13px;" onclick="confirmBackToSelector()">📋 단계 선택</button>';
+}
+
+function renderSelectBlank(w,bd,st){
+  if(st.answered&&st.correct)
+    return '<span class="blank-select correct"><select disabled><option>'+bd.choices[bd.correct]+'</option></select></span>';
+  if(st.answered&&!st.correct&&st.attempts>=1)
+    return '<span class="blank-select wrong"><select disabled><option>'+bd.choices[bd.correct]+' \u2713</option></select></span>';
+  var opts='<option value="">___</option>';
+  bd.choices.forEach(function(ch,ci){
+    if(ch) opts+='<option value="'+ci+'">'+ch+'</option>';
+  });
+  var rb=st.attempts===1?'<span class="retry-badge">재도전</span>':'';
+  return '<span class="blank-select" id="bs'+w.i+'"><select onchange="checkSelect('+w.i+',this.value)">'+opts+'</select>'+rb+'</span>';
+}
+
+function renderTypingBlank(w,bd,st){
+  if(st.answered&&st.correct){
+    var csz=Math.max(Math.ceil((bd.answer.length+1)/2*1.3),4);
+    return '<span class="blank-input correct"><input disabled size="'+csz+'" value="'+bd.answer+'"></span>';}
+  if(st.answered&&!st.correct&&st.attempts>=2){
+    var csz=Math.max(Math.ceil((bd.answer.length+3)/2*1.3),4);
+    return '<span class="blank-input wrong"><input disabled size="'+csz+'" value="'+bd.answer+' \u2713"></span>';}
+  var rb=st.attempts===1?'<span class="retry-badge">재도전</span>':'';
+  var parts=bd.answer.split(' ');
+  var prefix,rest,ph;
+  if(parts.length>1){
+    prefix=parts[0]+' ';
+    rest=parts.slice(1).join(' ');
+    ph='';
+  }else{
+    prefix=bd.answer.charAt(0);
+    rest=bd.answer.slice(1);
+    ph='';
+  }
+  var sz=Math.max(Math.ceil((rest.length+3)/2),4);
+  return '<span class="blank-input" id="bs'+w.i+'" data-prefix="'+encodeURIComponent(prefix)+'">'
+    +'<span class="hint-prefix">'+prefix+'</span>'
+    +'<input size="'+sz+'" placeholder="'+ph+'" onkeydown="if(event.key===\'Enter\')checkType('+w.i+',this.value)">'
+    +'<button onclick="checkType('+w.i+',this.parentNode.querySelector(\'input\').value)" style="font-size:16px;padding:2px 5px;margin-left:2px;border:none;background:transparent;cursor:pointer;" title="확인">&#x23CE;</button>'
+    +rb+'</span>';
+}
+
+function checkSelect(wordIdx,val){
+  if(val==='')return;
+  var w=DATA.words.find(function(ww){return ww.i===wordIdx;});
+  var bd=w.b[currentLevel];
+  var st=blankStates[wordIdx]||{answered:false,correct:false,attempts:0};
+  st.attempts++;
+  if(parseInt(val)===bd.correct){
+    st.answered=true;st.correct=true;
+    blankStates[wordIdx]=st;renderPassage();
+  }else{
+    st.answered=true;st.correct=false;
+    blankStates[wordIdx]=st;renderPassage();
+  }
+}
+
+function normApo(s){return s.replace(/[\u2018\u2019\u2032\u0060\u00B4\uFF07]/g,"\'").trim().toLowerCase();}
+function checkType(wordIdx,val){
+  if(!val.trim())return;
+  var w=DATA.words.find(function(ww){return ww.i===wordIdx;});
+  var bd=w.b[currentLevel];
+  var st=blankStates[wordIdx]||{answered:false,correct:false,attempts:0};
+  st.attempts++;
+  var el=document.getElementById('bs'+wordIdx);
+  var prefix=el?decodeURIComponent(el.getAttribute('data-prefix')||''):'';
+  var fullAnswer=(prefix+val).trim();
+  if(normApo(fullAnswer)===normApo(bd.answer)){
+    st.answered=true;st.correct=true;
+    blankStates[wordIdx]=st;renderPassage();
+  }else{
+    if(st.attempts>=2){
+      st.answered=true;st.correct=false;
+      blankStates[wordIdx]=st;renderPassage();
+    }else{
+      blankStates[wordIdx]=st;
+      if(el){el.classList.add('wrong');setTimeout(function(){el.classList.remove('wrong');renderPassage();},600);}
+    }
+  }
+}
+
+function showResults(){
+  var blanks=getBlanksForLevel(currentLevel);
+  var total=blanks.length;var correct=0;
+  blanks.forEach(function(w){var st=blankStates[w.i];if(st&&st.correct)correct++;});
+  var pct=Math.round(correct/total*100);
+  var threshold=DATA.thresholds[currentLevel];
+  var pass=pct>=threshold;
+  levelScores[currentLevel]={correct:correct,total:total,pct:pct};
+  var h='<div class="result-card"><h2>'+levelNames[currentLevel]+' 단계 결과</h2>';
+  h+='<div class="score '+(pass?'pass':'fail')+'">'+pct+'%</div>';
+  h+='<p>'+total+'개 빈칸 중 '+correct+'개 정답 (기준: '+threshold+'%)</p>';
+  if(pass){completedLevels[currentLevel]=true;}
+  h+='</div>';
+  document.getElementById('content').innerHTML+=h;
+  var ah='';
+  if(!pass){
+    ah='<button class="btn btn-retry" onclick="startLevel(\''+currentLevel+'\')">재도전</button>';
+  }else{
+    var ni=levels.indexOf(currentLevel)+1;
+    if(ni<levels.length){
+      ah='<button class="btn btn-next" onclick="startLevel(\''+levels[ni]+'\')">다음 단계 →</button>';
+    }else{showCongrats();return;}
+    ah+=' <button class="btn" style="background:#eee;color:#333;" onclick="showLevelSelector()">단계 선택</button>';
+  }
+  document.getElementById('actionBar').innerHTML=ah;
+}
+
+function showCongrats(){
+  var tc=0,tb=0;
+  for(var x=0;x<levels.length;x++){
+    var s=levelScores[levels[x]];
+    if(s){tc+=s.correct;tb+=s.total;}
+  }
+  var tp=Math.round(tc/tb*100);
+  var h='<div class="congrats"><div style="font-size:40px;margin-bottom:10px;">🎉</div>';
+  h+='<h2>축하합니다!</h2><p>모든 단계를 통과했습니다!</p>';
+  h+='<p style="font-size:19px;font-weight:700;margin-top:10px;">전체 성취도: '+tp+'%</p></div>';
+  document.getElementById('content').innerHTML=h;
+  document.getElementById('actionBar').innerHTML='<button class="btn" style="background:#eee;color:#333;" onclick="showLevelSelector()">다시 도전</button>';
+}
+
+function confirmBackToSelector(){
+  if(confirm('테스트를 중단하고 단계 선택으로 돌아갈까요?\n(현재 진행 상황은 초기화됩니다)')){
+    showLevelSelector();
+  }
+}
+
+init();
+</script></body></html>
