@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="format-detection" content="telephone=no">
+<title>중2기말_3과OX</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#2e1065 0%,#4c1d95 60%,#1e1b4b 100%);min-height:100vh;min-height:-webkit-fill-available;padding:16px;padding-top:max(16px,env(safe-area-inset-top));padding-bottom:max(80px,env(safe-area-inset-bottom));display:flex;align-items:flex-start;justify-content:center;-webkit-font-smoothing:antialiased;overscroll-behavior-y:contain;touch-action:pan-y}
+.wrap{max-width:520px;width:100%;background:#f8fafc;border-radius:28px;box-shadow:0 24px 64px rgba(0,0,0,.35);overflow:hidden}
+.header{background:linear-gradient(150deg,#2e1065 0%,#4c1d95 60%,#1e1b4b 100%);padding:24px 20px 18px;color:#fff;text-align:center;position:-webkit-sticky;position:sticky;top:0;z-index:10;box-shadow:0 2px 12px rgba(0,0,0,.35)}
+.header h1{font-size:1.15rem;font-weight:700;margin-bottom:3px;letter-spacing:-.02em}
+.header p{opacity:.7;font-size:.8rem}
+.content{padding:20px 18px 40px}
+.prog-bar{height:8px;background:#e2e8f0;border-radius:4px;margin-bottom:14px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,#8b5cf6,#a78bfa);border-radius:4px;transition:width .4s}
+.q-counter{text-align:center;font-size:.82rem;color:#64748b;margin-bottom:6px;font-weight:500}
+.title-box{text-align:center;margin:10px 0 14px;padding:18px 16px;background:linear-gradient(135deg,#faf5ff,#f3e8ff);border-radius:18px;border:2px solid #c4b5fd}
+.title-box .ptitle{font-size:1.55rem;font-weight:800;color:#5b21b6;letter-spacing:-.02em;line-height:1.2}
+.title-box .tlabel{display:inline-block;margin-top:6px;font-size:.72rem;background:#ede9fe;color:#6d28d9;padding:3px 10px;border-radius:20px;font-weight:700}
+.statement{margin:14px 0;padding:16px 18px;background:#fff;border:1.5px solid #e8ecf1;border-radius:14px;font-size:1rem;color:#1e293b;line-height:1.65;font-weight:500;box-shadow:0 1px 4px rgba(15,23,42,.06)}
+.source-box{margin:10px 0 4px;padding:12px 14px;background:#f9fafb;border-left:3px solid #a78bfa;border-radius:0 10px 10px 0;font-size:.82rem;color:#4b5563;line-height:1.65;font-style:italic}
+.source-label{display:block;font-size:.68rem;color:#7c3aed;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;font-style:normal}
+.ox-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.ox-btn{padding:18px 10px;border:2px solid #e5e7eb;background:#fff;border-radius:16px;font-size:1rem;font-weight:800;color:#1e293b;cursor:pointer;font-family:inherit;transition:all .18s;touch-action:manipulation;-webkit-user-select:none;user-select:none;min-height:84px}
+.ox-btn:active{transform:scale(.96)}
+.ox-btn.o{color:#059669}
+.ox-btn.x{color:#dc2626}
+.ox-btn.dunno{grid-column:1 / span 2;padding:14px;font-size:.92rem;color:#64748b;font-weight:700;min-height:0}
+.ox-btn.sel.o{background:linear-gradient(135deg,#ecfdf5,#d1fae5);border-color:#10b981}
+.ox-btn.sel.x{background:linear-gradient(135deg,#fff1f2,#fecdd3);border-color:#ef4444}
+.ox-btn.sel.dunno{background:#f1f5f9;border-color:#94a3b8}
+.ox-btn.correct{background:linear-gradient(135deg,#ecfdf5,#d1fae5);border-color:#10b981;color:#065f46}
+.ox-btn.wrong{background:linear-gradient(135deg,#fff1f2,#fecdd3);border-color:#ef4444;color:#7f1d1d}
+.ox-btn[disabled]{cursor:default;opacity:.85}
+.ox-icon{display:block;font-size:1.6rem;margin-bottom:4px}
+.fb{text-align:center;padding:14px 16px;border-radius:14px;margin-top:14px;font-weight:700;font-size:.92rem;line-height:1.5}
+.fb.ok{background:linear-gradient(135deg,#ecfdf5,#d1fae5);color:#065f46;border:1.5px solid #6ee7b7}
+.fb.ng{background:linear-gradient(135deg,#fff1f2,#fecdd3);color:#881337;border:1.5px solid #fda4af}
+.fb.dunno{background:#f1f5f9;color:#475569;border:1.5px solid #cbd5e1}
+.explain-box{margin-top:10px;padding:14px;background:#fff;border-radius:12px;border:1.5px solid #e8ecf1}
+.ex-title{font-size:.82rem;font-weight:800;color:#6d28d9;margin-bottom:8px;padding-bottom:6px;border-bottom:1.5px solid #f1f5f9}
+.ex-body{font-size:.88rem;color:#374151;line-height:1.75}
+.ex-answer{display:inline-block;font-size:.95rem;font-weight:900;padding:2px 14px;border-radius:20px;margin-right:8px;vertical-align:middle}
+.ex-answer.O{background:#dcfce7;color:#166534}
+.ex-answer.X{background:#fee2e2;color:#991b1b}
+.nav-bar{display:flex;justify-content:space-between;align-items:center;margin-top:18px;padding-top:14px;border-top:1.5px solid #e8ecf1;gap:8px}
+.nav-btn{padding:10px 16px;border:none;border-radius:12px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;touch-action:manipulation}
+.nav-btn.prev,.nav-btn.home{background:#f1f5f9;color:#374151;border:1.5px solid #e2e8f0}
+.nav-btn.next{background:linear-gradient(135deg,#8b5cf6,#a78bfa);color:#fff}
+.nav-btn:disabled{opacity:.3;cursor:default}
+.set-list{display:grid;gap:10px;margin-top:8px}
+.set-card{background:#fff;border:2px solid #e5e7eb;border-radius:16px;padding:16px 20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:all .2s}
+.set-card:hover{border-color:#8b5cf6;background:#faf5ff;transform:translateY(-2px)}
+.set-card.done{border-color:#8b5cf6;background:linear-gradient(135deg,#faf5ff,#f3e8ff)}
+.score-circle{width:110px;height:110px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:16px auto;font-size:1.8rem;font-weight:800;border:6px solid}
+.score-circle.pass{border-color:#10b981;color:#059669;background:linear-gradient(135deg,#ecfdf5,#d1fae5)}
+.score-circle.fail{border-color:#f43f5e;color:#e11d48;background:linear-gradient(135deg,#fff1f2,#fecdd3)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.fade{animation:fadeIn .15s ease-out}
+@media(prefers-reduced-motion:reduce){.fade{animation:none}}</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header"><h1 id="hTitle"></h1><p id="hSub"></p></div>
+  <div class="content" id="app"></div>
+</div>
+<script>
+var CONFIG={"title":"중2기말_3과OX","passThreshold":97,"level":"low","levelLabel":"중2 수준 · CEFR A2-","passages":[{"id":1,"title":"VR Car Racing","body":"B : What is that woman doing there?\nW: She is experiencing VR car racing.\nB : Could you explain more about it?\nW: With a VR device, you can be a car racer.\nB : That sounds fun. I’d like to try it.\nW: Then stand in line there.\n"},{"id":2,"title":"Drone Flying Lesson","body":"G: I saw that your drone passed through the rings. That was cool!\nM: Thanks. Do you want to try it?\nG: I’d love to. How can I fly the drone?\nM: You can use this controller.\nG: Could you explain more about it?\nM: Press the green button, and the drone goes up.\nG: I see. What’s next?\nM: Press the red button, and it goes down.\nG: It works! Thank you so much.\n\n"},{"id":3,"title":"Air Rocket Competition","body":"B: Look! People are trying to fly air rockets!\nG: Which rocket will go the highest?\nB: I’m sure that the red rocket will go the highest.\nG: Why do you think so?\nB: Its head looks different.\nG: Oh, you’re right! The red rocket is sharper than the other rockets.\n"},{"id":4,"title":"Silent Recorder Invention","body":"Reporter: Juwon, you won the special prize in the invention contest. Great Job!\nJuwon: Thank you. I’m proud of my invention.\nReporter: What’s your invention?\nJuwon: It’s a recorder which doesn’t bother other people.\nReporter: How does it work? Could you explain more about it?\nJuwon: I connected headphones to the recorder with a simple device. The device sends the sound from the recorder to the headphones.\nReporter: That’s cool. When you wear the headphones, only you can hear the sound.\nJuwon: Right. People can play the recorder any time. I’m sure that this invention will be very helpful.\n"},{"id":5,"title":"Eiffel Tower Science","body":"Welcome to my science quiz show! I'm Isabel. Here is the first question. I'm sure that you can find the right answer. The Eiffel Tower gets taller during the summer. Is this true or false? 3, 2, 1. The answer is true! The Eiffel Tower is 330 m. In summer, the temperature of the Eiffel Tower goes up. When the metal gets hot, it becomes bigger. So, the height of the tower becomes about 15 cm taller. In winter, the metal cools down, and the height of the tower becomes shorter. Now, let's answer another question together!"},{"id":6,"title":"Accidental Inventions Stories","body":"A New Cookie Star: Chocolate Chip Cookies. \nIn America, there was a famous cook, Ms. Wakefield. One day in 1938, she wanted to bake chocolate cookies. However, she didn’t have enough time to melt chocolate. So, she cut a chocolate bar into small chips. Then, she mixed them with her dough and put the cookie dough into the oven. When Ms. Wakefield opened the oven, she found that the chips were not melted into the dough. Although the chips remained in the cookies, she was not disappointed. Her new cookies were so delicious. She invented chocolate CHIP cookies! \n\nFinding Safety in Glass: Safety Glass. \nIn 1903, a French scientist, Mr. Bénédictus, was experimenting with liquid plastic in a glass flask. He accidentally hit the glass flask, and it fell on the floor. Although the glass flask was broken into pieces, they still held together in the shape of the flask! How could this happen? The secret was the liquid plastic in the flask. This finding led to his invention of safety glass. These days, we can find safety glass everywhere. For example, it is used for car windows. If there is a car accident, people are safer from sharp pieces of glass. \n\nCleaning Clothes Without Water: Dry Cleaning. \nCan you clean your clothes without water? The answer is \"yes.\" Dry cleaning uses oil to clean clothes. There's an interesting story about dry cleaning. In the 1800s, a factory worker in France spilled lamp oil on a tablecloth. The factory manager, Mr. Jolly, looked at the tablecloth and found something. The dirty spot on the tablecloth was cleaned by the lamp oil! His discovery led to a new way of cleaning clothes. Now, dry cleaning is widely used around the world. These wonderful inventions came by chance. When things go wrong, don’t be disappointed. Maybe you can be the next amazing inventor.\n"}],"questions":[{"questionNumber":1,"passageId":1,"passageTitle":"VR Car Racing","type":"ko_detail","typeLabel":"부분 내용 (한글)","statement":"대화에서 여자는 VR 장치를 사용하면 자동차 경주 선수가 될 수 있다고 설명했다.","sourceSentence":null,"expression":null,"contextSentence":null,"answer":"O","explanation":"지문에서 여자는 'With a VR device, you can be a car racer.'라고 말하며 VR 장치를 사용하면 자동차 경주 선수가 될 수 있다고 설명했다. statement의 내용은 지문의 해당 발화와 완전히 일치한다."},{"questionNumber":2,"passageId":1,"passageTitle":"VR Car Racing","type":"ko_detail","typeLabel":"부분 내용 (한글)","statement":"대화에서 남자아이는 VR 카레이싱을 직접 경험하고 있었다.","sourceSentence":null,"expression":null,"contextSentence":null,"answer":"X","explanation":"대화에서 남자아이(B)는 VR 카레이싱을 직접 경험하고 있는 것이 아니라, 여자가 VR 카레이싱을 경험하는 것을 보고 있었다. 남자아이는 '해보고 싶다(I'd like to try it)'고 말하며 줄을 서라는 안내를 받는 상황이므로, 아직 직접 체험하지 않은 상태이다."},{"questionNumber":3,"passageId":1,"passageTitle":"VR Car Racing","type":"en_main","typeLabel":"전반 내용 (영어)","statement":"The boy wanted to experience VR car racing and was told to wait in line.","sourceSentence":null,"expression":null,"contextSentence":null,"answer":"O","explanation":"소년은 'I'd like to try it(해보고 싶다)'라고 말하며 VR 카레이싱을 경험하고 싶다는 의사를 표현했다. 이에 여성은 'stand in line there(저기 줄을 서세요)'라고 안내했으므로, statement의 내용은 지문과 완전히 일치한다."},{"questionNumber":4,"passageId":1,"passageTitle":"VR Car Racing","type":"grammar","typeLabel":"문법 OX","statement":"She is experiencing VR car racing.","sourceSentence":null,"expression":null,"contextSentence":null,"answer":"O","explanation":"이 문장은 문법적으로 완전히 올바릅니다. 주어 'She'에 맞게 be동사 'is'가 사용되었고, 현재진행형 'is experiencing'의 형태(be동사 + 동사원형-ing)도 정확합니다. 'VR car racing'은 목적어로 자연스럽게 쓰였으며, 관사·전치사·수일치 등 모든 문법 요소에 오류가 없습니다."},{"questionNumber":5,"passageId":1,"passageTitle":"VR Car Racing","type":"context_vocab","typeLabel":"문맥 어휘 OX","statement":"표현: stand in line → 줄지어 기다리다","sourceSentence":null,"expression":"stand in line","contextSentence":"Then stand in line there.","answer":"O","explanation":"'stand in line'은 '줄을 서다, 줄지어 기다리다'라는 뜻의 표현입니다. 지문에서 여성이 VR 체험을 해보고 싶다는 소년에게 'Then stand in line there'라고 말하며 줄을 서서 기다리라고 안내하는 맥락으로 사용되었습니다. 따라서 제시된 한글 의미 '줄지어 기다리다'는 지문의 맥락과 정확히 일치합니다."},{"questionNumber":6,"passageId":2,"passageTitle":"Drone Flying Lesson","type":"ko_detail","typeLabel":"부분 내용 (한글)","statement":"소녀는 드론이 링을 통과하는 것을 보고 직접 해보고 싶다고 말했다.","sourceSentence":null,"expression":null,"contextSentence":null,"answer":"O","explanation":"소녀(G)는 대화 첫 부분에서 드론이 링을 통과하는 것을 봤다고 말했고('I saw that your drone passed through the rings'), 남자아이가 해보겠냐고 묻자 'I'd love to'라고 답하며 직접 해보고 싶다는 의사를 표현했다. statement의 내용은 지문과 완전히 일치한다."},{"questionNumber":7,"passageId":2,"passageTitle":"Drone Flying Lesson","type":"ko_detail","typeLabel":"부분 내용 (한글)","statement":"드론을 위로 올리려면 빨간 버튼을 눌러야 한다.","sourceSentence":null,"expression":null,"contextSentence":null,"answer":"X","explanation":"지문에서 M은 '초록 버튼을 누르면 드론이 올라간다(Press the green button, and the drone goes up)'고 설명했다. 빨간 버튼은 드론을 내리는 버튼이므로, 위로 올리려면 빨간 버튼이 아닌 초록 버튼을 눌러야 한다. 따라서 해당 진술은 사실과 반대되는 내용이다."},{"questionNumber":8,"passageId":2,"passageTitle":"Drone Flying Lesson","type":"en_main","typeLabel":"전반 내용 (영어)","statement":"The boy showed the girl how to operate the drone using a controller.","sourceSentence":null,"expression":null,"contextSentence":null,"answer":"O","explanation":"지문에서 M(남자아이)은 G(여자아이)에게 컨트롤러를 사용하여 드론을 조종하는 방법을 설명해 주었다. 초록 버튼을 누르면 드론이 올라가고, 빨간 버튼을 누르면 내려간다고 알려주었으므로 statement의 내용과 일치한다."},{"questionNumber":9,"passageId":2,"passageTitle":"Drone Flying Lesson","type":"grammar","typeLabel":"문법 OX","statement":"Press the green button, and the drone go up.","sourceSentence":null,"expression":null,"contextSentence":null,"answer":"X","explanation":"문장에서 'the drone go up'은 문법적으로 틀렸습니다. 주어 'the drone'은 3인칭 단수이므로 동사에 -(e)s를 붙여 'goes'로 써야 합니다. 지문의 원문도 'the drone goes up'으로 표기되어 있습니다."},{"questionNumber":10,"passageId":2,"passageTitle":"Drone Flying Lesson","type":"context_vocab","typeLabel":"문맥 어휘 OX","statement":"표현: explain more about it → 그것에 대해 더 자세히 알려달라고 요청하다","sourceSentence":null,"expression":"explain more about it","contextSentence":"Could you explain more about it?","answer":"O","explanation":"'Could you explain more about it?'은 컨트롤러 사용법에 대해 더 자세히 설명해달라는 요청 표현입니다. 지문에서 G가 컨트롤러를 어떻게 사용하는지 묻고 M이 버튼 조작법을 설명해주는 흐름으로 이어지므로, '그것에 대해 더 자세히 알려달라고 요청하다'는 한글 의미는 맥락과 정확히 일치합니다."},{"questionNumber":11,"passageId":3,"passageTitle":"Air Rocket Competition","type":"ko_detail","typeLabel":"부분 내용 (한글)","statement":"남자아이는 빨간 로켓이 가장 높이 날 것이라고 확신하고 있다.","sourceSentence":null,"expression":null,"contextSentence":null,"answer":"O","explanation":"지문에서 남자아이(B)는 'I'm sure that the red rocket will go the highest.'라고 말하며 빨간 로켓이 가장 높이 날 것이라고 확신하고 있다. 'I'm sure'는 확신을 나타내는 표현으로, statement의 내용과 완전히 일치한다."},{"questionNumber":12,"passageId":3,"passageTitle":"Air Rocket Competition","type":"ko_detail","typeLabel":"부분 내용 (한글)","statement":"남자아이가 빨간 로켓이 높이 날 것이라고 생각한 이유는 로켓의 색깔이 다르기 때문이다.","sourceSentence":null,"expression":null,"contextSentence":null,"answer":"X","explanation":"남자아이는 빨간 로켓이 가장 높이 날 것이라고 생각한 이유로 '머리 부분(head)이 다르게 생겼다'고 말했다. 색깔이 다르기 때문이라고 말한 적은 없으며, 여자아이가 이를 보충 설명하며 '빨간 로켓이 다른 로켓들보다 더 뾰족하다(sharper)'고 언급한 것이다. 따라서 이유를 '색깔'로 서술한 statement는 지문 내용을 왜곡한 것이므로 X이다."},{"questionNumber":13,"passageId":3,"passageTitle":"Air Rocket Competition","type":"en_main","typeLabel":"전반 내용 (영어)","statement":"The girl agrees that the red rocket is sharper than the other rockets.","sourceSentence":null,"expression":null,"contextSentence":null,"answer":"O","explanation":"지문에서 소녀는 'Oh, you're right! The red rocket is sharper than the other rockets.'라고 말하며 빨간 로켓이 다른 로켓들보다 더 뾰족하다는 점에 동의하고 있습니다. 소년이 먼저 빨간 로켓의 머리 모양이 다르다고 언급한 뒤, 소녀가 이를 확인하며 동의한 것입니다. 따라서 statement는 지문 내용과 완전히 일치합니다."},{"questionNumber":14,"passageId":3,"passageTitle":"Air Rocket Competition","type":"grammar","typeLabel":"문법 OX","statement":"The red rocket is more sharp than the other rockets.","sourceSentence":null,"expression":null,"contextSentence":null,"answer":"X","explanation":"'sharp'는 1음절 형용사이므로 비교급을 만들 때 '-er'을 붙여 'sharper'로 써야 합니다. 'more sharp'는 문법적으로 틀린 표현이며, 지문에서도 'sharper than'이라고 올바르게 사용되고 있습니다. 따라서 'more sharp than'은 'sharper than'으로 고쳐야 합니다."},{"questionNumber":15,"passageId":3,"passageTitle":"Air Rocket Competition","type":"context_vocab","typeLabel":"문맥 어휘 OX","statement":"표현: sharper → (끝이) 더 뾰족한","sourceSentence":null,"expression":"sharper","contextSentence":"The red rocket is sharper than the other rockets.","answer":"O","explanation":"지문에서 'The red rocket is sharper than the other rockets'는 빨간 로켓의 머리 부분이 다른 로켓들보다 더 뾰족하다는 의미로 사용되었습니다. 앞서 'Its head looks different'라는 맥락과 함께 쓰여, 로켓 끝부분의 형태를 비교하는 표현임을 확인할 수 있습니다. 따라서 'sharper'를 '(끝이) 더 뾰족한'으로 해석한 것은 지문 맥락과 정확히 일치합니다."},{"questionNumber":16,"passageId":4,"passageTitle":"Silent Recorder Invention","type":"ko_detail","typeLabel":"부분 내용 (한글)","statement":"주원은 발명품 대회에서 대상(금상)을 수상했다.","sourceSentence":null,"expression":null,"contextSentence":null,"answer":"X","explanation":"지문에서 주원은 발명품 대회에서 '특별상(special prize)'을 수상했다고 명시되어 있습니다. 'special prize'는 대상(금상)과 다른 상이므로, 대상을 수상했다는 statement는 사실과 다릅니다."},{"questionNumber":17,"passageId":4,"passageTitle":"Silent Recorder Invention","type":"context_vocab","typeLabel":"문맥 어휘 OX","statement":"표현: bother → (다른 사람에게) 불편함을 주다","sourceSentence":null,"expression":"bother","contextSentence":"It's a recorder which doesn't bother other people.","answer":"O","explanation":"지문에서 'bother'는 'a recorder which doesn't bother other people'이라는 문장에 사용되었습니다. 이 맥락에서 'bother'는 녹음기 소리가 주변 사람들에게 불편함을 주거나 방해가 된다는 의미로 쓰였으므로, '(다른 사람에게) 불편함을 주다'라는 한글 의미와 정확히 일치합니다."},{"questionNumber":18,"passageId":4,"passageTitle":"Silent Recorder Invention","type":"en_main","typeLabel":"전반 내용 (영어)","statement":"Juwon connected a microphone to the recorder to send sound to the headphones.","sourceSentence":null,"expression":null,"contextSentence":null,"answer":"X","explanation":"지문에서 주원은 헤드폰을 레코더에 연결하기 위해 'headphones'를 'a simple device'로 연결했다고 설명했습니다. Statement에서는 'microphone(마이크)'을 연결했다고 했으나, 실제로는 'headphones(헤드폰)'을 연결한 것이므로 사실과 다릅니다."},{"questionNumber":19,"passageId":4,"passageTitle":"Silent Recorder Invention","type":"grammar","typeLabel":"문법 OX","statement":"I connected headphones to the recorder with a simple device.","sourceSentence":null,"expression":null,"contextSentence":null,"answer":"O","explanation":"이 문장은 문법적으로 완전히 올바릅니다. 'connected A to B with C' 구조(A를 C를 사용하여 B에 연결했다)가 정확하게 사용되었으며, 과거 시제(connected), 전치사(to, with), 관사(a) 모두 적절하게 쓰였습니다."},{"questionNumber":20,"passageId":4,"passageTitle":"Silent Recorder Invention","type":"context_vocab","typeLabel":"문맥 어휘 OX","statement":"표현: I'm proud of → ~을 부끄럽게 여기다","sourceSentence":null,"expression":"I'm proud of","contextSentence":"I'm proud of my invention.","answer":"X","explanation":"'I'm proud of'는 '~을 자랑스럽게 여기다'라는 의미입니다. 지문에서 주원이는 자신의 발명품을 자랑스러워하는 맥락으로 이 표현을 사용했습니다. 제시된 한글 의미 '~을 부끄럽게 여기다'는 정반대의 뜻으로, 올바르지 않습니다."},{"questionNumber":21,"passageId":4,"passageTitle":"Silent Recorder Invention","type":"en_main","typeLabel":"전반 내용 (영어)","statement":"When wearing the headphones, only the person using them can hear the sound from the recorder.","sourceSentence":null,"expression":null,"contextSentence":null,"answer":"O","explanation":"기자가 '헤드폰을 착용하면 당신만 소리를 들을 수 있다'고 말하고 주원이 '맞다(Right)'고 확인해 주었습니다. 이는 헤드폰을 착용한 사람만 녹음기 소리를 들을 수 있다는 statement의 내용과 완전히 일치합니다."},{"questionNumber":22,"passageId":4,"passageTitle":"Silent Recorder Invention","type":"context_vocab","typeLabel":"문맥 어휘 OX","statement":"표현: I'm sure that → ~라고 확신하다","sourceSentence":null,"expression":"I'm sure that","contextSentence":"I'm sure that this invention will be very helpful.","answer":"O","explanation":"'I'm sure that'은 '~라고 확신하다'는 의미로, 지문 마지막 문장 'I'm sure that this invention will be very helpful.'에서 주완이 자신의 발명품이 매우 유용할 것이라고 확신하며 말하는 맥락에서 사용되었습니다. 제시된 한글 의미 '~라고 확신하다'는 이 표현의 지문 내 실제 의미와 정확히 일치합니다."},{"questionNumber":23,"passageId":5,"passageTitle":"Eiffel Tower Science","type":"ko_detail","typeLabel":"부분 내용 (한글)","statement":"에펠탑은 여름에 약 15cm 더 낮아진다.","sourceSentence":null,"expression":null,"contextSentence":null,"answer":"X","explanation":"지문에 따르면 에펠탑은 여름에 금속이 열로 인해 팽창하여 약 15cm 더 높아진다고 나와 있습니다. 반면 statement는 여름에 15cm 더 낮아진다고 서술하고 있으므로 지문의 내용과 정반대입니다."},{"questionNumber":24,"passageId":5,"passageTitle":"Eiffel Tower Science","type":"ko_detail","typeLabel":"부분 내용 (한글)","statement":"겨울에는 금속이 식으면서 에펠탑의 높이가 짧아진다.","sourceSentence":null,"expression":null,"contextSentence":null,"answer":"O","explanation":"지문에서 'In winter, the metal cools down, and the height of the tower becomes shorter.'라고 명시되어 있습니다. 이는 겨울에 금속이 식으면서 에펠탑의 높이가 짧아진다는 statement와 완전히 일치합니다."},{"questionNumber":25,"passageId":5,"passageTitle":"Eiffel Tower Science","type":"ko_detail","typeLabel":"부분 내용 (한글)","statement":"이 퀴즈쇼의 진행자는 Sophie라는 이름이다.","sourceSentence":null,"expression":null,"contextSentence":null,"answer":"X","explanation":"지문에서 퀴즈쇼의 진행자는 'Isabel'이라고 소개하고 있습니다. Statement에서 언급한 'Sophie'는 지문에 전혀 등장하지 않는 이름으로, 진행자의 이름이 잘못 기재되었습니다."},{"questionNumber":26,"passageId":5,"passageTitle":"Eiffel Tower Science","type":"en_main","typeLabel":"전반 내용 (영어)","statement":"The Eiffel Tower is 330 m tall, and its height changes depending on the season.","sourceSentence":null,"expression":null,"contextSentence":null,"answer":"O","explanation":"지문에서 에펠탑의 높이는 330m라고 명시되어 있으며, 여름에는 금속이 열을 받아 약 15cm 더 높아지고 겨울에는 낮아진다고 설명하고 있습니다. 따라서 '330m이며 계절에 따라 높이가 변한다'는 statement는 지문 내용과 완전히 일치합니다."},{"questionNumber":27,"passageId":5,"passageTitle":"Eiffel Tower Science","type":"en_main","typeLabel":"전반 내용 (영어)","statement":"When metal gets cold, it expands and makes the tower taller.","sourceSentence":null,"expression":null,"contextSentence":null,"answer":"X","explanation":"지문에 따르면 금속이 뜨거워질 때(여름) 팽창하여 탑이 더 높아진다고 설명하고 있습니다. 반대로 겨울에는 금속이 식으면서 탑의 높이가 짧아진다고 명시되어 있습니다. Statement는 금속이 차가워질 때 팽창하여 탑이 높아진다고 했으므로, 지문 내용과 정반대의 내용입니다."},{"questionNumber":28,"passageId":5,"passageTitle":"Eiffel Tower Science","type":"grammar","typeLabel":"문법 OX","statement":"When the metal gets hot, it becomes more bigger.","sourceSentence":null,"expression":null,"contextSentence":null,"answer":"X","explanation":"'more bigger'는 이중 비교급(double comparative) 오류입니다. 'big'의 비교급은 'bigger' 하나로 충분하며, 앞에 'more'를 붙이면 문법적으로 틀립니다. 올바른 표현은 지문에 나온 것처럼 'it becomes bigger'입니다."},{"questionNumber":29,"passageId":5,"passageTitle":"Eiffel Tower Science","type":"context_vocab","typeLabel":"문맥 어휘 OX","statement":"표현: goes up → (온도가) 상승하다","sourceSentence":null,"expression":"goes up","contextSentence":"In summer, the temperature of the Eiffel Tower goes up.","answer":"O","explanation":"지문에서 'the temperature of the Eiffel Tower goes up'은 여름에 에펠탑의 온도가 올라간다는 의미로 사용되었습니다. 이 맥락에서 'goes up'은 '(온도가) 상승하다'라는 뜻으로 쓰였으므로 제시된 한글 의미와 정확히 일치합니다."},{"questionNumber":30,"passageId":6,"passageTitle":"Accidental Inventions Stories","type":"ko_detail","typeLabel":"부분 내용 (한글)","statement":"웨이크필드 씨는 초콜릿을 녹일 시간이 부족해서 초콜릿 바를 작은 조각으로 잘랐다.","sourceSentence":null,"expression":null,"contextSentence":null,"answer":"O","explanation":"지문에서 웨이크필드 씨는 초콜릿 쿠키를 만들고 싶었지만 초콜릿을 녹일 시간이 충분하지 않아(she didn't have enough time to melt chocolate) 초콜릿 바를 작은 조각으로 잘랐다(she cut a chocolate bar into small chips)고 명시되어 있습니다. statement의 인과 관계와 행동 모두 지문 내용과 정확히 일치합니다."},{"questionNumber":31,"passageId":6,"passageTitle":"Accidental Inventions Stories","type":"ko_detail","typeLabel":"부분 내용 (한글)","statement":"웨이크필드 씨가 오븐을 열었을 때, 초콜릿 칩이 반죽 속으로 완전히 녹아 있었다.","sourceSentence":null,"expression":null,"contextSentence":null,"answer":"X","explanation":"지문에 따르면 웨이크필드 씨가 오븐을 열었을 때 초콜릿 칩은 반죽 속으로 녹아들지 않고 그대로 남아 있었습니다(the chips were not melted into the dough). 따라서 '완전히 녹아 있었다'는 statement는 지문 내용과 정반대입니다."},{"questionNumber":32,"passageId":6,"passageTitle":"Accidental Inventions Stories","type":"en_main","typeLabel":"전반 내용 (영어)","statement":"Ms. Wakefield was disappointed because the chocolate chips did not melt into the dough.","sourceSentence":null,"expression":null,"contextSentence":null,"answer":"X","explanation":"지문에서 Ms. Wakefield는 초콜릿 칩이 반죽에 녹지 않았음에도 불구하고 실망하지 않았다(she was not disappointed)고 명시되어 있습니다. 오히려 그녀의 새로운 쿠키는 매우 맛있었고, 이를 통해 초콜릿 칩 쿠키를 발명하게 되었습니다. 따라서 '실망했다'는 statement의 내용은 지문과 정반대입니다."},{"questionNumber":33,"passageId":6,"passageTitle":"Accidental Inventions Stories","type":"ko_detail","typeLabel":"부분 내용 (한글)","statement":"프랑스 과학자 베네딕투스 씨는 1905년에 유리 플라스크로 액체 플라스틱 실험을 하고 있었다.","sourceSentence":null,"expression":null,"contextSentence":null,"answer":"X","explanation":"지문에 따르면 베네딕투스 씨가 액체 플라스틱 실험을 한 것은 1903년이라고 명시되어 있습니다. statement에서는 1905년이라고 기술하여 연도가 잘못되었으므로 X입니다."},{"questionNumber":34,"passageId":6,"passageTitle":"Accidental Inventions Stories","type":"en_main","typeLabel":"전반 내용 (영어)","statement":"When Mr. Bénédictus dropped the glass flask, the broken pieces stayed together in the shape of the flask.","sourceSentence":null,"expression":null,"contextSentence":null,"answer":"O","explanation":"지문에서 Mr. Bénédictus가 실수로 유리 플라스크를 건드려 바닥에 떨어뜨렸을 때, 유리가 산산조각 났음에도 불구하고 조각들이 플라스크 모양 그대로 붙어 있었다고 서술되어 있습니다. Statement는 '깨진 조각들이 플라스크 모양으로 붙어 있었다'고 말하고 있으므로 지문 내용과 완전히 일치합니다."},{"questionNumber":35,"passageId":6,"passageTitle":"Accidental Inventions Stories","type":"ko_detail","typeLabel":"부분 내용 (한글)","statement":"안전유리가 자동차 창문에 사용되는 이유는 사고 발생 시 날카로운 유리 조각으로부터 사람들을 더 안전하게 지켜주기 때문이다.","sourceSentence":null,"expression":null,"contextSentence":null,"answer":"O","explanation":"지문에서 안전유리는 자동차 창문에 사용된다고 명시되어 있으며, 자동차 사고 시 날카로운 유리 조각으로부터 사람들을 더 안전하게 보호해준다고 설명하고 있다. statement의 인과 관계(날카로운 유리 조각으로부터 보호 → 자동차 창문에 사용)는 지문의 내용과 완전히 일치한다."},{"questionNumber":36,"passageId":6,"passageTitle":"Accidental Inventions Stories","type":"en_main","typeLabel":"전반 내용 (영어)","statement":"A factory worker in France discovered dry cleaning when he spilled water on a tablecloth in the 1800s.","sourceSentence":null,"expression":null,"contextSentence":null,"answer":"X","explanation":"지문에서 프랑스의 공장 노동자가 흘린 것은 '물(water)'이 아니라 '램프 오일(lamp oil)'입니다. 이 오류가 결정적인 차이로, statement는 핵심 세부 사항을 잘못 서술하고 있습니다. 나머지 내용(프랑스, 1800년대, 테이블보)은 지문과 일치합니다."},{"questionNumber":37,"passageId":6,"passageTitle":"Accidental Inventions Stories","type":"ko_detail","typeLabel":"부분 내용 (한글)","statement":"드라이클리닝의 발견을 이끈 사람은 공장 관리자인 졸리 씨였다.","sourceSentence":null,"expression":null,"contextSentence":null,"answer":"O","explanation":"지문에서 프랑스의 공장 노동자가 테이블보에 램프 오일을 엎질렀고, 공장 관리자인 졸리 씨가 그 테이블보를 보고 더러운 얼룩이 램프 오일에 의해 지워진 것을 발견했다고 서술되어 있습니다. 즉, 드라이클리닝이라는 새로운 세탁 방법의 발견을 이끈 것은 공장 관리자 졸리 씨의 관찰이었으므로 statement는 지문 내용과 일치합니다."},{"questionNumber":38,"passageId":6,"passageTitle":"Accidental Inventions Stories","type":"context_vocab","typeLabel":"문맥 어휘 OX","statement":"표현: led to → (어떤 결과를) 이끌어 내다","sourceSentence":null,"expression":"led to","contextSentence":"This finding led to his invention of safety glass.","answer":"O","explanation":"'led to'는 지문에서 'This finding led to his invention of safety glass'와 'His discovery led to a new way of cleaning clothes'와 같이 사용되었습니다. 이 맥락에서 'led to'는 어떤 발견이나 사건이 특정 결과나 발명을 이끌어 냈다는 의미로 쓰였으며, 제시된 한글 의미 '(어떤 결과를) 이끌어 내다'와 정확히 일치합니다."},{"questionNumber":39,"passageId":6,"passageTitle":"Accidental Inventions Stories","type":"context_vocab","typeLabel":"문맥 어휘 OX","statement":"표현: came by chance → 오랜 계획 끝에 만들어졌다","sourceSentence":null,"expression":"came by chance","contextSentence":"These wonderful inventions came by chance.","answer":"X","explanation":"'came by chance'는 '우연히 생겨났다'는 의미입니다. 지문 마지막 문장 'These wonderful inventions came by chance'는 초콜릿 칩 쿠키, 안전 유리, 드라이클리닝 모두 우연한 사고나 실수에서 발명되었다는 내용을 요약하고 있습니다. 따라서 '오랜 계획 끝에 만들어졌다'는 설명은 지문의 맥락과 정반대되는 의미입니다."},{"questionNumber":40,"passageId":6,"passageTitle":"Accidental Inventions Stories","type":"context_vocab","typeLabel":"문맥 어휘 OX","statement":"표현: widely used → 전 세계적으로 널리 활용되다","sourceSentence":null,"expression":"widely used","contextSentence":"Now, dry cleaning is widely used around the world.","answer":"O","explanation":"지문에서 'dry cleaning is widely used around the world'는 드라이클리닝이 전 세계적으로 널리 사용된다는 의미로 쓰였습니다. 'widely used'는 '널리 활용되다', 'around the world'는 '전 세계적으로'를 뜻하므로, 제시된 한글 의미 '전 세계적으로 널리 활용되다'는 지문 맥락과 정확히 일치합니다."},{"questionNumber":41,"passageId":6,"passageTitle":"Accidental Inventions Stories","type":"grammar","typeLabel":"문법 OX","statement":"Although the chips remained in the cookies, she were not disappointed.","sourceSentence":null,"expression":null,"contextSentence":null,"answer":"X","explanation":"주어 'she'는 3인칭 단수이므로 be동사는 'were'가 아닌 'was'를 사용해야 합니다. 올바른 문장은 'Although the chips remained in the cookies, she was not disappointed.'입니다. 원문에서도 'she was not disappointed'로 표현되어 있습니다."},{"questionNumber":42,"passageId":6,"passageTitle":"Accidental Inventions Stories","type":"grammar","typeLabel":"문법 OX","statement":"He accidentally hit the glass flask, and it fell on the floor.","sourceSentence":null,"expression":null,"contextSentence":null,"answer":"O","explanation":"이 문장은 문법적으로 완전히 올바릅니다. 'accidentally'는 동사 'hit'을 수식하는 부사로 적절히 사용되었고, 과거시제(hit, fell)가 일관되게 쓰였으며, 접속사 'and'로 두 절이 자연스럽게 연결되어 있습니다. 주어-동사 수일치 및 전치사 'on' 사용도 모두 올바릅니다."}]};
+var QS=CONFIG.questions||[];
+var TOTAL=QS.length;
+var SET_SIZE=10;
+var SETS=(function(){var s=[];for(var i=0;i<TOTAL;i+=SET_SIZE)s.push(QS.slice(i,i+SET_SIZE));return s;})();
+var answers={};var currentSet=0;
+function esc(s){if(s==null)return"";var d=document.createElement("div");d.textContent=String(s);return d.innerHTML}
+function setH(t,sub){var h=document.getElementById("hTitle");var p=document.getElementById("hSub");if(h)h.textContent=t;if(p)p.textContent=sub}
+function gi(si,pi){return si*SET_SIZE+pi}
+function showIndex(){
+  setH(CONFIG.title,"OX 문제 테스트");
+  var chips=SETS.map(function(sq,si){
+    var base=si*SET_SIZE;var done=0,correct=0;
+    for(var i=0;i<sq.length;i++){var a=answers[base+i];if(a){done++;if(a.isCorrect)correct++;}}
+    var allDone=(done===sq.length);
+    var pct=done>0?Math.round(correct/sq.length*100):null;
+    var passed=pct!==null&&pct>=CONFIG.passThreshold;
+    var scoreHTML=pct===null
+      ?"<span style='font-size:.78rem;color:#9ca3af'>미응시</span>"
+      :(allDone?"<span style='font-weight:700;color:"+(passed?"#10b981":"#ef4444")+"'>"+(passed?"✅ ":"❌ ")+pct+"%</span>"
+             :"<span style='font-weight:700;color:#8b5cf6'>📝 "+done+"/"+sq.length+"</span>");
+    return "<div class='set-card"+(allDone?" done":"")+"' onclick='enterSet("+si+")'>"
+           +"<div><div style='font-weight:700'>세트 "+(si+1)+" <span style='font-size:.8rem;color:#6b7280;font-weight:400'>("+sq.length+"문제)</span></div></div>"
+           +"<div>"+scoreHTML+"</div></div>";
+  }).join("");
+  var app=document.getElementById("app");if(!app)return;
+  app.innerHTML="<div class='fade' style='text-align:center;padding:16px 0'>"
+    +"<div style='font-size:2.5rem;margin-bottom:8px'>📱</div>"
+    +"<h2 style='font-size:1.2rem;font-weight:700;color:#1f2937;margin-bottom:4px'>OX 문제 테스트</h2>"
+    +"<p style='color:#6b7280;font-size:.85rem;margin-bottom:16px'>전체 "+TOTAL+"문제 · "+CONFIG.passThreshold+"% 이상 통과 · 몰라요는 오답 처리</p>"
+    +"</div><div class='set-list'>"+chips+"</div>";
+}
+function enterSet(si){currentSet=si;showQ(0)}
+function showQ(pos){
+  try{window.scrollTo(0,0)}catch(e){}
+  var si=currentSet;var qs=SETS[si];
+  if(!qs||pos<0||pos>=qs.length){showIndex();return;}
+  var gidx=gi(si,pos);var q=qs[pos];var answered=answers[gidx];
+  setH("세트 "+(si+1),"문제 "+(pos+1)+"/"+qs.length);
+  var pct=Math.round((pos+1)/qs.length*100);
+  function btnClass(which){
+    if(!answered)return "ox-btn "+which;
+    if(answered.picked===which){
+      if(which==="dunno")return "ox-btn dunno sel dunno wrong";
+      return "ox-btn "+which+" "+(answered.isCorrect?"correct":"wrong");
+    }
+    return "ox-btn "+which;
+  }
+  var sourceHTML="";
+  // 학생용 HTML — 원본 지문 미표시
+  var fbHTML="";
+  if(answered){
+    var cls=answered.picked==="dunno"?"dunno":(answered.isCorrect?"ok":"ng");
+    var msg=answered.picked==="dunno"?"🤔 몰라요 — 해설을 학습하세요":(answered.isCorrect?"✅ 정답!":"❌ 오답");
+    fbHTML="<div class='fb "+cls+"'>"+msg+"</div>"
+      +"<div class='explain-box'><div class='ex-title'>📖 정답 & 해설</div>"
+      +"<div class='ex-body'><span class='ex-answer "+q.answer+"'>"+q.answer+"</span>"+(q.explanation?esc(q.explanation):"해설이 없습니다.")+"</div></div>";
+  }
+  var app=document.getElementById("app");if(!app)return;
+  app.innerHTML="<div class='fade'>"
+    +"<div class='q-counter'>"+(pos+1)+" / "+qs.length+"</div>"
+    +"<div class='prog-bar'><div class='prog-fill' style='width:"+pct+"%'></div></div>"
+    +"<div class='title-box'><div class='ptitle'>"+esc(q.passageTitle)+"</div>"
+    +"<span class='tlabel'>"+esc(q.typeLabel||"")+"</span></div>"
+    +"<div class='statement'>"+esc(q.statement)+"</div>"
+    +sourceHTML
+    +"<div class='ox-grid'>"
+    +"<button class='"+btnClass("o")+"' onclick='pick("+pos+",&quot;o&quot;)' "+(answered?"disabled":"")+"><span class='ox-icon'>⭕</span>O (맞음)</button>"
+    +"<button class='"+btnClass("x")+"' onclick='pick("+pos+",&quot;x&quot;)' "+(answered?"disabled":"")+"><span class='ox-icon'>❌</span>X (틀림)</button>"
+    +"<button class='"+btnClass("dunno")+"' onclick='pick("+pos+",&quot;dunno&quot;)' "+(answered?"disabled":"")+">🤔 몰라요 (정답·해설 보기)</button>"
+    +"</div>"
+    +fbHTML
+    +"<div class='nav-bar'>"
+    +"<button class='nav-btn prev' onclick='showQ("+(pos-1)+")' "+(pos<=0?"disabled":"")+">← 이전</button>"
+    +"<button class='nav-btn home' onclick='showIndex()'>목록</button>"
+    +"<button class='nav-btn next' onclick='"+(pos<qs.length-1?"showQ("+(pos+1)+")":"showSetResult()")+"'>"+(pos<qs.length-1?"다음 →":"결과")+"</button>"
+    +"</div></div>";
+}
+function pick(pos,which){
+  var gidx=gi(currentSet,pos);
+  if(answers[gidx])return;
+  var q=SETS[currentSet][pos];
+  var isCorrect=false;
+  if(which==="dunno"){isCorrect=false;}
+  else{isCorrect=(which==="o"&&q.answer==="O")||(which==="x"&&q.answer==="X");}
+  answers[gidx]={picked:which,isCorrect:isCorrect};
+  showQ(pos);
+}
+function showSetResult(){
+  var si=currentSet;var qs=SETS[si];var base=si*SET_SIZE;
+  var total=qs.length;var correct=0,dunno=0;
+  for(var i=0;i<total;i++){var a=answers[base+i];if(a&&a.isCorrect)correct++;if(a&&a.picked==="dunno")dunno++;}
+  var pct=Math.round(correct/total*100);var passed=pct>=CONFIG.passThreshold;
+  setH("세트 "+(si+1)+" 결과",passed?"통과":"미달");
+  var app=document.getElementById("app");if(!app)return;
+  app.innerHTML="<div class='fade' style='text-align:center;padding:16px 0'>"
+    +"<div class='score-circle "+(passed?"pass":"fail")+"'>"+pct+"%</div>"
+    +"<p style='font-size:1.1rem;font-weight:700;color:"+(passed?"#10b981":"#ef4444")+"'>"+(passed?"통과!":"미달")+"</p>"
+    +"<p style='color:#6b7280;font-size:.88rem;margin-top:8px'>"+correct+"/"+total+"문제 정답 · 몰라요 "+dunno+"개 · 기준 "+CONFIG.passThreshold+"%</p>"
+    +"</div>"
+    +"<div style='margin-top:16px'><button class='nav-btn next' style='width:100%;padding:14px' onclick='showIndex()'>목록으로</button></div>";
+}
+try{history.pushState(null,"",location.href);
+window.addEventListener("popstate",function(){history.pushState(null,"",location.href);showIndex();});}catch(e){}
+showIndex();
+</script>
+</body>
+</html>
