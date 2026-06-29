@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 해솔중 2학년 영어 기말고사 모의시험 Set 4</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --primary:#db2777;--primary-light:#fce7f3;--primary-dark:#9d174d;
+  --accent:#c026d3;
+  --success:#16a34a;--success-light:#dcfce7;
+  --danger:#dc2626;--danger-light:#fee2e2;
+  --warning:#f59e0b;--warning-light:#fef3c7;
+  --bg:#fdf2f8;--card:#fff;--text:#1e293b;--muted:#64748b;--border:#fbcfe8;
+  --radius:12px;
+}
+body{font-family:'Segoe UI','Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.55}
+.container{max-width:760px;margin:0 auto;padding:16px}
+.start-screen{text-align:center;padding:48px 20px}
+.start-screen h1{font-size:1.7rem;margin-bottom:6px;color:var(--primary)}
+.start-screen .sub-title{color:var(--muted);margin-bottom:24px;font-size:.95rem}
+.start-screen .info-box{background:var(--primary-light);border-radius:var(--radius);padding:22px;margin:18px 0;text-align:left;font-size:.9rem;line-height:1.85}
+.start-screen .info-box strong{color:var(--primary-dark)}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 30px;border:none;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:var(--primary-dark)}
+.btn-success{background:var(--success);color:#fff}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-outline{background:transparent;border:2px solid var(--primary);color:var(--primary)}
+.btn-outline:hover{background:var(--primary-light)}
+.btn-sm{padding:8px 18px;font-size:.85rem}
+.progress-bar{background:var(--border);border-radius:99px;height:8px;margin:10px 0;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:99px;transition:width .4s ease}
+.progress-text{display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted);margin-bottom:4px}
+.q-map{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;margin:10px 0 14px}
+.q-dot{aspect-ratio:1;border-radius:6px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:600;cursor:pointer;transition:all .15s;background:#fff}
+.q-dot:hover{transform:scale(1.08)}
+.q-dot.answered{background:var(--primary-light);border-color:var(--primary);color:var(--primary)}
+.q-dot.current{background:var(--primary);color:#fff;border-color:var(--primary)}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:0 1px 3px rgba(0,0,0,.08),0 4px 14px rgba(0,0,0,.04);padding:22px;margin:14px 0}
+.q-header{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.q-num{background:var(--primary);color:#fff;border-radius:99px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.88rem}
+.q-type{font-size:.72rem;padding:3px 9px;border-radius:99px;font-weight:600}
+.q-type.d{background:#fef3c7;color:#92400e}
+.q-type.p{background:#dbeafe;color:#1e40af}
+.q-type.k{background:#fce7f3;color:#9d174d}
+.q-type.g{background:#dcfce7;color:#065f46}
+.q-type.t{background:#ede9fe;color:#5b21b6}
+.q-pts{font-size:.72rem;color:var(--muted);font-weight:600}
+.q-diff{font-size:.68rem;padding:2px 8px;border-radius:99px;font-weight:700}
+.q-diff.low{background:#e0f2fe;color:#0369a1}
+.q-diff.mid{background:#fef3c7;color:#a16207}
+.q-diff.high{background:#fee2e2;color:#b91c1c}
+.multi-hint{font-size:.78rem;color:#b91c1c;background:#fee2e2;padding:6px 10px;border-radius:6px;margin-bottom:10px;font-weight:600}
+.stem{font-size:.95rem;line-height:1.65;margin-bottom:14px;font-weight:500;white-space:pre-line}
+.passage{background:#fdf2f8;border-left:3px solid var(--primary);padding:12px 14px;margin-bottom:14px;font-size:.86rem;line-height:1.8;border-radius:0 8px 8px 0;white-space:pre-line;max-height:340px;overflow-y:auto;font-family:'Times New Roman',serif}
+.passage u{text-decoration:underline;text-decoration-color:var(--danger);text-underline-offset:3px;font-weight:600}
+.passage b{font-weight:700;color:var(--primary-dark)}
+.choices{list-style:none;display:flex;flex-direction:column;gap:7px}
+.choice{display:flex;align-items:flex-start;gap:10px;padding:11px 13px;border:2px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s;font-size:.88rem;line-height:1.55}
+.choice:hover{border-color:var(--primary);background:var(--primary-light)}
+.choice.selected{border-color:var(--primary);background:var(--primary-light)}
+.choice input{margin-top:3px;flex-shrink:0;accent-color:var(--primary)}
+.nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:8px}
+.nav-row .btn{min-width:96px}
+.result-screen{text-align:center;padding:36px 20px}
+.score-circle{width:170px;height:170px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:18px auto;font-size:2.6rem;font-weight:800;border:6px solid}
+.score-circle.perfect{border-color:var(--warning);background:#fffbeb;color:var(--warning);animation:pulse 1s infinite}
+.score-circle.great{border-color:var(--success);background:var(--success-light);color:var(--success)}
+.score-circle.retry{border-color:var(--danger);background:var(--danger-light);color:var(--danger)}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.score-circle small{font-size:.78rem;font-weight:400;margin-top:4px}
+.result-msg{font-size:1.05rem;margin:14px 0;line-height:1.6}
+.result-detail{background:#fdf2f8;border-radius:var(--radius);padding:16px;margin:14px 0;text-align:left;font-size:.86rem;line-height:1.85}
+.result-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.review-card{border-left:4px solid var(--danger);margin-bottom:14px}
+.my-answer{background:#fef3c7;border-radius:6px;padding:10px;margin:8px 0;font-size:.85rem}
+.model-answer{background:var(--success-light);border-radius:6px;padding:10px;margin:8px 0;font-size:.85rem}
+.explanation{background:var(--warning-light);border-radius:6px;padding:10px 12px;margin-top:10px;font-size:.84rem;line-height:1.6;color:#713f12}
+#confetti-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999}
+@media(max-width:520px){.container{padding:10px}.card{padding:14px}.q-map{grid-template-columns:repeat(8,1fr)}.passage{font-size:.8rem;max-height:260px}}
+</style>
+</head>
+<body>
+<div class="container" id="app"></div>
+<canvas id="confetti-canvas"></canvas>
+<script>
+const Q=[
+{id:"q001",num:1,type:"D-1 대화 순서",cat:"d",pts:2,diff:"low",
+ stem:"대화가 자연스럽게 이어지도록 (A)~(D)를 순서에 맞게 배열한 것은?",
+ passage:"(주어진 글) B: What is that woman doing there?\n(A) W: With a VR device, you can be a car racer.\n(B) B: Could you explain more about it?\n(C) W: She is experiencing VR car racing.\n(D) B: That sounds fun. I'd like to try it.",
+ choices:["(A)-(B)-(C)-(D)","(B)-(C)-(A)-(D)","(C)-(B)-(A)-(D)","(C)-(A)-(B)-(D)","(D)-(B)-(A)-(C)"],
+ answers:[3],explanation:"답변(C) → 설명요청(B) → 설명(A) → 재미(D)"},
+{id:"q002",num:2,type:"D-5 대화 요지",cat:"d",pts:2,diff:"high",
+ stem:"위 대화(VR)의 요지로 적절한 것을 모두 고르시오.",
+ passage:"(S1 VR 본문)",
+ choices:["VR로 자동차 경주를 체험할 수 있다.","VR 기기 사용으로 카레이서가 될 수 있다.","소년은 VR을 직접 해보고 싶어 한다.","VR 기술은 위험하므로 어린이 사용 금지이다.","VR은 매우 비싼 첨단 기술 장비이다."],
+ answers:[1,2,3],explanation:"체험 + 기술 효과 + 시도 의사"},
+{id:"q003",num:3,type:"D-2 문장 위치",cat:"d",pts:2,diff:"high",
+ stem:"〈보기〉의 문장이 들어갈 수 있는 모든 위치를 고르시오.\n〈보기〉 Could you show me?",
+ passage:"G: I saw your drone passed through rings. (ⓐ) M: Thanks. Do you want to try it? (ⓑ) G: I'd love to. (ⓒ) M: You can use this controller. (ⓓ) G: Could you explain more? (ⓔ)",
+ choices:["ⓐ","ⓑ","ⓒ","ⓓ","ⓔ"],
+ answers:[3,5],explanation:"ⓒ 의향 + 보여달라 / ⓔ 더 설명 요청 자연스러움"},
+{id:"q004",num:4,type:"D-4 대화 일치",cat:"d",pts:2,diff:"high",
+ stem:"위 대화(드론)의 내용과 일치하는 것을 모두 고르시오.",
+ passage:"(S2 Drone 본문)",
+ choices:["소년의 드론은 고리를 통과했다.","소녀는 드론 조종을 배우고 싶어 한다.","드론은 컨트롤러로 조종한다.","녹색 버튼은 드론을 위로 올린다.","빨간 버튼은 드론 속도를 늦춘다."],
+ answers:[1,2,3,4],explanation:"⑤ 빨간 버튼은 아래로 (속도 늦춤 아님)"},
+{id:"q005",num:5,type:"D-5 대화 요지",cat:"d",pts:3,diff:"mid",
+ stem:"위 대화(발명 인터뷰)의 요지로 적절한 것을 모두 고르시오. [정답 2개]",
+ passage:"(S3 Invention 본문)",
+ choices:["Juwon은 발명 대회에서 특별상을 받았다.","Juwon은 헤드폰 부착 리코더를 발명했다.","Juwon은 음악 학교에 입학하려고 한다.","리코더는 시중에서 가장 인기 많은 악기이다.","Juwon은 새로운 디지털 게임을 개발했다."],
+ answers:[1,2],explanation:"특별상 + 리코더 발명"},
+{id:"q006",num:6,type:"K-5 어휘 한글",cat:"k",pts:2,diff:"high",
+ stem:"밑줄 친 'invention'의 한글 뜻을 모두 고르시오.",
+ passage:"Juwon: I'm proud of my <u>invention</u>.",
+ choices:["발명","발명품","창작물","고안한 물건","발견"],
+ answers:[1,2,3,4],explanation:"발명·발명품·창작물·고안 모두 가능 / ⑤ 발견(discovery)은 다른 단어"},
+{id:"q007",num:7,type:"D-4 대화 일치",cat:"d",pts:2,diff:"high",
+ stem:"위 대화(NY 관광)의 내용과 일치하는 것을 모두 고르시오.",
+ passage:"(S4 NY 본문)",
+ choices:["두 사람은 뉴욕이 처음이다.","Ben은 자유의 여신상을 가장 먼저 가자고 했다.","자유의 여신상은 뉴욕의 랜드마크이다.","엠파이어 스테이트 빌딩은 환상적인 전망이 있다.","두 사람은 박물관을 먼저 방문하기로 했다."],
+ answers:[1,2,3,4],explanation:"⑤ 박물관 언급 없음"},
+{id:"q008",num:8,type:"K-3 함축 의미",cat:"k",pts:3,diff:"mid",
+ stem:"밑줄 친 'landmark'가 의미하는 바를 모두 고르시오. [정답 2개]",
+ passage:"Mia: It's a <u>landmark</u> of New York.",
+ choices:["도시를 상징하는 명소","도시의 대표적 건축물","도시의 행정 구역","도시의 비밀 장소","도시의 단순한 표지판"],
+ answers:[1,2],explanation:"landmark = 상징 명소·대표 건축물"},
+{id:"q009",num:9,type:"D-6 빈칸 응답",cat:"d",pts:2,diff:"low",
+ stem:"대화 빈칸에 들어갈 말로 가장 적절한 것은?",
+ passage:"W: Pardon?\nB: __________\nW: Ah, I got it.",
+ choices:["I love this city center.","I'm trying to find Times Square.","Times Square is closed today.","Where can I buy entry tickets?","Can you take a quick photo?"],
+ answers:[2],explanation:"되묻기 후 길찾기 요청"},
+{id:"q010",num:10,type:"D-2 문장 위치",cat:"d",pts:2,diff:"high",
+ stem:"〈보기〉의 문장이 들어갈 수 있는 위치를 모두 고르시오.\n〈보기〉 It's a big tower.",
+ passage:"W: Go straight and turn left. ⓐ B: Go straight and turn left? ⓑ W: Right. ⓒ You can't miss it. ⓓ B: Thank you so much! ⓔ",
+ choices:["ⓐ","ⓑ","ⓒ","ⓓ","ⓔ"],
+ answers:[3,4],explanation:"ⓒⓓ 부연 설명 위치 자연스러움"},
+{id:"q011",num:11,type:"P-9 빈칸 추론",cat:"p",pts:2,diff:"high",
+ stem:"다음 글의 빈칸에 들어갈 말로 적절한 것을 모두 고르시오.",
+ passage:"When the metal gets hot, __________. So the tower becomes about 15 cm taller.",
+ choices:["it becomes bigger","it expands","it grows in size","it becomes smaller","it disappears"],
+ answers:[1,2,3],explanation:"가열 → 팽창 (bigger·expand·grow)"},
+{id:"q012",num:12,type:"K-2 한글 해석 불일치",cat:"k",pts:2,diff:"high",
+ stem:"다음 문장의 한글 해석으로 적절하지 않은 것을 모두 고르시오.",
+ passage:"The Eiffel Tower gets taller during the summer.",
+ choices:["에펠탑은 여름 동안 더 높아진다.","에펠탑은 여름철에 키가 커진다.","에펠탑은 겨울 동안 더 높아진다.","에펠탑은 여름 동안 더 낮아진다.","에펠탑은 여름에 새로 지어진다."],
+ answers:[3,4,5],explanation:"③ 계절 / ④ 높이 반전 / ⑤ 새로 지어짐 (왜곡)"},
+{id:"q013",num:13,type:"P-5 내용 불일치",cat:"p",pts:2,diff:"high",
+ stem:"위 글(에펠탑)의 내용과 일치하지 않는 것을 모두 고르시오.",
+ passage:"(S6 Eiffel Tower 본문)",
+ choices:["에펠탑은 330m이다.","여름에 약 15cm 더 높아진다.","금속이 식으면 팽창한다.","여름에 약 15m 더 높아진다.","겨울에는 더 낮아진다."],
+ answers:[3,4],explanation:"③ 가열되어야 팽창 / ④ 15cm가 정확"},
+{id:"q014",num:14,type:"P-12 제목",cat:"p",pts:3,diff:"mid",
+ stem:"다음 글(쿠키)의 제목으로 적절한 것을 모두 고르시오. [정답 2개]",
+ passage:"(S7 Chocolate Chip Cookies 본문)",
+ choices:["A Lucky Accident: The Birth of Chip Cookies","From Mistake to Famous Cookies","The History of Chocolate Trade","The Most Expensive Cookie Recipe","Modern Baking Tools Used in Factories"],
+ answers:[1,2],explanation:"우연한 발명 + 실수 → 유명"},
+{id:"q015",num:15,type:"K-4 세부 한글",cat:"k",pts:2,diff:"high",
+ stem:"위 글(쿠키)의 내용과 일치하는 것을 모두 고르시오.",
+ passage:"In 1938, Ms. Wakefield wanted to bake chocolate cookies. However, she didn't have time to melt chocolate. She cut a bar into small chips. The chips were not melted. She invented chocolate CHIP cookies!",
+ choices:["1938년에 발생한 일이다.","Wakefield 부인은 시간이 부족했다.","그녀는 초콜릿을 작은 조각으로 잘랐다.","칩은 완전히 녹았다.","그녀는 초콜릿 칩 쿠키를 발명했다."],
+ answers:[1,2,3,5],explanation:"④ 'not melted' (녹지 않음)"},
+{id:"q016",num:16,type:"P-13 문장 삽입",cat:"p",pts:4,diff:"low",
+ stem:"〈보기〉의 문장이 들어가기에 가장 적절한 곳은?\n〈보기〉 However, she didn't have enough time to melt chocolate.",
+ passage:"In America, there was a famous cook, Ms. Wakefield. ⓐ One day in 1938, she wanted to bake chocolate cookies. ⓑ So, she cut a chocolate bar into small chips. ⓒ When Ms. Wakefield opened the oven, she found that the chips were not melted into the dough. ⓓ Although the chips remained in the cookies, she was not disappointed. ⓔ",
+ choices:["ⓐ","ⓑ","ⓒ","ⓓ","ⓔ"],
+ answers:[2],explanation:"굽고 싶었다(ⓑ 앞) → 시간 부족(보기) → So 잘랐다(ⓑ 뒤)"},
+{id:"q017",num:17,type:"★ G-2 although",cat:"g",pts:4,diff:"high",
+ stem:"다음 문장과 같은 의미인 것을 모두 고르시오.\n\nAlthough the chips remained in the cookies, she was not disappointed.",
+ passage:"",
+ choices:["The chips remained in the cookies, but she was not disappointed.","Though the chips remained in the cookies, she was not disappointed.","Despite the chips remaining in the cookies, she was not disappointed.","Because the chips remained, she was disappointed.","In spite of the chips remaining, she was not disappointed."],
+ answers:[1,2,3,5],explanation:"④ Because+disappointed (의미 반전)"},
+{id:"q018",num:18,type:"T-4 빈칸 문맥",cat:"t",pts:3,diff:"mid",
+ stem:"다음 본문 빈칸에 들어갈 수 있는 말을 모두 고르시오. [정답 2개]",
+ passage:"She cut a chocolate bar into small __________.",
+ choices:["chips","pieces","slices","blocks","crumbs"],
+ answers:[1,2],explanation:"chips(원문) / pieces(자연스러움)"},
+{id:"q019",num:19,type:"P-6 글의 순서",cat:"p",pts:2,diff:"low",
+ stem:"주어진 글 다음에 이어질 글의 순서로 가장 적절한 것은?",
+ passage:"(주어진 글) In 1903, a French scientist, Mr. Bénédictus, was experimenting with liquid plastic in a glass flask.\n(A) The secret was the liquid plastic in the flask.\n(B) Although the glass flask was broken into pieces, they still held together in the shape of the flask!\n(C) He accidentally hit the glass flask, and it fell on the floor.",
+ choices:["(A)-(B)-(C)","(A)-(C)-(B)","(B)-(C)-(A)","(C)-(A)-(B)","(C)-(B)-(A)"],
+ answers:[5],explanation:"실수(C) → 형태유지(B) → 비밀(A)"},
+{id:"q020",num:20,type:"P-1 어법 5밑줄",cat:"p",pts:2,diff:"high",
+ stem:"다음 글의 밑줄 친 부분 중 어법상 틀린 것을 모두 고르시오.",
+ passage:"In 1903, a French scientist <b>ⓐ was experimenting</b> with liquid plastic. He <b>ⓑ accidentally hit</b> the flask. Although the flask <b>ⓒ was broke</b> into pieces, they <b>ⓓ held</b> together. This finding <b>ⓔ leaded to</b> his invention.",
+ choices:["ⓐ","ⓑ","ⓒ","ⓓ","ⓔ"],
+ answers:[3,5],explanation:"ⓒ was broke→was broken / ⓔ leaded→led"},
+{id:"q021",num:21,type:"K-4 세부 한글",cat:"k",pts:2,diff:"high",
+ stem:"위 글(안전유리)의 내용과 일치하는 것을 모두 고르시오.",
+ passage:"(S8 Safety Glass 본문)",
+ choices:["Mr. Bénédictus는 프랑스 과학자였다.","그는 1903년에 실험하고 있었다.","깨진 조각들은 플라스크 모양을 유지했다.","안전유리는 자동차 창문에 사용된다.","Mr. Bénédictus는 일부러 플라스크를 떨어뜨렸다."],
+ answers:[1,2,3,4],explanation:"⑤ accidentally (우연히)"},
+{id:"q022",num:22,type:"★ G-1 수동태",cat:"g",pts:4,diff:"high",
+ stem:"다음 중 어법상 올바른 수동태 문장을 모두 고르시오.",
+ passage:"",
+ choices:["The flask was broken into pieces.","The window is broken by the ball.","Safety glass is used for car windows.","The book was wrote by him.","The cake was making by Tom."],
+ answers:[1,2,3],explanation:"④ wrote→written / ⑤ making→made"},
+{id:"q023",num:23,type:"T-2 핵심 표현",cat:"t",pts:3,diff:"mid",
+ stem:"본문 빈칸에 들어갈 수 있는 표현을 모두 고르시오. [정답 2개]",
+ passage:"This finding __________ his invention of safety glass.",
+ choices:["led to","resulted in","took off","gave up","looked after"],
+ answers:[1,2],explanation:"led to = resulted in (~로 이끌다)"},
+{id:"q024",num:24,type:"P-21 글의 목적",cat:"p",pts:3,diff:"mid",
+ stem:"다음 글(드라이클리닝)의 목적으로 적절한 것을 모두 고르시오. [정답 2개]",
+ passage:"(S9 Dry Cleaning 본문)",
+ choices:["드라이클리닝의 유래를 소개한다.","드라이클리닝의 원리를 알린다.","드라이클리닝의 위험성을 경고한다.","가정 세탁 방법을 가르친다.","산업혁명을 설명한다."],
+ answers:[1,2],explanation:"유래 + 원리 소개"},
+{id:"q025",num:25,type:"K-2 한글 해석 불일치",cat:"k",pts:2,diff:"high",
+ stem:"다음 문장의 한글 해석으로 적절하지 않은 것을 모두 고르시오.",
+ passage:"The dirty spot was cleaned by the lamp oil.",
+ choices:["램프 기름의 더러운 얼룩이 깨끗해졌다.","램프 기름은 식탁보를 더럽혔다.","식탁보의 얼룩은 램프 기름이 만들었다.","식탁보의 얼룩은 램프 기름에 의해 깨끗해졌다.","더러운 자국이 램프 기름으로 사라졌다."],
+ answers:[1,2,3],explanation:"① 주어-행위자 뒤바꿈 / ② 능동 / ③ 의미 반전"},
+{id:"q026",num:26,type:"P-4 내용 일치",cat:"p",pts:2,diff:"high",
+ stem:"위 글(드라이클리닝)의 내용과 일치하는 것을 모두 고르시오.",
+ passage:"(S9 Dry Cleaning 본문)",
+ choices:["드라이클리닝은 기름으로 옷을 닦는다.","1800년대에 발견되었다.","Mr. Jolly는 공장 관리자였다.","램프 기름이 얼룩을 깨끗하게 했다.","드라이클리닝은 한 나라에서만 쓴다."],
+ answers:[1,2,3,4],explanation:"⑤ around the world (전 세계)"},
+{id:"q027",num:27,type:"T-1 문법 단어 조합",cat:"t",pts:4,diff:"high",
+ stem:"다음 본문 빈칸 (a)~(d)에 들어갈 단어 조합을 모두 고르시오.",
+ passage:"In the 1800s, a factory worker (a)____ lamp oil on a tablecloth. The manager (b)____ something. The dirty spot (c)____ by the lamp oil! His discovery (d)____ to a new way.",
+ choices:["spilled — found — was cleaned — led","spilled — found — was cleaned — led (동일)","spill — find — clean — lead","spilled — finds — cleaned — leading","spills — finding — cleaning — leads"],
+ answers:[1],explanation:"과거 시제 일관 + 과거 수동태 정확"},
+{id:"q028",num:28,type:"P-21 글의 목적",cat:"p",pts:3,diff:"mid",
+ stem:"다음 글(Australia)의 목적으로 적절한 것을 모두 고르시오. [정답 2개]",
+ passage:"(S10 Australia 본문)",
+ choices:["호주 여행 상품을 광고한다.","호주 관광 명소를 안내한다.","호주의 정치 상황을 설명한다.","코알라 보호 활동을 권한다.","한국의 여름 날씨를 알린다."],
+ answers:[1,2],explanation:"홈쇼핑 광고 + 관광 안내"},
+{id:"q029",num:29,type:"P-15 빈칸 (A)(B)",cat:"p",pts:2,diff:"high",
+ stem:"빈칸 (A)와 (B)에 들어갈 조합으로 적절한 것을 모두 고르시오.",
+ passage:"It's summer in Korea, (A) it's winter in Australia. This country is famous (B) its wild animals.",
+ choices:["(A) but — (B) for","(A) however, — (B) for","(A) yet — (B) for","(A) so — (B) of","(A) and — (B) with"],
+ answers:[1,2,3],explanation:"대조 접속·연결어 + famous for"},
+{id:"q030",num:30,type:"K-5 어휘 한글",cat:"k",pts:2,diff:"high",
+ stem:"밑줄 친 'unique'의 한글 뜻을 모두 고르시오.",
+ passage:"This country is famous for its <u>unique</u> wild animals.",
+ choices:["독특한","특유의","유일한","흔한","위험한"],
+ answers:[1,2,3],explanation:"④ 반대 / ⑤ 무관"},
+{id:"q031",num:31,type:"D-3 분위기",cat:"d",pts:2,diff:"high",
+ stem:"위 글(호주 홈쇼핑)의 분위기로 적절한 것을 모두 고르시오.",
+ passage:"(S10 Australia 본문)",
+ choices:["excited and persuasive","lively and inviting","enthusiastic and promotional","calm and quiet","sad and gloomy"],
+ answers:[1,2,3],explanation:"광고 — 활기·설득 / ④⑤ 정반대"},
+{id:"q032",num:32,type:"P-5 내용 불일치",cat:"p",pts:2,diff:"high",
+ stem:"위 글(Australia)의 내용과 일치하지 않는 것을 모두 고르시오.",
+ passage:"(S10 Australia 본문)",
+ choices:["한국은 현재 여름이다.","호주는 현재 여름이다.","호주는 야생동물로 유명하다.","호주에서 코알라를 만날 수 없다.","시드니 오페라 하우스를 방문할 것이다."],
+ answers:[2,4],explanation:"② winter / ④ meet koalas"},
+{id:"q033",num:33,type:"P-1 어법 5밑줄",cat:"p",pts:2,diff:"high",
+ stem:"다음 글의 밑줄 친 부분 중 어법상 틀린 것을 모두 고르시오.",
+ passage:"Hula <b>ⓐ has been</b> a part of Hawaiian life for a long time. Early Hawaiians <b>ⓑ didn't had</b> a writing system, so they <b>ⓒ used</b> hula. These gestures are <b>ⓓ enough simple</b> that you can remember them. Hula <b>ⓔ is danced</b> barefoot.",
+ choices:["ⓐ","ⓑ","ⓒ","ⓓ","ⓔ"],
+ answers:[2,4],explanation:"ⓑ didn't have / ⓓ simple enough"},
+{id:"q034",num:34,type:"★ G-1 수동태",cat:"g",pts:3,diff:"mid",
+ stem:"다음 중 어법상 올바른 수동태 문장을 모두 고르시오. [정답 2개]",
+ passage:"",
+ choices:["The stories were passed down by Hawaiians.","Hula is danced barefoot.","Hula danced by everyone.","Stories told by hula.","The dance was perform by Malia."],
+ answers:[1,2],explanation:"③④ be 누락 / ⑤ perform→performed"},
+{id:"q035",num:35,type:"★ G-3 현재완료",cat:"g",pts:3,diff:"mid",
+ stem:"다음 중 어법상 올바른 현재완료 문장을 모두 고르시오. [정답 2개]",
+ passage:"",
+ choices:["Hula has been a part of Hawaiian life for a long time.","Malia have taught hula for ten years.","The stories have been passed down for centuries.","The dance has wrote on the wall.","They has danced since 1900."],
+ answers:[1,3],explanation:"② have→has / ④ wrote→written / ⑤ has→have"},
+{id:"q036",num:36,type:"★ G-4 so...that",cat:"g",pts:4,diff:"high",
+ stem:"\"These gestures are so simple that you can easily remember them.\"과 같은 의미인 것을 모두 고르시오.",
+ passage:"",
+ choices:["These gestures are simple enough for you to easily remember.","These gestures are easy enough for you to remember.","You can easily remember them because they are very simple.","These gestures are too simple to remember.","These gestures are too simple that you can remember."],
+ answers:[1,2,3],explanation:"④ too...to (부정) / ⑤ too...that 결합 오류"},
+{id:"q037",num:37,type:"T-1 문법 단어 조합",cat:"t",pts:4,diff:"high",
+ stem:"본문 빈칸 (a)~(d)에 들어갈 단어 조합을 모두 고르시오.",
+ passage:"Hula is a language (a)____ body movements, and it (b)____ down stories from one generation (c)____ the next. Now it's time (d)____ dance!",
+ choices:["through — has passed — to — to","by — passed — for — for","through — passes — to — to","for — has passed — to — about","with — is passing — from — of"],
+ answers:[1],explanation:"through + has passed + to + to dance"},
+{id:"q038",num:38,type:"P-4 내용 일치",cat:"p",pts:3,diff:"mid",
+ stem:"위 글(Hula)의 내용과 일치하는 것을 모두 고르시오. [정답 2개]",
+ passage:"(S11 Hula 본문)",
+ choices:["훌라는 하와이의 전통 춤이다.","훌라는 맨발로 춘다.","초기 하와이인들은 글쓰기 체계가 있었다.","ua는 하와이어로 태양을 뜻한다.","모든 훌라 동작이 매우 복잡하다."],
+ answers:[1,2],explanation:"③ didn't have / ④ ua=rain / ⑤ so simple"},
+{id:"q039",num:39,type:"K-1 한글 해석",cat:"k",pts:2,diff:"high",
+ stem:"다음 문장의 한글 해석으로 적절한 것을 모두 고르시오.",
+ passage:"Hula is a language through body movements, and it has passed down stories from one generation to the next.",
+ choices:["훌라는 몸짓을 통한 언어이며, 세대 간 이야기를 전해 왔다.","훌라는 신체 동작을 통한 언어이고, 한 세대에서 다음으로 전해졌다.","훌라는 몸짓 언어로서 대대로 이야기를 전해 왔다.","훌라는 몸짓을 막는 언어이며, 같은 세대에 전했다.","훌라는 미래에 전해질 언어이다."],
+ answers:[1,2,3],explanation:"④ 반대 / ⑤ 시제 오류"},
+{id:"q040",num:40,type:"K-6 한글 요약",cat:"k",pts:2,diff:"high",
+ stem:"다음 글(훌라)을 가장 잘 요약한 한글 문장을 모두 고르시오.",
+ passage:"(S11 Hula 본문)",
+ choices:["훌라는 하와이의 전통 춤으로, 몸의 움직임을 통해 이야기를 전한다.","훌라는 글이 없던 시대에 이야기를 보존한 하와이의 언어이자 춤이다.","훌라는 단순한 동작으로 이루어진 하와이 전통 무용이다.","훌라는 하와이의 신호 체계로 군사 훈련에 쓰였다.","훌라는 현대 하와이에서만 가르치는 신생 무용이다."],
+ answers:[1,2,3],explanation:"④⑤ 의미 왜곡"}
+];
+
+let state={screen:"start",cur:0,ans:{},score:0,wrong:[],retry:null,att:1,startTime:0,elapsed:0};
+function fmt(ms){if(!ms||ms<0) return "0초";const s=Math.floor(ms/1000);const m=Math.floor(s/60);const r=s%60;return m>0?`${m}분 ${r}초`:`${r}초`;}
+const app=document.getElementById("app");
+const TOT=Q.reduce((s,q)=>s+q.pts,0);
+const lowC=Q.filter(q=>q.diff==="low").length;
+const midC=Q.filter(q=>q.diff==="mid").length;
+const highC=Q.filter(q=>q.diff==="high").length;
+
+function activeQs(){if(state.retry==="wrong") return Q.filter(q=>state.wrong.includes(q.id));return Q;}
+function isCorrect(u,c){if(!u||u.length!==c.length) return false;const su=[...u].sort();const sc=[...c].sort();return su.every((v,i)=>v===sc[i]);}
+function render(){switch(state.screen){case"start":rStart();break;case"quiz":rQuiz();break;case"result":rRes();break;case"review":rRev();break;}}
+function esc(s){if(s==null) return "";return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/&lt;u&gt;/g,"<u>").replace(/&lt;\/u&gt;/g,"</u>").replace(/&lt;b&gt;/g,"<b>").replace(/&lt;\/b&gt;/g,"</b>");}
+
+function rStart(){
+  app.innerHTML=`<div class="start-screen">
+    <h1>2026 해솔중 2학년 영어 기말고사 모의시험</h1>
+    <p class="sub-title">finaltermM2 Set 4 · 40문제 · 100점 (복수 정답 최대)</p>
+    <div class="info-box">
+      <strong>★ 복수 정답 비중 90%</strong> (Set 3 대비 강화)<br>
+      • <strong>하 (low)</strong> ${lowC}문제 — 단일 정답<br>
+      • <strong>중 (mid)</strong> ${midC}문제 — 복수 + 개수 공개<br>
+      • <strong>상 (high)</strong> ${highC}문제 — 복수 + 개수 비공개<br><br>
+      <strong>★ 4대 핵심문법:</strong> 수동태 · although · 현재완료 · so...that~<br><br>
+      <strong>채점 규칙 (M2):</strong><br>
+      • 95점 이상 — 🎉 EXCELLENT! 축포!<br>
+      • 90~94점 — 틀린 문제만 재도전<br>
+      • 90점 미만 — 전체 처음부터 재도전
+    </div>
+    <button class="btn btn-primary" onclick="start()" style="font-size:1.05rem;padding:14px 44px">시작하기</button>
+  </div>`;
+}
+
+function start(){state.screen="quiz";state.cur=0;state.ans={};state.score=0;state.wrong=[];state.startTime=Date.now();state.elapsed=0;render();}
+
+function rQuiz(){
+  const qs=activeQs();const q=qs[state.cur];const total=qs.length;
+  const aCnt=Object.keys(state.ans).filter(k=>state.ans[k]&&state.ans[k].length>0).length;
+  const pct=Math.round(((state.cur+1)/total)*100);
+  const isMulti=q.diff!=="low";
+  const sel=state.ans[q.id]||[];
+  const diffLabel=q.diff==="low"?"하":q.diff==="mid"?"중":"상";
+  const countHint=q.diff==="mid"?`<div class="multi-hint">✓ 복수 정답 — 정답 ${q.answers.length}개를 모두 고르세요</div>`:q.diff==="high"?`<div class="multi-hint">✓ 복수 정답 — "모두 고르시오" (개수 비공개)</div>`:"";
+
+  app.innerHTML=`
+  <div class="progress-text"><span>${state.cur+1} / ${total}</span><span>${aCnt}/${total} 완료</span></div>
+  <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+  <div class="q-map">${qs.map((qq,i)=>{let cls="q-dot";if(i===state.cur) cls+=" current";else if(state.ans[qq.id]&&state.ans[qq.id].length>0) cls+=" answered";return`<div class="${cls}" onclick="goto(${i})">${qq.num}</div>`}).join("")}</div>
+  <div class="card">
+    <div class="q-header">
+      <div class="q-num">${q.num}</div>
+      <span class="q-type ${q.cat}">${esc(q.type)}</span>
+      <span class="q-pts">${q.pts}점</span>
+      <span class="q-diff ${q.diff}">난이도 ${diffLabel}</span>
+    </div>
+    ${countHint}
+    <div class="stem">${esc(q.stem)}</div>
+    ${q.passage?`<div class="passage">${q.passage}</div>`:""}
+    <ul class="choices">${q.choices.map((c,i)=>{const n=i+1;const checked=sel.includes(n);return`<li class="choice${checked?" selected":""}" onclick="pick(${n},${isMulti})"><input type="${isMulti?"checkbox":"radio"}" name="q${q.id}" ${checked?"checked":""}><span>${"①②③④⑤"[i]} ${esc(c)}</span></li>`}).join("")}</ul>
+  </div>
+  <div class="nav-row">
+    <button class="btn btn-outline btn-sm" ${state.cur===0?"disabled":""} onclick="goto(${state.cur-1})">◀ 이전</button>
+    ${state.cur===total-1?`<button class="btn btn-success btn-sm" onclick="submit()">제출하기 ✓</button>`:`<button class="btn btn-primary btn-sm" onclick="goto(${state.cur+1})">다음 ▶</button>`}
+  </div>`;
+}
+
+function pick(n,isMulti){
+  const qs=activeQs();const q=qs[state.cur];
+  let sel=state.ans[q.id]||[];
+  if(isMulti){if(sel.includes(n)) sel=sel.filter(x=>x!==n);else sel=[...sel,n];}
+  else{sel=[n];}
+  state.ans[q.id]=sel;render();
+}
+
+function goto(i){const qs=activeQs();if(i>=0&&i<qs.length){state.cur=i;render()}}
+
+function submit(){
+  const qs=activeQs();
+  const unanswered=qs.filter(q=>!state.ans[q.id]||state.ans[q.id].length===0);
+  if(unanswered.length>0){if(!confirm(`아직 ${unanswered.length}문제를 풀지 않았습니다. 그래도 제출하시겠습니까?`)) return;}
+  let score=0;const wrong=[];
+  qs.forEach(q=>{if(isCorrect(state.ans[q.id],q.answers)) score+=q.pts;else wrong.push(q.id);});
+  state.elapsed=Date.now()-state.startTime;
+  state.score=score;state.wrong=wrong;state.screen="result";render();
+  if(state.score>=95) confetti();
+}
+
+function rRes(){
+  const qs=activeQs();const max=qs.reduce((s,q)=>s+q.pts,0);
+  const pct=Math.round((state.score/max)*100);const wc=state.wrong.length;const cc=qs.length-wc;
+  let cls,msg,btns;
+  if(state.score>=95){cls="perfect";msg=`<b>🎉 EXCELLENT!</b> ${state.score}점!<br>대단합니다!`;
+    btns=`${wc>0?`<button class="btn btn-success" onclick="retryW()">틀린 문제 재도전</button>`:""}<button class="btn btn-outline" onclick="showRev()">오답 복습</button><button class="btn btn-primary" onclick="resetAll()">처음부터</button>`;}
+  else if(state.score>=90){cls="great";msg=`훌륭합니다! ${pct}점<br>틀린 ${wc}문제만 다시 풀어보세요.`;
+    btns=`<button class="btn btn-success" onclick="retryW()">틀린 문제만 재도전</button><button class="btn btn-outline" onclick="showRev()">오답 복습</button><button class="btn btn-outline" onclick="resetAll()">처음부터</button>`;}
+  else{cls="retry";msg=`${pct}점 (${state.score}/${max})<br>전체 문제를 다시 도전하세요!`;
+    btns=`<button class="btn btn-outline" onclick="showRev()">오답 복습</button><button class="btn btn-danger" onclick="resetAll()">전체 재도전</button>`;}
+  app.innerHTML=`<div class="result-screen">
+    <h2>${state.att>1?`${state.att}차 `:""}채점 결과</h2>
+    <div class="score-circle ${cls}"><span>${state.score}</span><small>/ ${max}점</small></div>
+    <div class="result-msg">${msg}</div>
+    <div class="result-detail">
+      <b>📋 시험:</b> finaltermM2 Set 4 (복수 정답 최대)<br>
+      <b>정답:</b> ${cc}문제 / <b>오답:</b> ${wc}문제 / <b>정답률:</b> ${pct}%<br>
+      <b>⏱ 풀이 시간:</b> ${fmt(state.elapsed)}<br>
+      ${wc>0?`<b>틀린 문제:</b> ${state.wrong.map(id=>Q.find(x=>x.id===id)?.num).filter(Boolean).sort((a,b)=>a-b).join(", ")}번`:""}
+    </div>
+    <div class="result-btns">${btns}</div>
+  </div>`;
+}
+
+function retryW(){state.retry="wrong";state.att++;state.screen="quiz";state.cur=0;state.ans={};state.score=0;state.startTime=Date.now();state.elapsed=0;render();}
+function resetAll(){state.retry=null;state.att=1;state.screen="start";state.ans={};state.score=0;state.wrong=[];render();}
+function showRev(){state.screen="review";render();}
+
+function rRev(){
+  app.innerHTML=`<div class="card">
+    <h2 style="color:var(--primary);margin-bottom:14px">📖 오답 복습</h2>
+    ${activeQs().filter(q=>state.wrong.includes(q.id)).map(q=>{
+      const my=state.ans[q.id]&&state.ans[q.id].length>0?state.ans[q.id].sort((a,b)=>a-b).map(n=>"①②③④⑤"[n-1]).join(", "):"(미응답)";
+      const corr=q.answers.sort((a,b)=>a-b).map(n=>`${"①②③④⑤"[n-1]} ${esc(q.choices[n-1])}`).join("<br>");
+      return `<div class="card review-card">
+        <div class="q-header"><div class="q-num">${q.num}</div><span class="q-type ${q.cat}">${esc(q.type)}</span><span class="q-pts">${q.pts}점</span><span class="q-diff ${q.diff}">난이도 ${q.diff==="low"?"하":q.diff==="mid"?"중":"상"}</span></div>
+        <div class="stem">${esc(q.stem)}</div>
+        ${q.passage?`<div class="passage">${q.passage}</div>`:""}
+        <div class="my-answer"><b>[내 답안]</b> ${my}</div>
+        <div class="model-answer"><b>[정답]</b><br>${corr}</div>
+        <div class="explanation"><b>해설:</b> ${esc(q.explanation)}</div>
+      </div>`;
+    }).join("")}
+    <div style="text-align:center;margin-top:18px"><button class="btn btn-outline" onclick="state.screen='result';render()">결과로 돌아가기</button></div>
+  </div>`;
+}
+
+function confetti(){
+  const c=document.getElementById("confetti-canvas");const ctx=c.getContext("2d");
+  c.width=window.innerWidth;c.height=window.innerHeight;
+  const colors=["#db2777","#c026d3","#f59e0b","#16a34a","#9d174d","#fbbf24"];
+  const parts=[];for(let i=0;i<140;i++){parts.push({x:Math.random()*c.width,y:-20,vx:(Math.random()-0.5)*5,vy:Math.random()*4+3,size:Math.random()*8+4,color:colors[Math.floor(Math.random()*colors.length)],angle:Math.random()*Math.PI*2,spin:(Math.random()-0.5)*0.2});}
+  let f=0;function tick(){ctx.clearRect(0,0,c.width,c.height);parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.angle+=p.spin;p.vy+=0.05;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.angle);ctx.fillStyle=p.color;ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size);ctx.restore();});f++;if(f<260) requestAnimationFrame(tick);else ctx.clearRect(0,0,c.width,c.height);}tick();
+}
+render();
+</script>
+</body>
+</html>
