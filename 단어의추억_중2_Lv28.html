@@ -257,6 +257,60 @@
   .cloze-input.correct{border-color:var(--grade);background:rgba(16,185,129,.15);color:#a7f3d0;}
   .cloze-input.wrong{border-color:var(--danger);background:rgba(239,68,68,.15);color:#fca5a5;}
   .input-box.only-btn{justify-content:center;}
+  /* 첫글자 프리필 인풋 — 미리 채워진 첫 글자를 시각적으로 강조 */
+  .prefill-input{caret-color:#fef3c7;font-family:'Courier New',ui-monospace,monospace;letter-spacing:.05em;font-weight:700;}
+  .prefill-hint{color:#c4b5fd;font-size:.82rem;font-weight:500;margin-left:6px;letter-spacing:0;}
+  /* ---------- 낱말박스 (자동완성 방어) ---------- */
+  .word-answer{display:flex;flex-wrap:wrap;gap:12px 14px;align-items:center;margin:6px 0;}
+  .word-answer.inline{display:inline-flex;gap:8px;vertical-align:middle;margin:0 4px;}
+  .word-group{
+    display:inline-flex;align-items:center;gap:0;
+    background:rgba(11,18,32,.7);border:1.5px solid #334155;border-radius:8px;
+    padding:0;transition:all .15s;overflow:hidden;flex-shrink:0;
+  }
+  .word-group:focus-within{border-color:#a78bfa;box-shadow:0 0 0 3px rgba(168,139,250,.22);}
+  .word-group.correct{border-color:var(--grade);background:rgba(16,185,129,.10);}
+  .word-group.wrong{border-color:var(--danger);background:rgba(239,68,68,.10);}
+  /* 폰트: body 상속 sans-serif (이전 .input-box input과 동일한 스타일) */
+  .first-letter{
+    display:inline-flex;align-items:center;justify-content:center;
+    min-width:26px;padding:0 8px;height:44px;line-height:44px;
+    background:linear-gradient(180deg,#3b2966 0%,#2a1e4d 100%);
+    color:#fef3c7;
+    font-family:inherit;
+    font-size:1.15rem;font-weight:600;letter-spacing:.5px;
+    text-transform:lowercase;
+    border-right:1px solid #8b5cf6;user-select:none;
+  }
+  .rest-input{
+    border:0;background:transparent;color:var(--text);outline:none;
+    font-family:inherit;
+    font-size:1.15rem;font-weight:600;letter-spacing:.5px;
+    padding:0 10px;height:44px;line-height:44px;width:120px;min-width:90px;
+    text-transform:lowercase;
+  }
+  .rest-input::placeholder{color:#475569;font-weight:400;}
+  .word-group.correct .rest-input{color:#a7f3d0;}
+  .word-group.wrong .rest-input{color:#fca5a5;}
+  .cloze-sentence .word-answer{display:inline-flex;flex-wrap:wrap;gap:6px 8px;margin:0 4px;vertical-align:middle;}
+  .cloze-sentence .word-group{border-radius:6px;}
+  .cloze-sentence .first-letter{height:38px;line-height:38px;font-size:1.05rem;min-width:22px;padding:0 7px;}
+  .cloze-sentence .rest-input{height:38px;line-height:38px;font-size:1.05rem;width:100px;min-width:70px;padding:0 9px;}
+  /* .input-box input 스타일이 .rest-input을 override 하는 문제 해결 */
+  .input-box .word-answer input.rest-input{
+    background:transparent;border:0;padding:0 10px;
+    min-height:44px;height:44px;line-height:44px;text-align:left;
+    font-family:inherit;
+    font-size:1.15rem;font-weight:600;letter-spacing:.5px;
+    text-transform:lowercase;
+    width:120px;min-width:90px;box-shadow:none;
+  }
+  .input-box .word-answer input.rest-input:focus{border:0;box-shadow:none;}
+  /* single-letter 그룹 */
+  .word-group.single-letter{background:rgba(11,18,32,.5);}
+  .word-group.single-letter input.rest-input{width:80px;min-width:60px;}
+  .hint-line{margin-top:12px;padding:10px 14px;background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.35);border-radius:10px;color:#c4b5fd;font-size:.95rem;line-height:1.55;text-align:center;letter-spacing:.03em;}
+  .hint-line b{color:#fef3c7;font-weight:800;font-family:'Courier New',ui-monospace,monospace;font-size:1.05rem;letter-spacing:.15em;margin:0 2px;}
 
   /* ---------- CARD STUDY ---------- */
   .stage{position:relative;padding:14px 2px;perspective:1200px;flex:1;display:flex;flex-direction:column;}
@@ -852,38 +906,38 @@ const DATA = {
   chapter: { id:"중2-L28", title:"중2 Lv.28", index:28, totalCount:32 },
   gradeColor: "#3b82f6",
   newWords: [
-    {"id":"u08360","w":"incurable","pos":["adj"],"ph":"","cefr":"A2","kr":["불치의"],"ex":[{"en":"The doctor told him the rare disease was incurable but manageable.","ko":"의사는 그에게 그 희귀병이 불치이지만 관리는 가능하다고 말했다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"disease","ko":"질병","reason":"불치의 병(incurable disease)이라는 표현이 가장 대표적인 콜로케이션"},{"w":"cure","ko":"치료하다","reason":"cure의 반대 개념—치료가 불가능한 상태가 incurable"}],"collocBest":[{"en":"an incurable disease","ko":"불치병"},{"en":"an incurable illness","ko":"불치의 병"}]},"nuance":{"koSimple":"약을 써도 낫지 않는, 고칠 수 없는 병 같은 거예요.","whenToUse":"심각한 병·습관 얘기할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"u08365","w":"interval","pos":["noun"],"ph":"","cefr":"A2","kr":["간격"],"ex":[{"en":"The buses arrive at ten-minute intervals every morning during rush hour.","ko":"버스는 아침 러시아워마다 10분 간격으로 도착한다."}],"mnemonic":{"soundHint":null,"story":"인터벌(interval) 트레이닝—1분 뛰고 30초 쉬는 간격을 반복하니 심장이 요동친다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"regular","ko":"규칙적인","reason":"규칙적인 간격(regular intervals)이라는 표현이 매우 흔한 콜로케이션"},{"w":"pause","ko":"잠시 멈춤","reason":"간격과 유사한 개념—사이의 멈춤"}],"collocBest":[{"en":"at regular intervals","ko":"규칙적인 간격으로"},{"en":"a short interval","ko":"짧은 간격"}]},"nuance":{"koSimple":"두 시점 사이에 벌어진 빈 시간이나 거리예요.","whenToUse":"쉬는 시간·차 간격·음 간격 말할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"u08370","w":"limp","pos":["verb","adj"],"ph":"","cefr":"A2","kr":["절뚝거리다","기운이 없는"],"ex":[{"en":"He had to limp home after twisting his ankle during soccer practice.","ko":"그는 축구 연습 중 발목을 삐어서 집까지 절뚝거리며 가야 했다."}],"mnemonic":{"soundHint":null,"story":"림프(limp)—축구하다 발목을 삐끗한 형은 절뚝거리며 겨우 벤치까지 걸어갔다.","hintConfidence":2},"pairs":{"buddyWords":[{"w":"injury","ko":"부상","reason":"부상 때문에 절뚝거리는 상황이 자연스럽게 연결됨"},{"w":"weak","ko":"약한","reason":"'기운이 없는' 뜻과 동의어 관계"}],"collocBest":[{"en":"limp badly","ko":"심하게 절뚝거리다"},{"en":"limp slightly","ko":"약간 절뚝거리다"}]},"nuance":{"koSimple":"다리를 다쳐서 한쪽으로 절뚝절뚝 걸어요.","whenToUse":"다친 사람 걸음걸이 말할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"u08375","w":"misplace","pos":["verb"],"ph":"","cefr":"A2","kr":["잘못 두다"],"ex":[{"en":"I always misplace my keys right before I need to leave.","ko":"나는 나가야 할 때만 되면 항상 열쇠를 어디에 뒀는지 잊어버린다."}],"mnemonic":{"soundHint":null,"story":"미스(mis) 플레이스(place)—열쇠를 어디에 잘못 두었는지 몰라 온 집을 뒤졌다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"keys","ko":"열쇠","reason":"열쇠를 잘못 두다(misplace one's keys)라는 가장 흔한 사용 상황"},{"w":"lose","ko":"잃어버리다","reason":"잘못 둬서 결국 잃어버리는 결과로 이어지는 시나리오"}],"collocBest":[{"en":"misplace keys","ko":"열쇠를 잘못 두다"},{"en":"misplace a wallet","ko":"지갑을 잘못 두다"}]},"nuance":{"koSimple":"물건을 엉뚱한 곳에 놓고 어디 뒀는지 잊어버려요.","whenToUse":"열쇠·지갑 잃어버렸을 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"u08380","w":"mutation","pos":["noun"],"ph":"","cefr":"A2","kr":["변화, 돌연변이"],"ex":[{"en":"A small mutation in the gene caused the flower to change color.","ko":"그 유전자의 작은 돌연변이가 꽃의 색을 바꾸게 만들었다."}],"mnemonic":{"soundHint":null,"story":"뮤테이션(mutation)—X맨 만화 속 돌연변이 히어로들이 유전자 변화로 특수 능력을 얻는다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"gene","ko":"유전자","reason":"유전자 돌연변이(gene mutation)이라는 대표적 콜로케이션"},{"w":"evolution","ko":"진화","reason":"돌연변이가 진화의 원동력이라는 과학적 시나리오"}],"collocBest":[{"en":"a genetic mutation","ko":"유전자 돌연변이"},{"en":"cause a mutation","ko":"돌연변이를 일으키다"}]},"nuance":{"koSimple":"DNA가 갑자기 변해서 다른 모습이 되는 거예요.","whenToUse":"과학 시간 유전·돌연변이 얘기할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"u08385","w":"overtake","pos":["verb"],"ph":"","cefr":"A2","kr":["따라잡다"],"ex":[{"en":"She ran faster and finally overtook the leader in the last lap.","ko":"그녀는 더 빨리 달려서 마지막 바퀴에서 마침내 선두를 따라잡았다."}],"mnemonic":{"soundHint":null,"story":"오버(over) 테이크(take)—결승 직전, 2위 선수가 1위를 추월해 따라잡으며 결승선을 통과했다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"pass","ko":"추월하다","reason":"따라잡아 추월한다는 의미의 동의어"},{"w":"catch","ko":"붙잡다","reason":"catch up과 결합해 따라잡는다는 뜻이 됨"}],"collocBest":[{"en":"overtake a car","ko":"차를 앞지르다"},{"en":"overtake a rival","ko":"경쟁자를 따라잡다"}]},"nuance":{"koSimple":"뒤에서 달려와 앞차를 앞질러 가는 모습이에요.","whenToUse":"달리기·자동차 추월할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"u08390","w":"perspiration","pos":["noun"],"ph":"","cefr":"A2","kr":["땀"],"ex":[{"en":"Perspiration dripped from his forehead after the long soccer match.","ko":"긴 축구 경기 후 그의 이마에서 땀이 뚝뚝 떨어졌다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"sweat","ko":"땀","reason":"sweat의 격식 있는 표현이 perspiration"},{"w":"heat","ko":"열기","reason":"더위·열기로 인해 땀이 나는 자연스러운 인과관계"}],"collocBest":[{"en":"heavy perspiration","ko":"많은 땀"},{"en":"wipe perspiration","ko":"땀을 닦다"}]},"nuance":{"koSimple":"이마와 등에 송글송글 맺힌 땀방울이에요.","whenToUse":"운동·더위·긴장으로 땀날 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"u08395","w":"pinch","pos":["verb"],"ph":"","cefr":"A2","kr":["꼬집다"],"ex":[{"en":"My little sister pinched my arm to check if I was awake.","ko":"여동생은 내가 깨어 있는지 확인하려고 내 팔을 꼬집었다."}],"mnemonic":{"soundHint":null,"story":"핀치(pinch)—꿈인지 확인하려고 볼을 살짝 꼬집자 진짜 아팠다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"cheek","ko":"볼","reason":"볼을 꼬집다(pinch one's cheek)라는 대표적 콜로케이션"},{"w":"squeeze","ko":"쥐어짜다","reason":"꼬집는 동작과 유사한 압박 동작"}],"collocBest":[{"en":"pinch someone's cheek","ko":"누군가의 볼을 꼬집다"},{"en":"pinch hard","ko":"세게 꼬집다"}]},"nuance":{"koSimple":"엄지와 검지로 살을 꼭 집어 비틀어요.","whenToUse":"장난·꿈인지 확인·따끔한 자극 얘기할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"u08400","w":"predominant","pos":["adj"],"ph":"","cefr":"A2","kr":["뛰어난, 우세한"],"ex":[{"en":"English is the predominant language used in international business meetings today.","ko":"영어는 오늘날 국제 비즈니스 회의에서 가장 우세한 언어이다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"dominant","ko":"우세한","reason":"predominant와 어원이 같고 뜻이 거의 동일한 동의어"},{"w":"main","ko":"주된","reason":"가장 우세한, 주된 것이라는 의미가 통함"}],"collocBest":[{"en":"the predominant language","ko":"우세한 언어"},{"en":"a predominant role","ko":"주도적 역할"}]},"nuance":{"koSimple":"여러 개 중에 가장 눈에 띄고 앞서 있어요.","whenToUse":"우세한 색·의견·문화 말할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"u08405","w":"preview","pos":["noun"],"ph":"","cefr":"A2","kr":["미리 보기, 예고편"],"ex":[{"en":"The preview of the new movie made everyone want to watch it.","ko":"그 새 영화의 예고편은 모두가 그것을 보고 싶게 만들었다."}],"mnemonic":{"soundHint":null,"story":"프리(pre) 뷰(view)—영화관에서 본편 시작 전 나오는 예고편이 다음 영화 예매를 부추긴다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"movie","ko":"영화","reason":"영화 예고편(movie preview)이라는 가장 흔한 사용 상황"},{"w":"trailer","ko":"예고편","reason":"trailer와 preview는 예고편이라는 뜻의 동의어"}],"collocBest":[{"en":"a movie preview","ko":"영화 예고편"},{"en":"watch a preview","ko":"예고편을 보다"}]},"nuance":{"koSimple":"본편 시작 전에 살짝 맛보기로 보여주는 장면이에요.","whenToUse":"영화 예고편·앱 미리보기 말할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"u08410","w":"pulse","pos":["noun"],"ph":"","cefr":"A2","kr":["맥박"],"ex":[{"en":"The nurse checked his pulse and said his heart was beating normally.","ko":"간호사는 그의 맥박을 확인하고 심장이 정상적으로 뛰고 있다고 말했다."}],"mnemonic":{"soundHint":null,"story":"펄스(pulse) 옥시미터—손가락에 끼우자 화면에 맥박이 초당 78회로 뛰는 숫자가 보인다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"heart","ko":"심장","reason":"심장 박동이 곧 맥박(heart pulse)—직접적 인과관계"},{"w":"beat","ko":"박동","reason":"맥박과 박동은 뛰는 리듬이라는 점에서 동의어"}],"collocBest":[{"en":"check a pulse","ko":"맥박을 확인하다"},{"en":"a rapid pulse","ko":"빠른 맥박"}]},"nuance":{"koSimple":"손목에서 콩닥콩닥 뛰는 심장 박동이에요.","whenToUse":"병원·운동·긴장할 때 맥박 잴 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"u08415","w":"recess","pos":["noun"],"ph":"","cefr":"A2","kr":["휴식, 휴업"],"ex":[{"en":"During recess, we played basketball on the school playground with friends.","ko":"쉬는 시간에 우리는 친구들과 학교 운동장에서 농구를 했다."}],"mnemonic":{"soundHint":null,"story":"리세스(recess) 벨이 울리자 아이들은 운동장으로 뛰어나가 짧은 휴식을 즐겼다.","hintConfidence":2},"pairs":{"buddyWords":[{"w":"break","ko":"휴식","reason":"recess와 break 모두 학교·회의 중 쉬는 시간을 뜻하는 동의어"},{"w":"school","ko":"학교","reason":"학교의 쉬는 시간(school recess)이라는 흔한 콜로케이션"}],"collocBest":[{"en":"during recess","ko":"쉬는 시간 동안"},{"en":"a short recess","ko":"짧은 휴식"}]},"nuance":{"koSimple":"수업 사이에 놀 수 있는 짧은 쉬는 시간이에요.","whenToUse":"학교 쉬는 시간·회의 휴회 얘기할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"u08420","w":"refresh","pos":["verb"],"ph":"","cefr":"A2","kr":["상쾌하게 하다"],"ex":[{"en":"A cold drink will refresh you after running in the hot sun.","ko":"차가운 음료는 뜨거운 햇볕 아래에서 뛴 후 너를 상쾌하게 해줄 것이다."}],"mnemonic":{"soundHint":null,"story":"리(re) 프레시(fresh)—뜨거운 여름날 얼음 냉수 한 잔이 몸을 상쾌하게 해준다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"renew","ko":"새롭게 하다","reason":"다시 신선하게 만든다는 의미의 동의어"},{"w":"tired","ko":"지친","reason":"지친 사람을 상쾌하게 해주는 시나리오—반의 관계"}],"collocBest":[{"en":"refresh the memory","ko":"기억을 새롭게 하다"},{"en":"refresh the page","ko":"페이지를 새로고침하다"}]},"nuance":{"koSimple":"찬물로 세수한 것처럼 몸이 개운해져요.","whenToUse":"물 마시고 시원하거나 화면 새로고침할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"u08425","w":"respectively","pos":["adv"],"ph":"","cefr":"A2","kr":["각각, 저마다"],"ex":[{"en":"Tom and Jerry scored 90 and 85 points respectively on the math test.","ko":"톰과 제리는 수학 시험에서 각각 90점과 85점을 받았다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"each","ko":"각각","reason":"each와 respectively 모두 '각각'을 뜻하는 동의어"},{"w":"separately","ko":"따로따로","reason":"저마다 따로따로라는 의미가 통함"}],"collocBest":[{"en":"A and B respectively","ko":"각각 A와 B"},{"en":"first and second respectively","ko":"각각 첫째와 둘째"}]},"nuance":{"koSimple":"'철수와 영희는 각각 사과와 배'처럼 순서대로 매칭돼요.","whenToUse":"여러 대상 짝지어 설명할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"u08430","w":"revise","pos":["verb"],"ph":"","cefr":"A2","kr":["개정하다"],"ex":[{"en":"The teacher asked us to revise our essays before turning them in.","ko":"선생님은 우리에게 에세이를 제출하기 전에 수정하라고 하셨다."}],"mnemonic":{"soundHint":null,"story":"리바이스(Levi's)—리바이 편집장이 원고를 다시 살펴보며 문장을 개정한다.","hintConfidence":2},"pairs":{"buddyWords":[{"w":"edit","ko":"편집하다","reason":"개정과 편집은 원고를 다듬는 유사 행위—동의 관계"},{"w":"policy","ko":"정책","reason":"정책을 개정하다(revise a policy)라는 흔한 콜로케이션"}],"collocBest":[{"en":"revise a plan","ko":"계획을 수정하다"},{"en":"revise an essay","ko":"에세이를 수정하다"}]},"nuance":{"koSimple":"원고나 규칙을 빨간펜으로 다시 손봐서 고쳐요.","whenToUse":"책 개정·법 개정·글 수정할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"u08435","w":"rod","pos":["noun"],"ph":"","cefr":"A2","kr":["막대기"],"ex":[{"en":"He picked up a long rod to fish in the quiet lake.","ko":"그는 조용한 호수에서 낚시하기 위해 긴 낚싯대를 집어들었다."}],"mnemonic":{"soundHint":null,"story":"낚시 로드(rod)—긴 낚싯대 막대기가 손끝에서 휘어지며 큰 물고기가 잡혔다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"fishing","ko":"낚시","reason":"낚싯대(fishing rod)라는 가장 대표적 콜로케이션"},{"w":"stick","ko":"막대기","reason":"rod와 stick은 막대기라는 뜻의 동의어"}],"collocBest":[{"en":"a fishing rod","ko":"낚싯대"},{"en":"a metal rod","ko":"금속 막대"}]},"nuance":{"koSimple":"가늘고 긴 나무나 쇠막대기예요.","whenToUse":"낚싯대·지팡이·쇠막대 말할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"u08440","w":"secondhand","pos":["adj"],"ph":"","cefr":"A2","kr":["중고의, 간접적인"],"ex":[{"en":"I bought a secondhand bike online because it was cheap and clean.","ko":"나는 저렴하고 깨끗해서 온라인에서 중고 자전거를 샀다."}],"mnemonic":{"soundHint":null,"story":"세컨(second) 핸드(hand)—중고 서점에서 두 번째 주인을 기다리는 헌책들이 반값에 팔린다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"used","ko":"사용된","reason":"used와 secondhand는 중고라는 뜻의 동의어"},{"w":"shop","ko":"가게","reason":"중고 가게(secondhand shop)이라는 흔한 콜로케이션"}],"collocBest":[{"en":"a secondhand book","ko":"중고 책"},{"en":"a secondhand store","ko":"중고 가게"}]},"nuance":{"koSimple":"누가 한 번 쓰던 걸 내가 다시 쓰는 거예요.","whenToUse":"중고 옷·중고차·간접흡연 얘기할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"u08445","w":"shred","pos":["verb"],"ph":"","cefr":"A2","kr":["갈기갈기 찢다"],"ex":[{"en":"She shredded the old letters before throwing them into the trash can.","ko":"그녀는 오래된 편지들을 갈기갈기 찢은 뒤 쓰레기통에 버렸다."}],"mnemonic":{"soundHint":null,"story":"슈레드(shred)—회사 기밀문서를 문서 파쇄기가 갈기갈기 찢어 종이 눈처럼 흩날린다.","hintConfidence":2},"pairs":{"buddyWords":[{"w":"paper","ko":"종이","reason":"종이를 찢다(shred paper)라는 대표적 콜로케이션"},{"w":"tear","ko":"찢다","reason":"찢는다는 뜻의 동의어 관계"}],"collocBest":[{"en":"shred paper","ko":"종이를 찢다"},{"en":"shred documents","ko":"문서를 파쇄하다"}]},"nuance":{"koSimple":"종이를 쫙쫙 찢어 가늘고 긴 조각으로 만들어요.","whenToUse":"문서 파쇄·양배추 채썰기·서류 폐기할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"u08450","w":"simplicity","pos":["noun"],"ph":"","cefr":"A2","kr":["간단, 단순"],"ex":[{"en":"I love the simplicity of her writing because it is easy to understand.","ko":"나는 이해하기 쉽기 때문에 그녀의 글의 단순함을 좋아한다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"simple","ko":"단순한","reason":"형용사 simple의 명사형—단순함"},{"w":"complexity","ko":"복잡성","reason":"단순함의 정반대 개념—반의어"}],"collocBest":[{"en":"for the sake of simplicity","ko":"단순함을 위해"},{"en":"the simplicity of design","ko":"디자인의 단순함"}]},"nuance":{"koSimple":"복잡하지 않고 딱 필요한 것만 있는 깔끔함이에요.","whenToUse":"디자인·생활방식·설명이 단순할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"u08455","w":"sour","pos":["adj"],"ph":"","cefr":"A2","kr":["신맛이 나는"],"ex":[{"en":"The lemon candy was so sour that my face immediately scrunched up.","ko":"레몬 사탕이 너무 시어서 내 얼굴이 곧바로 찡그려졌다."}],"mnemonic":{"soundHint":null,"story":"사워(sour) 크림—레몬을 한입 물자 신맛에 얼굴이 저절로 찡그려진다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"lemon","ko":"레몬","reason":"레몬의 대표 맛이 신맛(sour lemon)—대표적 콜로케이션"},{"w":"sweet","ko":"달콤한","reason":"단맛의 반대가 신맛—반의 관계"}],"collocBest":[{"en":"sour taste","ko":"신맛"},{"en":"sour milk","ko":"상한 우유"}]},"nuance":{"koSimple":"레몬 한 입 물면 얼굴이 찌푸려지는 그 신맛이에요.","whenToUse":"레몬·식초·상한 우유 맛 얘기할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"u08460","w":"spike","pos":["noun","verb"],"ph":"","cefr":"A2","kr":["대못","대못을 박다"],"ex":[{"en":"There was a sudden spike in ice cream sales during the hot summer.","ko":"무더운 여름 동안 아이스크림 판매가 급증했다."}],"mnemonic":{"soundHint":null,"story":"배구 스파이크(spike)—높이 뛰어올라 대못을 박듯 강력하게 공을 내리꽂았다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"nail","ko":"못","reason":"spike와 nail은 못이라는 뜻의 동의어"},{"w":"sharp","ko":"뾰족한","reason":"대못은 뾰족한 물체—형태적 유사"}],"collocBest":[{"en":"a sudden spike","ko":"갑작스러운 급증"},{"en":"a sharp spike","ko":"급격한 증가"}]},"nuance":{"koSimple":"끝이 뾰족한 굵고 큰 못이에요.","whenToUse":"철로·울타리·뾰족 장식 말할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"u08465","w":"stiffen","pos":["verb"],"ph":"","cefr":"A2","kr":["굳어지다"],"ex":[{"en":"My legs began to stiffen after sitting still for two long hours.","ko":"두 시간 동안 가만히 앉아 있으니 다리가 굳기 시작했다."}],"mnemonic":{"soundHint":null,"story":"스틸(stiff)—냉동실에 두었던 옷이 뻣뻣하게 굳어져 손끝으로 두드리자 딱딱 소리가 났다.","hintConfidence":2},"pairs":{"buddyWords":[{"w":"hard","ko":"딱딱한","reason":"굳어지면 딱딱해진다는 상태 변화—동의 관계"},{"w":"muscle","ko":"근육","reason":"근육이 굳다(muscles stiffen)라는 흔한 상황"}],"collocBest":[{"en":"muscles stiffen","ko":"근육이 굳어지다"},{"en":"stiffen with cold","ko":"추위로 굳어지다"}]},"nuance":{"koSimple":"부드럽던 게 뻣뻣하게 굳어져요.","whenToUse":"긴장해 몸이 굳거나 반죽이 딱딱해질 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"u08470","w":"suicide","pos":["noun"],"ph":"","cefr":"A2","kr":["자살"],"ex":[{"en":"The school held a talk to help students think about suicide prevention.","ko":"학교는 학생들이 자살 예방에 대해 생각하도록 돕는 강연을 열었다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"prevention","ko":"예방","reason":"자살 예방(suicide prevention)이라는 대표적 콜로케이션"},{"w":"death","ko":"죽음","reason":"자살은 스스로 죽음을 택하는 행위—개념적 연결"}],"collocBest":[{"en":"commit suicide","ko":"자살하다"},{"en":"suicide prevention","ko":"자살 예방"}]},"nuance":{"koSimple":"스스로 자기 목숨을 끊는 슬픈 행동이에요.","whenToUse":"뉴스·상담·생명 존중 이야기할 때 조심히 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"u08475","w":"surf","pos":["noun","verb"],"ph":"","cefr":"A2","kr":["파도","파도타기를 하다"],"ex":[{"en":"We went to the beach to surf big waves last Saturday afternoon.","ko":"우리는 지난 토요일 오후에 큰 파도를 타러 해변에 갔다."}],"mnemonic":{"soundHint":null,"story":"서핑(surf)—하와이 해변에서 큰 파도가 몰려오자 보드 위로 올라타 파도타기를 시작했다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"wave","ko":"파도","reason":"surf와 wave는 파도라는 뜻의 동의어"},{"w":"beach","ko":"해변","reason":"해변에서 파도타기를 하는 자연스러운 시나리오"}],"collocBest":[{"en":"surf the internet","ko":"인터넷 서핑을 하다"},{"en":"surf the waves","ko":"파도를 타다"}]},"nuance":{"koSimple":"바닷가로 하얗게 밀려오는 파도 위에 올라타요.","whenToUse":"바다·서핑·인터넷 서핑 얘기할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"u08480","w":"terminate","pos":["verb"],"ph":"","cefr":"A2","kr":["끝내다"],"ex":[{"en":"The company decided to terminate the contract because of poor service quality.","ko":"그 회사는 서비스 품질이 나빠서 계약을 종료하기로 결정했다."}],"mnemonic":{"soundHint":null,"story":"터미네이터(Terminator)—영화 속 로봇이 임무를 끝내겠다며 마지막 미션을 종료한다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"end","ko":"끝내다","reason":"terminate와 end는 끝낸다는 뜻의 동의어"},{"w":"contract","ko":"계약","reason":"계약을 종료하다(terminate a contract)라는 대표적 콜로케이션"}],"collocBest":[{"en":"terminate a contract","ko":"계약을 종료하다"},{"en":"terminate employment","ko":"고용을 종료하다"}]},"nuance":{"koSimple":"진행되던 일을 딱 잘라 끝내버려요.","whenToUse":"계약·통화·프로그램 종료할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"u08485","w":"vest","pos":["noun"],"ph":"","cefr":"A2","kr":["조끼"],"ex":[{"en":"He wore a warm vest over his shirt to stay warm outside.","ko":"그는 밖에서 따뜻하게 있기 위해 셔츠 위에 따뜻한 조끼를 입었다."}],"mnemonic":{"soundHint":null,"story":"베스트(vest)—겨울 산행에 얇은 조끼 하나를 겹쳐 입었더니 체온이 훨씬 잘 유지됐다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"jacket","ko":"재킷","reason":"조끼와 재킷은 상의 외투 계열—카테고리 동류"},{"w":"wear","ko":"입다","reason":"조끼를 입다(wear a vest)라는 자연스러운 콜로케이션"}],"collocBest":[{"en":"wear a vest","ko":"조끼를 입다"},{"en":"a life vest","ko":"구명 조끼"}]},"nuance":{"koSimple":"소매 없이 상체만 감싸는 조끼 옷이에요.","whenToUse":"구명조끼·방탄조끼·패딩조끼 말할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w05782","w":"skip","pos":["v"],"ph":"/skɪp/","cefr":"A2","kr":["건너뛰다","스킵하다"],"ex":[{"en":"Let's skip this part and move on.","ko":"이 부분은 건너뛰고 넘어가자."}],"mnemonic":{"soundHint":"'스킵' 버튼 누르듯 그냥 건너뛴다","story":"'스킵(skip)' 버튼을 눌러 영상이든 수업이든 확 건너뛴다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"class","ko":"수업","reason":"skip class는 대표적인 콜로케이션 배치 표현"},{"w":"jump","ko":"뛰어넘다","reason":"skip과 유사한 동작이자 동의어"},{"w":"miss","ko":"놓치다","reason":"skip class처럼 결석·거르기 시나리오와 겹침"}],"collocBest":[{"en":"skip class","ko":"수업을 빠지다"},{"en":"skip a meal","ko":"식사를 거르다"}]},"nuance":{"koSimple":"차례를 폴짝 뛰어넘고 지나가는 거예요.","whenToUse":"수업 빠질 때, 식사 거를 때, 광고 넘길 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w05886","w":"special","pos":["adj"],"ph":"/ˈspɛʃəl/","cefr":"A1","kr":["특별한","특수한"],"ex":[{"en":"Today is a very special day for our family.","ko":"오늘은 우리 가족에게 매우 특별한 날이다."}],"mnemonic":{"soundHint":"스페셜(메뉴)","story":"오늘의 스페셜 메뉴는 사장님이 특별히 준비한 거야.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"unique","ko":"독특한","reason":"동의어 — 특별함의 대표 짝"},{"w":"ordinary","ko":"평범한","reason":"반의어 — 특별함 vs 평범함"},{"w":"occasion","ko":"행사","reason":"special occasion 콜로케이션의 짝"}],"collocBest":[{"en":"special occasion","ko":"특별한 행사"}]},"nuance":{"koSimple":"평범한 것들 중에서 딱 하나 특별한 거예요.","whenToUse":"생일·기념일·특가 상품 말할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w06295","w":"through","pos":["prep","adv"],"ph":"/θruː/","cefr":"A1","kr":["~을 통해","~을 통과하여","처음부터 끝까지"],"ex":[{"en":"Walk through the park.","ko":"공원을 통해 걸어가라."}],"mnemonic":{"soundHint":"쓰루 = 드라이브 스루(drive-through)의 그 '스루'","story":"맥도날드 드라이브 스루는 차를 세우지 않고 통과하며 주문한다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"across","ko":"가로질러","reason":"통과하는 경로를 나타내는 유사 전치사"},{"w":"tunnel","ko":"터널","reason":"터널을 통과할 때 through 사용"}],"collocBest":[{"en":"go through","ko":"~을 통과하다"}]},"nuance":{"koSimple":"터널처럼 한쪽으로 들어가 반대쪽으로 나와요.","whenToUse":"숲·창문·시간을 통과할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w06325","w":"together","pos":["adv"],"ph":"/təˈɡeðər/","cefr":"A1","kr":["함께","같이","동시에"],"ex":[{"en":"Let's work together on this.","ko":"이것에 대해 함께 일하자."}],"mnemonic":{"soundHint":null,"story":"친구들과 투게더 아이스크림을 함께 나눠 먹었다.","hintConfidence":2},"pairs":{"buddyWords":[{"w":"friend","ko":"친구","reason":"친구와는 함께 시간을 보냄"},{"w":"apart","ko":"떨어져","reason":"together의 대표 반의어"}],"collocBest":[{"en":"work together","ko":"함께 일하다"}]},"nuance":{"koSimple":"친구와 어깨 나란히 같은 공간에 있어요.","whenToUse":"같이 놀고·같이 일할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w05766","w":"sir","pos":["n"],"ph":"/sɜːr/","cefr":"A2","kr":["선생님","~씨"],"ex":[{"en":"Yes, sir, I will do it right away.","ko":"네, 선생님, 바로 하겠습니다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"mister","ko":"~씨","reason":"sir의 대표 동의어이자 호칭 콜로케이션"},{"w":"ma'am","ko":"부인, 여사님","reason":"sir의 여성형 상대 호칭 반의어"},{"w":"gentleman","ko":"신사","reason":"정중한 남성 호칭 시나리오에서 sir과 함께 쓰임"}],"collocBest":[{"en":"yes, sir","ko":"네, 알겠습니다"},{"en":"dear sir","ko":"~귀하"}]},"nuance":{"koSimple":"남자 어른을 공손히 부를 때 '~님' 같은 말이에요.","whenToUse":"손님·상사·낯선 남자분께 예의 갖출 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w05685","w":"several","pos":["det","pron"],"ph":"/ˈsevrəl/","cefr":"A1","kr":["여러","몇몇"],"ex":[{"en":"I visited the museum several times.","ko":"나는 그 박물관을 여러 번 방문했다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"some","ko":"몇몇","reason":"동의어 — 애매한 수량 짝"},{"w":"few","ko":"적은","reason":"반의어 — 여럿 vs 소수 대비"},{"w":"many","ko":"많은","reason":"시나리오 — 수량 표현 스펙트럼"}],"collocBest":[{"en":"several times","ko":"여러 번"},{"en":"several people","ko":"몇몇 사람들"}]},"nuance":{"koSimple":"한두 개가 아닌 3~5개쯤, 여러 개를 뜻해요.","whenToUse":"'몇 번', '몇 명' 셀 수 있는 것에 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null}
+    {"id":"u08360","w":"incurable","pos":["adj"],"ph":"","cefr":"A2","kr":["불치의"],"ex":[{"en":"The doctor told him the rare disease was incurable but manageable.","ko":"의사는 그에게 그 희귀병이 불치이지만 관리는 가능하다고 말했다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"disease","ko":"질병","reason":"불치의 병(incurable disease)이라는 표현이 가장 대표적인 콜로케이션"},{"w":"cure","ko":"치료하다","reason":"cure의 반대 개념—치료가 불가능한 상태가 incurable"}],"collocBest":[{"en":"an incurable disease","ko":"불치병"},{"en":"an incurable illness","ko":"불치의 병"}]},"nuance":{"koSimple":"약을 써도 낫지 않는, 고칠 수 없는 병 같은 거예요.","whenToUse":"심각한 병·습관 얘기할 때 써요."},"krDetail":[{"ko":"불치의","explain":"고칠 수 없는"}],"usageExamples":[{"en":"The old dog had an incurable illness.","ko":"그 늙은 개는 불치병에 걸렸다."},{"en":"Some diseases were once incurable but now are not.","ko":"어떤 병들은 예전엔 불치였지만 지금은 아니다."}],"grammarNote":"in-(부정)+cure(치료)+-able로 '치료 불가능한'.","grammarQuiz":null},
+    {"id":"u08365","w":"interval","pos":["noun"],"ph":"","cefr":"A2","kr":["간격"],"ex":[{"en":"The buses arrive at ten-minute intervals every morning during rush hour.","ko":"버스는 아침 러시아워마다 10분 간격으로 도착한다."}],"mnemonic":{"soundHint":null,"story":"인터벌(interval) 트레이닝—1분 뛰고 30초 쉬는 간격을 반복하니 심장이 요동친다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"regular","ko":"규칙적인","reason":"규칙적인 간격(regular intervals)이라는 표현이 매우 흔한 콜로케이션"},{"w":"pause","ko":"잠시 멈춤","reason":"간격과 유사한 개념—사이의 멈춤"}],"collocBest":[{"en":"at regular intervals","ko":"규칙적인 간격으로"},{"en":"a short interval","ko":"짧은 간격"}]},"nuance":{"koSimple":"두 시점 사이에 벌어진 빈 시간이나 거리예요.","whenToUse":"쉬는 시간·차 간격·음 간격 말할 때 써요."},"krDetail":[{"ko":"간격","explain":"사이의 거리나 시간"}],"usageExamples":[{"en":"Take a short rest at regular intervals.","ko":"일정한 간격으로 짧은 휴식을 취해라."},{"en":"There was a long interval between the two shows.","ko":"두 공연 사이에는 긴 간격이 있었다."}],"grammarNote":"'at ~ intervals'는 '~ 간격으로'라는 뜻.","grammarQuiz":null},
+    {"id":"u08370","w":"limp","pos":["verb","adj"],"ph":"","cefr":"A2","kr":["절뚝거리다","기운이 없는"],"ex":[{"en":"He had to limp home after twisting his ankle during soccer practice.","ko":"그는 축구 연습 중 발목을 삐어서 집까지 절뚝거리며 가야 했다."}],"mnemonic":{"soundHint":null,"story":"림프(limp)—축구하다 발목을 삐끗한 형은 절뚝거리며 겨우 벤치까지 걸어갔다.","hintConfidence":2},"pairs":{"buddyWords":[{"w":"injury","ko":"부상","reason":"부상 때문에 절뚝거리는 상황이 자연스럽게 연결됨"},{"w":"weak","ko":"약한","reason":"'기운이 없는' 뜻과 동의어 관계"}],"collocBest":[{"en":"limp badly","ko":"심하게 절뚝거리다"},{"en":"limp slightly","ko":"약간 절뚝거리다"}]},"nuance":{"koSimple":"다리를 다쳐서 한쪽으로 절뚝절뚝 걸어요.","whenToUse":"다친 사람 걸음걸이 말할 때 써요."},"krDetail":[{"ko":"절뚝거리다","explain":"다리를 절며 걷다"},{"ko":"기운이 없는","explain":"축 처져 힘 없는"}],"usageExamples":[{"en":"He hurt his knee and had to limp.","ko":"그는 무릎을 다쳐 절뚝거려야 했다."},{"en":"The wet flowers looked limp in the vase.","ko":"젖은 꽃들이 꽃병에서 축 처져 보였다."}],"grammarNote":"동사는 '절뚝거리다', 형용사는 '축 처진'.","grammarQuiz":null},
+    {"id":"u08375","w":"misplace","pos":["verb"],"ph":"","cefr":"A2","kr":["잘못 두다"],"ex":[{"en":"I always misplace my keys right before I need to leave.","ko":"나는 나가야 할 때만 되면 항상 열쇠를 어디에 뒀는지 잊어버린다."}],"mnemonic":{"soundHint":null,"story":"미스(mis) 플레이스(place)—열쇠를 어디에 잘못 두었는지 몰라 온 집을 뒤졌다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"keys","ko":"열쇠","reason":"열쇠를 잘못 두다(misplace one's keys)라는 가장 흔한 사용 상황"},{"w":"lose","ko":"잃어버리다","reason":"잘못 둬서 결국 잃어버리는 결과로 이어지는 시나리오"}],"collocBest":[{"en":"misplace keys","ko":"열쇠를 잘못 두다"},{"en":"misplace a wallet","ko":"지갑을 잘못 두다"}]},"nuance":{"koSimple":"물건을 엉뚱한 곳에 놓고 어디 뒀는지 잊어버려요.","whenToUse":"열쇠·지갑 잃어버렸을 때 써요."},"krDetail":[{"ko":"잘못 두다","explain":"물건을 엉뚱한 데 두다"}],"usageExamples":[{"en":"I often misplace my glasses at home.","ko":"나는 집에서 안경을 자주 엉뚱한 데 둔다."},{"en":"He misplaced his phone and looked everywhere.","ko":"그는 전화기를 잘못 두고 온 데를 다 찾았다."}],"grammarNote":"mis-(잘못)+place(두다)로 '잘못 두다'.","grammarQuiz":null},
+    {"id":"u08380","w":"mutation","pos":["noun"],"ph":"","cefr":"A2","kr":["변화, 돌연변이"],"ex":[{"en":"A small mutation in the gene caused the flower to change color.","ko":"그 유전자의 작은 돌연변이가 꽃의 색을 바꾸게 만들었다."}],"mnemonic":{"soundHint":null,"story":"뮤테이션(mutation)—X맨 만화 속 돌연변이 히어로들이 유전자 변화로 특수 능력을 얻는다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"gene","ko":"유전자","reason":"유전자 돌연변이(gene mutation)이라는 대표적 콜로케이션"},{"w":"evolution","ko":"진화","reason":"돌연변이가 진화의 원동력이라는 과학적 시나리오"}],"collocBest":[{"en":"a genetic mutation","ko":"유전자 돌연변이"},{"en":"cause a mutation","ko":"돌연변이를 일으키다"}]},"nuance":{"koSimple":"DNA가 갑자기 변해서 다른 모습이 되는 거예요.","whenToUse":"과학 시간 유전·돌연변이 얘기할 때 써요."},"krDetail":[{"ko":"변화, 돌연변이","explain":"유전자의 갑작스런 변화"}],"usageExamples":[{"en":"A mutation can change an animal's color.","ko":"돌연변이는 동물의 색을 바꿀 수 있다."},{"en":"Scientists found a new mutation in the virus.","ko":"과학자들은 그 바이러스에서 새 돌연변이를 발견했다."}],"grammarNote":"동사 mutate(변이하다)의 명사형.","grammarQuiz":null},
+    {"id":"u08385","w":"overtake","pos":["verb"],"ph":"","cefr":"A2","kr":["따라잡다"],"ex":[{"en":"She ran faster and finally overtook the leader in the last lap.","ko":"그녀는 더 빨리 달려서 마지막 바퀴에서 마침내 선두를 따라잡았다."}],"mnemonic":{"soundHint":null,"story":"오버(over) 테이크(take)—결승 직전, 2위 선수가 1위를 추월해 따라잡으며 결승선을 통과했다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"pass","ko":"추월하다","reason":"따라잡아 추월한다는 의미의 동의어"},{"w":"catch","ko":"붙잡다","reason":"catch up과 결합해 따라잡는다는 뜻이 됨"}],"collocBest":[{"en":"overtake a car","ko":"차를 앞지르다"},{"en":"overtake a rival","ko":"경쟁자를 따라잡다"}]},"nuance":{"koSimple":"뒤에서 달려와 앞차를 앞질러 가는 모습이에요.","whenToUse":"달리기·자동차 추월할 때 써요."},"krDetail":[{"ko":"따라잡다","explain":"앞선 것을 앞지르다"}],"usageExamples":[{"en":"The red car tried to overtake the truck.","ko":"빨간 차가 트럭을 앞지르려 했다."},{"en":"She overtook the leader in the last lap.","ko":"그녀는 마지막 바퀴에서 선두를 따라잡았다."}],"grammarNote":"불규칙 변화: overtake-overtook-overtaken.","grammarQuiz":null},
+    {"id":"u08390","w":"perspiration","pos":["noun"],"ph":"","cefr":"A2","kr":["땀"],"ex":[{"en":"Perspiration dripped from his forehead after the long soccer match.","ko":"긴 축구 경기 후 그의 이마에서 땀이 뚝뚝 떨어졌다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"sweat","ko":"땀","reason":"sweat의 격식 있는 표현이 perspiration"},{"w":"heat","ko":"열기","reason":"더위·열기로 인해 땀이 나는 자연스러운 인과관계"}],"collocBest":[{"en":"heavy perspiration","ko":"많은 땀"},{"en":"wipe perspiration","ko":"땀을 닦다"}]},"nuance":{"koSimple":"이마와 등에 송글송글 맺힌 땀방울이에요.","whenToUse":"운동·더위·긴장으로 땀날 때 써요."},"krDetail":[{"ko":"땀","explain":"몸에서 나오는 물기"}],"usageExamples":[{"en":"Perspiration covered his face after the run.","ko":"달리기 후 땀이 그의 얼굴을 뒤덮었다."},{"en":"Hard exercise causes a lot of perspiration.","ko":"힘든 운동은 많은 땀을 나게 한다."}],"grammarNote":"sweat의 격식 있는 말, 셀 수 없는 명사.","grammarQuiz":null},
+    {"id":"u08395","w":"pinch","pos":["verb"],"ph":"","cefr":"A2","kr":["꼬집다"],"ex":[{"en":"My little sister pinched my arm to check if I was awake.","ko":"여동생은 내가 깨어 있는지 확인하려고 내 팔을 꼬집었다."}],"mnemonic":{"soundHint":null,"story":"핀치(pinch)—꿈인지 확인하려고 볼을 살짝 꼬집자 진짜 아팠다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"cheek","ko":"볼","reason":"볼을 꼬집다(pinch one's cheek)라는 대표적 콜로케이션"},{"w":"squeeze","ko":"쥐어짜다","reason":"꼬집는 동작과 유사한 압박 동작"}],"collocBest":[{"en":"pinch someone's cheek","ko":"누군가의 볼을 꼬집다"},{"en":"pinch hard","ko":"세게 꼬집다"}]},"nuance":{"koSimple":"엄지와 검지로 살을 꼭 집어 비틀어요.","whenToUse":"장난·꿈인지 확인·따끔한 자극 얘기할 때 써요."},"krDetail":[{"ko":"꼬집다","explain":"손가락으로 집어 비틀다"}],"usageExamples":[{"en":"Don't pinch your brother's cheek so hard.","ko":"동생 볼을 그렇게 세게 꼬집지 마."},{"en":"She pinched a little salt into the soup.","ko":"그녀는 국에 소금을 조금 집어넣었다."}],"grammarNote":"'꼬집다' 외에 '조금 집다'의 뜻도 있음.","grammarQuiz":null},
+    {"id":"u08400","w":"predominant","pos":["adj"],"ph":"","cefr":"A2","kr":["뛰어난, 우세한"],"ex":[{"en":"English is the predominant language used in international business meetings today.","ko":"영어는 오늘날 국제 비즈니스 회의에서 가장 우세한 언어이다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"dominant","ko":"우세한","reason":"predominant와 어원이 같고 뜻이 거의 동일한 동의어"},{"w":"main","ko":"주된","reason":"가장 우세한, 주된 것이라는 의미가 통함"}],"collocBest":[{"en":"the predominant language","ko":"우세한 언어"},{"en":"a predominant role","ko":"주도적 역할"}]},"nuance":{"koSimple":"여러 개 중에 가장 눈에 띄고 앞서 있어요.","whenToUse":"우세한 색·의견·문화 말할 때 써요."},"krDetail":[{"ko":"뛰어난, 우세한","explain":"가장 많고 힘이 센"}],"usageExamples":[{"en":"Red was the predominant color in the room.","ko":"빨강은 그 방에서 우세한 색이었다."},{"en":"Rice is the predominant food in many countries.","ko":"쌀은 많은 나라에서 주된 음식이다."}],"grammarNote":"명사 앞에서 '주된, 가장 두드러진'으로 씀.","grammarQuiz":null},
+    {"id":"u08405","w":"preview","pos":["noun"],"ph":"","cefr":"A2","kr":["미리 보기, 예고편"],"ex":[{"en":"The preview of the new movie made everyone want to watch it.","ko":"그 새 영화의 예고편은 모두가 그것을 보고 싶게 만들었다."}],"mnemonic":{"soundHint":null,"story":"프리(pre) 뷰(view)—영화관에서 본편 시작 전 나오는 예고편이 다음 영화 예매를 부추긴다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"movie","ko":"영화","reason":"영화 예고편(movie preview)이라는 가장 흔한 사용 상황"},{"w":"trailer","ko":"예고편","reason":"trailer와 preview는 예고편이라는 뜻의 동의어"}],"collocBest":[{"en":"a movie preview","ko":"영화 예고편"},{"en":"watch a preview","ko":"예고편을 보다"}]},"nuance":{"koSimple":"본편 시작 전에 살짝 맛보기로 보여주는 장면이에요.","whenToUse":"영화 예고편·앱 미리보기 말할 때 써요."},"krDetail":[{"ko":"미리 보기, 예고편","explain":"미리 보여 주는 부분"}],"usageExamples":[{"en":"We watched a preview before the main movie.","ko":"우리는 본 영화 전에 예고편을 봤다."},{"en":"The teacher gave a preview of next week's lesson.","ko":"선생님은 다음 주 수업의 미리 보기를 해 주셨다."}],"grammarNote":"pre-(미리)+view(보다)로 '미리 봄'.","grammarQuiz":null},
+    {"id":"u08410","w":"pulse","pos":["noun"],"ph":"","cefr":"A2","kr":["맥박"],"ex":[{"en":"The nurse checked his pulse and said his heart was beating normally.","ko":"간호사는 그의 맥박을 확인하고 심장이 정상적으로 뛰고 있다고 말했다."}],"mnemonic":{"soundHint":null,"story":"펄스(pulse) 옥시미터—손가락에 끼우자 화면에 맥박이 초당 78회로 뛰는 숫자가 보인다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"heart","ko":"심장","reason":"심장 박동이 곧 맥박(heart pulse)—직접적 인과관계"},{"w":"beat","ko":"박동","reason":"맥박과 박동은 뛰는 리듬이라는 점에서 동의어"}],"collocBest":[{"en":"check a pulse","ko":"맥박을 확인하다"},{"en":"a rapid pulse","ko":"빠른 맥박"}]},"nuance":{"koSimple":"손목에서 콩닥콩닥 뛰는 심장 박동이에요.","whenToUse":"병원·운동·긴장할 때 맥박 잴 때 써요."},"krDetail":[{"ko":"맥박","explain":"심장이 뛰는 박동"}],"usageExamples":[{"en":"The doctor felt my pulse on my wrist.","ko":"의사는 내 손목에서 맥박을 짚었다."},{"en":"His pulse grew faster as he ran.","ko":"그가 달리자 맥박이 더 빨라졌다."}],"grammarNote":"'맥박을 재다'는 take/feel one's pulse.","grammarQuiz":null},
+    {"id":"u08415","w":"recess","pos":["noun"],"ph":"","cefr":"A2","kr":["휴식, 휴업"],"ex":[{"en":"During recess, we played basketball on the school playground with friends.","ko":"쉬는 시간에 우리는 친구들과 학교 운동장에서 농구를 했다."}],"mnemonic":{"soundHint":null,"story":"리세스(recess) 벨이 울리자 아이들은 운동장으로 뛰어나가 짧은 휴식을 즐겼다.","hintConfidence":2},"pairs":{"buddyWords":[{"w":"break","ko":"휴식","reason":"recess와 break 모두 학교·회의 중 쉬는 시간을 뜻하는 동의어"},{"w":"school","ko":"학교","reason":"학교의 쉬는 시간(school recess)이라는 흔한 콜로케이션"}],"collocBest":[{"en":"during recess","ko":"쉬는 시간 동안"},{"en":"a short recess","ko":"짧은 휴식"}]},"nuance":{"koSimple":"수업 사이에 놀 수 있는 짧은 쉬는 시간이에요.","whenToUse":"학교 쉬는 시간·회의 휴회 얘기할 때 써요."},"krDetail":[{"ko":"휴식, 휴업","explain":"잠깐 쉬는 시간"}],"usageExamples":[{"en":"The children ran outside during recess.","ko":"아이들은 쉬는 시간에 밖으로 뛰어나갔다."},{"en":"The court took a short recess for lunch.","ko":"법원은 점심을 위해 잠시 휴정했다."}],"grammarNote":"학교에서 '쉬는 시간'을 뜻하는 명사.","grammarQuiz":null},
+    {"id":"u08420","w":"refresh","pos":["verb"],"ph":"","cefr":"A2","kr":["상쾌하게 하다"],"ex":[{"en":"A cold drink will refresh you after running in the hot sun.","ko":"차가운 음료는 뜨거운 햇볕 아래에서 뛴 후 너를 상쾌하게 해줄 것이다."}],"mnemonic":{"soundHint":null,"story":"리(re) 프레시(fresh)—뜨거운 여름날 얼음 냉수 한 잔이 몸을 상쾌하게 해준다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"renew","ko":"새롭게 하다","reason":"다시 신선하게 만든다는 의미의 동의어"},{"w":"tired","ko":"지친","reason":"지친 사람을 상쾌하게 해주는 시나리오—반의 관계"}],"collocBest":[{"en":"refresh the memory","ko":"기억을 새롭게 하다"},{"en":"refresh the page","ko":"페이지를 새로고침하다"}]},"nuance":{"koSimple":"찬물로 세수한 것처럼 몸이 개운해져요.","whenToUse":"물 마시고 시원하거나 화면 새로고침할 때 써요."},"krDetail":[{"ko":"상쾌하게 하다","explain":"다시 기운나게 하다"}],"usageExamples":[{"en":"A short nap can refresh your mind.","ko":"짧은 낮잠은 마음을 상쾌하게 할 수 있다."},{"en":"Wash your face to refresh yourself.","ko":"세수를 해서 기분을 상쾌하게 해라."}],"grammarNote":"re-(다시)+fresh(상쾌한)로 '다시 상쾌하게'.","grammarQuiz":null},
+    {"id":"u08425","w":"respectively","pos":["adv"],"ph":"","cefr":"A2","kr":["각각, 저마다"],"ex":[{"en":"Tom and Jerry scored 90 and 85 points respectively on the math test.","ko":"톰과 제리는 수학 시험에서 각각 90점과 85점을 받았다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"each","ko":"각각","reason":"each와 respectively 모두 '각각'을 뜻하는 동의어"},{"w":"separately","ko":"따로따로","reason":"저마다 따로따로라는 의미가 통함"}],"collocBest":[{"en":"A and B respectively","ko":"각각 A와 B"},{"en":"first and second respectively","ko":"각각 첫째와 둘째"}]},"nuance":{"koSimple":"'철수와 영희는 각각 사과와 배'처럼 순서대로 매칭돼요.","whenToUse":"여러 대상 짝지어 설명할 때 써요."},"krDetail":[{"ko":"각각, 저마다","explain":"순서대로 하나씩"}],"usageExamples":[{"en":"Mom and Dad are 45 and 47 respectively.","ko":"엄마와 아빠는 각각 45세와 47세이다."},{"en":"The medals went to Ann and Sam respectively.","ko":"메달은 각각 앤과 샘에게 돌아갔다."}],"grammarNote":"앞에 나온 대상들을 '순서대로 각각' 연결.","grammarQuiz":null},
+    {"id":"u08430","w":"revise","pos":["verb"],"ph":"","cefr":"A2","kr":["개정하다"],"ex":[{"en":"The teacher asked us to revise our essays before turning them in.","ko":"선생님은 우리에게 에세이를 제출하기 전에 수정하라고 하셨다."}],"mnemonic":{"soundHint":null,"story":"리바이스(Levi's)—리바이 편집장이 원고를 다시 살펴보며 문장을 개정한다.","hintConfidence":2},"pairs":{"buddyWords":[{"w":"edit","ko":"편집하다","reason":"개정과 편집은 원고를 다듬는 유사 행위—동의 관계"},{"w":"policy","ko":"정책","reason":"정책을 개정하다(revise a policy)라는 흔한 콜로케이션"}],"collocBest":[{"en":"revise a plan","ko":"계획을 수정하다"},{"en":"revise an essay","ko":"에세이를 수정하다"}]},"nuance":{"koSimple":"원고나 규칙을 빨간펜으로 다시 손봐서 고쳐요.","whenToUse":"책 개정·법 개정·글 수정할 때 써요."},"krDetail":[{"ko":"개정하다","explain":"고쳐서 더 낫게 하다"}],"usageExamples":[{"en":"Please revise your plan before Monday.","ko":"월요일 전에 계획을 수정하세요."},{"en":"The writer revised the story many times.","ko":"작가는 그 이야기를 여러 번 고쳤다."}],"grammarNote":"re-(다시)+vise(보다)로 '다시 보아 고치다'.","grammarQuiz":null},
+    {"id":"u08435","w":"rod","pos":["noun"],"ph":"","cefr":"A2","kr":["막대기"],"ex":[{"en":"He picked up a long rod to fish in the quiet lake.","ko":"그는 조용한 호수에서 낚시하기 위해 긴 낚싯대를 집어들었다."}],"mnemonic":{"soundHint":null,"story":"낚시 로드(rod)—긴 낚싯대 막대기가 손끝에서 휘어지며 큰 물고기가 잡혔다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"fishing","ko":"낚시","reason":"낚싯대(fishing rod)라는 가장 대표적 콜로케이션"},{"w":"stick","ko":"막대기","reason":"rod와 stick은 막대기라는 뜻의 동의어"}],"collocBest":[{"en":"a fishing rod","ko":"낚싯대"},{"en":"a metal rod","ko":"금속 막대"}]},"nuance":{"koSimple":"가늘고 긴 나무나 쇠막대기예요.","whenToUse":"낚싯대·지팡이·쇠막대 말할 때 써요."},"krDetail":[{"ko":"막대기","explain":"가늘고 긴 막대"}],"usageExamples":[{"en":"He fixed the fence with a metal rod.","ko":"그는 쇠막대기로 울타리를 고쳤다."},{"en":"The fishing rod bent when the fish bit.","ko":"물고기가 물자 낚싯대가 휘었다."}],"grammarNote":"'하나의 막대기'는 a rod, 셀 수 있는 명사.","grammarQuiz":null},
+    {"id":"u08440","w":"secondhand","pos":["adj"],"ph":"","cefr":"A2","kr":["중고의, 간접적인"],"ex":[{"en":"I bought a secondhand bike online because it was cheap and clean.","ko":"나는 저렴하고 깨끗해서 온라인에서 중고 자전거를 샀다."}],"mnemonic":{"soundHint":null,"story":"세컨(second) 핸드(hand)—중고 서점에서 두 번째 주인을 기다리는 헌책들이 반값에 팔린다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"used","ko":"사용된","reason":"used와 secondhand는 중고라는 뜻의 동의어"},{"w":"shop","ko":"가게","reason":"중고 가게(secondhand shop)이라는 흔한 콜로케이션"}],"collocBest":[{"en":"a secondhand book","ko":"중고 책"},{"en":"a secondhand store","ko":"중고 가게"}]},"nuance":{"koSimple":"누가 한 번 쓰던 걸 내가 다시 쓰는 거예요.","whenToUse":"중고 옷·중고차·간접흡연 얘기할 때 써요."},"krDetail":[{"ko":"중고의, 간접적인","explain":"남이 쓰던, 남 통해 들은"}],"usageExamples":[{"en":"She wears secondhand clothes to save money.","ko":"그녀는 돈을 아끼려고 중고 옷을 입는다."},{"en":"I only got secondhand news about the event.","ko":"나는 그 일에 대해 간접적인 소식만 들었다."}],"grammarNote":"'secondhand smoke'는 '간접흡연'을 뜻함.","grammarQuiz":null},
+    {"id":"u08445","w":"shred","pos":["verb"],"ph":"","cefr":"A2","kr":["갈기갈기 찢다"],"ex":[{"en":"She shredded the old letters before throwing them into the trash can.","ko":"그녀는 오래된 편지들을 갈기갈기 찢은 뒤 쓰레기통에 버렸다."}],"mnemonic":{"soundHint":null,"story":"슈레드(shred)—회사 기밀문서를 문서 파쇄기가 갈기갈기 찢어 종이 눈처럼 흩날린다.","hintConfidence":2},"pairs":{"buddyWords":[{"w":"paper","ko":"종이","reason":"종이를 찢다(shred paper)라는 대표적 콜로케이션"},{"w":"tear","ko":"찢다","reason":"찢는다는 뜻의 동의어 관계"}],"collocBest":[{"en":"shred paper","ko":"종이를 찢다"},{"en":"shred documents","ko":"문서를 파쇄하다"}]},"nuance":{"koSimple":"종이를 쫙쫙 찢어 가늘고 긴 조각으로 만들어요.","whenToUse":"문서 파쇄·양배추 채썰기·서류 폐기할 때 써요."},"krDetail":[{"ko":"갈기갈기 찢다","explain":"잘게 찢어 조각내다"}],"usageExamples":[{"en":"Please shred these old papers.","ko":"이 오래된 서류들을 갈기갈기 찢어 주세요."},{"en":"The machine can shred paper in seconds.","ko":"그 기계는 몇 초 만에 종이를 잘게 찢을 수 있다."}],"grammarNote":"과거형은 shredded로 d를 두 번 씀.","grammarQuiz":null},
+    {"id":"u08450","w":"simplicity","pos":["noun"],"ph":"","cefr":"A2","kr":["간단, 단순"],"ex":[{"en":"I love the simplicity of her writing because it is easy to understand.","ko":"나는 이해하기 쉽기 때문에 그녀의 글의 단순함을 좋아한다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"simple","ko":"단순한","reason":"형용사 simple의 명사형—단순함"},{"w":"complexity","ko":"복잡성","reason":"단순함의 정반대 개념—반의어"}],"collocBest":[{"en":"for the sake of simplicity","ko":"단순함을 위해"},{"en":"the simplicity of design","ko":"디자인의 단순함"}]},"nuance":{"koSimple":"복잡하지 않고 딱 필요한 것만 있는 깔끔함이에요.","whenToUse":"디자인·생활방식·설명이 단순할 때 써요."},"krDetail":[{"ko":"간단, 단순","explain":"쉽고 꾸밈없음"}],"usageExamples":[{"en":"I like the simplicity of this design.","ko":"나는 이 디자인의 단순함이 좋다."},{"en":"The recipe is loved for its simplicity.","ko":"그 요리법은 간단함으로 사랑받는다."}],"grammarNote":"형용사 simple의 명사형(le→licity).","grammarQuiz":null},
+    {"id":"u08455","w":"sour","pos":["adj"],"ph":"","cefr":"A2","kr":["신맛이 나는"],"ex":[{"en":"The lemon candy was so sour that my face immediately scrunched up.","ko":"레몬 사탕이 너무 시어서 내 얼굴이 곧바로 찡그려졌다."}],"mnemonic":{"soundHint":null,"story":"사워(sour) 크림—레몬을 한입 물자 신맛에 얼굴이 저절로 찡그려진다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"lemon","ko":"레몬","reason":"레몬의 대표 맛이 신맛(sour lemon)—대표적 콜로케이션"},{"w":"sweet","ko":"달콤한","reason":"단맛의 반대가 신맛—반의 관계"}],"collocBest":[{"en":"sour taste","ko":"신맛"},{"en":"sour milk","ko":"상한 우유"}]},"nuance":{"koSimple":"레몬 한 입 물면 얼굴이 찌푸려지는 그 신맛이에요.","whenToUse":"레몬·식초·상한 우유 맛 얘기할 때 써요."},"krDetail":[{"ko":"신맛이 나는","explain":"시큼한 맛의"}],"usageExamples":[{"en":"This orange tastes a little sour.","ko":"이 오렌지는 약간 신맛이 난다."},{"en":"The milk went sour after a week.","ko":"그 우유는 일주일 뒤에 상해서 시어졌다."}],"grammarNote":"우유가 상했을 때 'go sour'로도 씀.","grammarQuiz":null},
+    {"id":"u08460","w":"spike","pos":["noun","verb"],"ph":"","cefr":"A2","kr":["대못","대못을 박다"],"ex":[{"en":"There was a sudden spike in ice cream sales during the hot summer.","ko":"무더운 여름 동안 아이스크림 판매가 급증했다."}],"mnemonic":{"soundHint":null,"story":"배구 스파이크(spike)—높이 뛰어올라 대못을 박듯 강력하게 공을 내리꽂았다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"nail","ko":"못","reason":"spike와 nail은 못이라는 뜻의 동의어"},{"w":"sharp","ko":"뾰족한","reason":"대못은 뾰족한 물체—형태적 유사"}],"collocBest":[{"en":"a sudden spike","ko":"갑작스러운 급증"},{"en":"a sharp spike","ko":"급격한 증가"}]},"nuance":{"koSimple":"끝이 뾰족한 굵고 큰 못이에요.","whenToUse":"철로·울타리·뾰족 장식 말할 때 써요."},"krDetail":[{"ko":"대못","explain":"굵고 큰 못"},{"ko":"대못을 박다","explain":"큰 못을 박다"}],"usageExamples":[{"en":"There was a sharp spike on the old gate.","ko":"낡은 문에 뾰족한 대못이 있었다."},{"en":"Prices spiked after the sudden storm.","ko":"갑작스런 폭풍 후에 가격이 급등했다."}],"grammarNote":"명사·동사로 쓰며 '급등하다' 뜻도 흔함.","grammarQuiz":null},
+    {"id":"u08465","w":"stiffen","pos":["verb"],"ph":"","cefr":"A2","kr":["굳어지다"],"ex":[{"en":"My legs began to stiffen after sitting still for two long hours.","ko":"두 시간 동안 가만히 앉아 있으니 다리가 굳기 시작했다."}],"mnemonic":{"soundHint":null,"story":"스틸(stiff)—냉동실에 두었던 옷이 뻣뻣하게 굳어져 손끝으로 두드리자 딱딱 소리가 났다.","hintConfidence":2},"pairs":{"buddyWords":[{"w":"hard","ko":"딱딱한","reason":"굳어지면 딱딱해진다는 상태 변화—동의 관계"},{"w":"muscle","ko":"근육","reason":"근육이 굳다(muscles stiffen)라는 흔한 상황"}],"collocBest":[{"en":"muscles stiffen","ko":"근육이 굳어지다"},{"en":"stiffen with cold","ko":"추위로 굳어지다"}]},"nuance":{"koSimple":"부드럽던 게 뻣뻣하게 굳어져요.","whenToUse":"긴장해 몸이 굳거나 반죽이 딱딱해질 때 써요."},"krDetail":[{"ko":"굳어지다","explain":"뻣뻣하게 딱딱해지다"}],"usageExamples":[{"en":"My hands stiffen in cold weather.","ko":"추운 날씨에 내 손이 뻣뻣해진다."},{"en":"The glue made the cloth stiffen.","ko":"그 풀은 천을 뻣뻣하게 만들었다."}],"grammarNote":"형용사 stiff에 -en이 붙어 '~해지다'.","grammarQuiz":null},
+    {"id":"u08470","w":"suicide","pos":["noun"],"ph":"","cefr":"A2","kr":["자살"],"ex":[{"en":"The school held a talk to help students think about suicide prevention.","ko":"학교는 학생들이 자살 예방에 대해 생각하도록 돕는 강연을 열었다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"prevention","ko":"예방","reason":"자살 예방(suicide prevention)이라는 대표적 콜로케이션"},{"w":"death","ko":"죽음","reason":"자살은 스스로 죽음을 택하는 행위—개념적 연결"}],"collocBest":[{"en":"commit suicide","ko":"자살하다"},{"en":"suicide prevention","ko":"자살 예방"}]},"nuance":{"koSimple":"스스로 자기 목숨을 끊는 슬픈 행동이에요.","whenToUse":"뉴스·상담·생명 존중 이야기할 때 조심히 써요."},"krDetail":[{"ko":"자살","explain":"스스로 목숨을 끊음"}],"usageExamples":[{"en":"The hotline works to prevent suicide.","ko":"그 상담 전화는 자살을 막으려고 애쓴다."},{"en":"Many groups try to lower the suicide rate.","ko":"많은 단체가 자살률을 낮추려고 노력한다."}],"grammarNote":"주로 셀 수 없는 명사로 쓰이는 무거운 주제어.","grammarQuiz":null},
+    {"id":"u08475","w":"surf","pos":["noun","verb"],"ph":"","cefr":"A2","kr":["파도","파도타기를 하다"],"ex":[{"en":"We went to the beach to surf big waves last Saturday afternoon.","ko":"우리는 지난 토요일 오후에 큰 파도를 타러 해변에 갔다."}],"mnemonic":{"soundHint":null,"story":"서핑(surf)—하와이 해변에서 큰 파도가 몰려오자 보드 위로 올라타 파도타기를 시작했다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"wave","ko":"파도","reason":"surf와 wave는 파도라는 뜻의 동의어"},{"w":"beach","ko":"해변","reason":"해변에서 파도타기를 하는 자연스러운 시나리오"}],"collocBest":[{"en":"surf the internet","ko":"인터넷 서핑을 하다"},{"en":"surf the waves","ko":"파도를 타다"}]},"nuance":{"koSimple":"바닷가로 하얗게 밀려오는 파도 위에 올라타요.","whenToUse":"바다·서핑·인터넷 서핑 얘기할 때 써요."},"krDetail":[{"ko":"파도","explain":"밀려오는 바닷물결"},{"ko":"파도타기를 하다","explain":"파도 위를 타다"}],"usageExamples":[{"en":"They love to surf on sunny days.","ko":"그들은 화창한 날에 파도타기 하는 것을 좋아한다."},{"en":"The white surf crashed onto the sand.","ko":"하얀 파도가 모래 위로 부서졌다."}],"grammarNote":"'인터넷을 검색하다'는 surf the Internet.","grammarQuiz":null},
+    {"id":"u08480","w":"terminate","pos":["verb"],"ph":"","cefr":"A2","kr":["끝내다"],"ex":[{"en":"The company decided to terminate the contract because of poor service quality.","ko":"그 회사는 서비스 품질이 나빠서 계약을 종료하기로 결정했다."}],"mnemonic":{"soundHint":null,"story":"터미네이터(Terminator)—영화 속 로봇이 임무를 끝내겠다며 마지막 미션을 종료한다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"end","ko":"끝내다","reason":"terminate와 end는 끝낸다는 뜻의 동의어"},{"w":"contract","ko":"계약","reason":"계약을 종료하다(terminate a contract)라는 대표적 콜로케이션"}],"collocBest":[{"en":"terminate a contract","ko":"계약을 종료하다"},{"en":"terminate employment","ko":"고용을 종료하다"}]},"nuance":{"koSimple":"진행되던 일을 딱 잘라 끝내버려요.","whenToUse":"계약·통화·프로그램 종료할 때 써요."},"krDetail":[{"ko":"끝내다","explain":"완전히 마치다, 끝맺다"}],"usageExamples":[{"en":"They decided to terminate the meeting early.","ko":"그들은 회의를 일찍 끝내기로 했다."},{"en":"The train service will terminate at this station.","ko":"이 열차 운행은 이 역에서 끝납니다."}],"grammarNote":"end보다 격식 있는 '완전히 끝내다'.","grammarQuiz":null},
+    {"id":"u08485","w":"vest","pos":["noun"],"ph":"","cefr":"A2","kr":["조끼"],"ex":[{"en":"He wore a warm vest over his shirt to stay warm outside.","ko":"그는 밖에서 따뜻하게 있기 위해 셔츠 위에 따뜻한 조끼를 입었다."}],"mnemonic":{"soundHint":null,"story":"베스트(vest)—겨울 산행에 얇은 조끼 하나를 겹쳐 입었더니 체온이 훨씬 잘 유지됐다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"jacket","ko":"재킷","reason":"조끼와 재킷은 상의 외투 계열—카테고리 동류"},{"w":"wear","ko":"입다","reason":"조끼를 입다(wear a vest)라는 자연스러운 콜로케이션"}],"collocBest":[{"en":"wear a vest","ko":"조끼를 입다"},{"en":"a life vest","ko":"구명 조끼"}]},"nuance":{"koSimple":"소매 없이 상체만 감싸는 조끼 옷이에요.","whenToUse":"구명조끼·방탄조끼·패딩조끼 말할 때 써요."},"krDetail":[{"ko":"조끼","explain":"소매 없는 윗옷"}],"usageExamples":[{"en":"He put on a life vest before the boat ride.","ko":"그는 배를 타기 전에 구명조끼를 입었다."},{"en":"The vest kept her warm without sleeves.","ko":"그 조끼는 소매 없이도 그녀를 따뜻하게 해 주었다."}],"grammarNote":"'구명조끼'는 life vest, 셀 수 있는 명사.","grammarQuiz":null},
+    {"id":"w05782","w":"skip","pos":["v"],"ph":"/skɪp/","cefr":"A2","kr":["건너뛰다","스킵하다"],"ex":[{"en":"Let's skip this part and move on.","ko":"이 부분은 건너뛰고 넘어가자."}],"mnemonic":{"soundHint":"'스킵' 버튼 누르듯 그냥 건너뛴다","story":"'스킵(skip)' 버튼을 눌러 영상이든 수업이든 확 건너뛴다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"class","ko":"수업","reason":"skip class는 대표적인 콜로케이션 배치 표현"},{"w":"jump","ko":"뛰어넘다","reason":"skip과 유사한 동작이자 동의어"},{"w":"miss","ko":"놓치다","reason":"skip class처럼 결석·거르기 시나리오와 겹침"}],"collocBest":[{"en":"skip class","ko":"수업을 빠지다"},{"en":"skip a meal","ko":"식사를 거르다"}]},"nuance":{"koSimple":"차례를 폴짝 뛰어넘고 지나가는 거예요.","whenToUse":"수업 빠질 때, 식사 거를 때, 광고 넘길 때 써요."},"krDetail":[{"ko":"건너뛰다","explain":"빼고 넘어가다"},{"ko":"스킵하다","explain":"생략하고 지나가다"}],"usageExamples":[{"en":"Don't skip your breakfast.","ko":"아침 식사를 거르지 마라."},{"en":"We can skip the last question.","ko":"우리는 마지막 문제를 건너뛰어도 된다."}],"grammarNote":"skip은 -p를 겹쳐 skipped, skipping으로 써요.","grammarQuiz":null},
+    {"id":"w05886","w":"special","pos":["adj"],"ph":"/ˈspɛʃəl/","cefr":"A1","kr":["특별한","특수한"],"ex":[{"en":"Today is a very special day for our family.","ko":"오늘은 우리 가족에게 매우 특별한 날이다."}],"mnemonic":{"soundHint":"스페셜(메뉴)","story":"오늘의 스페셜 메뉴는 사장님이 특별히 준비한 거야.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"unique","ko":"독특한","reason":"동의어 — 특별함의 대표 짝"},{"w":"ordinary","ko":"평범한","reason":"반의어 — 특별함 vs 평범함"},{"w":"occasion","ko":"행사","reason":"special occasion 콜로케이션의 짝"}],"collocBest":[{"en":"special occasion","ko":"특별한 행사"}]},"nuance":{"koSimple":"평범한 것들 중에서 딱 하나 특별한 거예요.","whenToUse":"생일·기념일·특가 상품 말할 때 써요."},"krDetail":[{"ko":"특별한","explain":"남다르고 소중한"},{"ko":"특수한","explain":"보통과 다른"}],"usageExamples":[{"en":"This is a special gift for you.","ko":"이것은 너를 위한 특별한 선물이다."},{"en":"We use special tools for this job.","ko":"우리는 이 일에 특수한 도구를 쓴다."}],"grammarNote":"명사 앞에서 special day처럼 명사를 꾸미는 형용사예요.","grammarQuiz":null},
+    {"id":"w06295","w":"through","pos":["prep","adv"],"ph":"/θruː/","cefr":"A1","kr":["~을 통해","~을 통과하여","처음부터 끝까지"],"ex":[{"en":"Walk through the park.","ko":"공원을 통해 걸어가라."}],"mnemonic":{"soundHint":"쓰루 = 드라이브 스루(drive-through)의 그 '스루'","story":"맥도날드 드라이브 스루는 차를 세우지 않고 통과하며 주문한다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"across","ko":"가로질러","reason":"통과하는 경로를 나타내는 유사 전치사"},{"w":"tunnel","ko":"터널","reason":"터널을 통과할 때 through 사용"}],"collocBest":[{"en":"go through","ko":"~을 통과하다"}]},"nuance":{"koSimple":"터널처럼 한쪽으로 들어가 반대쪽으로 나와요.","whenToUse":"숲·창문·시간을 통과할 때 써요."},"krDetail":[{"ko":"~을 통해","explain":"어떤 것을 거쳐서"},{"ko":"~을 통과하여","explain":"안을 지나 반대편으로"},{"ko":"처음부터 끝까지","explain":"내내 끝까지 쭉"}],"usageExamples":[{"en":"The train went through a tunnel.","ko":"기차가 터널을 통과해 지나갔다."},{"en":"We learned it through practice.","ko":"우리는 연습을 통해 그것을 배웠다."}],"grammarNote":"발음은 [θruː], 비슷한 throw(던지다)와 헷갈리지 마세요.","grammarQuiz":null},
+    {"id":"w06325","w":"together","pos":["adv"],"ph":"/təˈɡeðər/","cefr":"A1","kr":["함께","같이","동시에"],"ex":[{"en":"Let's work together on this.","ko":"이것에 대해 함께 일하자."}],"mnemonic":{"soundHint":null,"story":"친구들과 투게더 아이스크림을 함께 나눠 먹었다.","hintConfidence":2},"pairs":{"buddyWords":[{"w":"friend","ko":"친구","reason":"친구와는 함께 시간을 보냄"},{"w":"apart","ko":"떨어져","reason":"together의 대표 반의어"}],"collocBest":[{"en":"work together","ko":"함께 일하다"}]},"nuance":{"koSimple":"친구와 어깨 나란히 같은 공간에 있어요.","whenToUse":"같이 놀고·같이 일할 때 써요."},"krDetail":[{"ko":"함께","explain":"여럿이 같이"},{"ko":"같이","explain":"떨어지지 않고 같이"},{"ko":"동시에","explain":"같은 때에 한꺼번에"}],"usageExamples":[{"en":"We ate lunch together today.","ko":"우리는 오늘 함께 점심을 먹었다."},{"en":"Let's sing this song together.","ko":"이 노래를 같이 부르자."}],"grammarNote":"'함께 모이다'는 get together로 자주 씁니다.","grammarQuiz":null},
+    {"id":"w05766","w":"sir","pos":["n"],"ph":"/sɜːr/","cefr":"A2","kr":["선생님","~씨"],"ex":[{"en":"Yes, sir, I will do it right away.","ko":"네, 선생님, 바로 하겠습니다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"mister","ko":"~씨","reason":"sir의 대표 동의어이자 호칭 콜로케이션"},{"w":"ma'am","ko":"부인, 여사님","reason":"sir의 여성형 상대 호칭 반의어"},{"w":"gentleman","ko":"신사","reason":"정중한 남성 호칭 시나리오에서 sir과 함께 쓰임"}],"collocBest":[{"en":"yes, sir","ko":"네, 알겠습니다"},{"en":"dear sir","ko":"~귀하"}]},"nuance":{"koSimple":"남자 어른을 공손히 부를 때 '~님' 같은 말이에요.","whenToUse":"손님·상사·낯선 남자분께 예의 갖출 때 써요."},"krDetail":[{"ko":"선생님","explain":"남자를 높여 부르는 말"},{"ko":"~씨","explain":"정중한 호칭"}],"usageExamples":[{"en":"Excuse me, sir, is this seat free?","ko":"실례합니다, 선생님, 이 자리 비었나요?"},{"en":"Thank you very much, sir.","ko":"정말 감사합니다, 선생님."}],"grammarNote":"sir는 이름을 모르는 남자를 정중히 부를 때 써요.","grammarQuiz":null},
+    {"id":"w05685","w":"several","pos":["det","pron"],"ph":"/ˈsevrəl/","cefr":"A1","kr":["여러","몇몇"],"ex":[{"en":"I visited the museum several times.","ko":"나는 그 박물관을 여러 번 방문했다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"some","ko":"몇몇","reason":"동의어 — 애매한 수량 짝"},{"w":"few","ko":"적은","reason":"반의어 — 여럿 vs 소수 대비"},{"w":"many","ko":"많은","reason":"시나리오 — 수량 표현 스펙트럼"}],"collocBest":[{"en":"several times","ko":"여러 번"},{"en":"several people","ko":"몇몇 사람들"}]},"nuance":{"koSimple":"한두 개가 아닌 3~5개쯤, 여러 개를 뜻해요.","whenToUse":"'몇 번', '몇 명' 셀 수 있는 것에 써요."},"krDetail":[{"ko":"여러","explain":"둘 이상 많은"},{"ko":"몇몇","explain":"몇 개의"}],"usageExamples":[{"en":"I have several books to read.","ko":"나는 읽을 책이 여러 권 있다."},{"en":"Several people were waiting outside.","ko":"몇몇 사람들이 밖에서 기다리고 있었다."}],"grammarNote":"several 뒤에는 셀 수 있는 복수명사가 와요: several days.","grammarQuiz":null}
   ],
   reviewPolicy:{ leitnerBoxes:5 },
   xpTable:{ correct:10, streakBonus:5, perfectChapter:200, firstClear:100 },
@@ -1883,56 +1937,51 @@ function renderQuiz(){
   } else if(mode === "spelling"){
     promptHTML = `
       <div class="quiz-prompt">
-        <div class="label">뜻을 보고 영어 단어를 입력하세요</div>
+        <div class="label">뜻을 보고 영어 단어를 입력하세요 <span class="prefill-hint">(첫 글자는 잠겨 있음)</span></div>
         <div class="qkr">${escape(word.kr.join(" · "))}</div>
         <div class="qph">${escape(word.ph||"")}</div>
       </div>`;
     answerHTML = `
       <div class="input-box">
-        <input type="text" id="ansInput" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="영어로 입력...">
+        <div class="word-answer" id="wordAnswer" data-answer="${escape(word.w)}"></div>
         <button class="submit-btn" id="submitBtn">제출</button>
       </div>`;
   } else if(mode === "listening"){
     promptHTML = `
       <div class="quiz-prompt">
-        <div class="label">발음을 듣고 단어를 입력하세요</div>
+        <div class="label">발음을 듣고 단어를 입력하세요 <span class="prefill-hint">(첫 글자는 잠겨 있음)</span></div>
         <button class="lis-btn" id="lisBtn">🔊 다시 듣기</button>
         <div class="qph">${escape(word.ph||"")}</div>
       </div>`;
     answerHTML = `
       <div class="input-box">
-        <input type="text" id="ansInput" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="영어로 입력...">
+        <div class="word-answer" id="wordAnswer" data-answer="${escape(word.w)}"></div>
         <button class="submit-btn" id="submitBtn">제출</button>
       </div>`;
   } else if(mode === "colloc-write"){
     const c = state.quizCurrent.colloc;
-    const hint = firstCharsHint(c.en);
     promptHTML = `
       <div class="quiz-prompt">
-        <div class="label">뜻에 맞는 <b>콜로케이션</b>을 영어로 쓰세요</div>
+        <div class="label">뜻에 맞는 <b>콜로케이션</b>을 영어로 쓰세요 <span class="prefill-hint">(각 단어 첫 글자 잠금)</span></div>
         <div class="qkr">${escape(c.ko)}</div>
       </div>`;
     answerHTML = `
       <div class="input-box">
-        <input type="text" id="ansInput" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="${escape(hint)}">
+        <div class="word-answer" id="wordAnswer" data-answer="${escape(c.en)}"></div>
         <button class="submit-btn" id="submitBtn">제출</button>
       </div>`;
   } else if(mode === "cloze"){
     const { tokens, blankIdxs, sentence } = state.quizCurrent;
-    // 문장 렌더 — 빈칸 위치에 인풋 (정답의 첫 글자 placeholder 힌트)
     const sentHTML = tokens.map((t, i) => {
       const bIdx = blankIdxs.indexOf(i);
       if(bIdx >= 0){
-        const ans = t.text;
-        const size = Math.max(4, Math.min(14, ans.length + 2));
-        const hint = firstCharsHint(ans);
-        return `<input type="text" class="cloze-input" data-blank-idx="${bIdx}" data-ans="${escape(ans)}" size="${size}" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="${escape(hint)}">`;
+        return `<span class="word-answer inline cloze-wa" data-blank-idx="${bIdx}" data-answer="${escape(t.text)}"></span>`;
       }
       return escape(t.text);
     }).join("");
     promptHTML = `
       <div class="quiz-prompt cloze-prompt">
-        <div class="label">해석에 맞게 <b>${blankIdxs.length}개 빈칸</b>을 채우세요</div>
+        <div class="label">해석에 맞게 <b>${blankIdxs.length}개 빈칸</b>을 채우세요 <span class="prefill-hint">(각 단어 첫 글자 잠금)</span></div>
         <div class="qkr">${escape(sentence.ko)}</div>
         <div class="cloze-sentence">${sentHTML}</div>
       </div>`;
@@ -1942,19 +1991,16 @@ function renderQuiz(){
       </div>`;
   } else if(mode === "grammar-fill"){
     const { quiz } = state.quizCurrent;
-    // sentence 안의 _____ (밑줄 3개 이상)을 인풋으로 대체 · 각 빈칸에 정답의 첫 글자만 placeholder 로 힌트
     const ansList = Array.isArray(quiz.answer) ? quiz.answer : [quiz.answer];
     let blankSeq = 0;
     const sentHTML = escape(quiz.sentence).replace(/_{3,}/g, () => {
       const ans = ansList[blankSeq] ?? ansList[0];
-      const size = Math.max(5, Math.min(20, (ans||'').length + 2));
       const idx = blankSeq++;
-      const hint = firstCharsHint(ans);
-      return `<input type="text" class="cloze-input grammar-input" data-blank-idx="${idx}" data-ans="${escape(ans)}" size="${size}" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="${escape(hint)}">`;
+      return `<span class="word-answer inline cloze-wa" data-blank-idx="${idx}" data-answer="${escape(ans)}"></span>`;
     });
     promptHTML = `
       <div class="quiz-prompt cloze-prompt grammar-prompt">
-        <div class="label">📌 <b>문법 포인트</b> — 해석에 맞게 빈칸을 채우세요</div>
+        <div class="label">📌 <b>문법 포인트</b> — 해석에 맞게 빈칸을 채우세요 <span class="prefill-hint">(각 단어 첫 글자 잠금)</span></div>
         <div class="qkr">${escape(quiz.ko)}</div>
         <div class="cloze-sentence">${sentHTML}</div>
       </div>`;
@@ -1984,25 +2030,17 @@ function renderQuiz(){
       btn.addEventListener("click", ()=> handleChoice(btn));
     });
   } else if(mode === "cloze" || mode === "grammar-fill"){
-    const inputs = document.querySelectorAll(".cloze-input");
-    inputs.forEach((inp, i)=>{
-      inp.addEventListener("keydown", e=>{
-        if(e.key === "Enter"){
-          const next = inputs[i+1];
-          if(next) next.focus();
-          else handleSubmit();
-        }
-      });
-    });
+    const containers = Array.from(document.querySelectorAll(".cloze-wa"));
+    containers.forEach(c => renderWordAnswer(c, c.dataset.answer));
     document.getElementById("submitBtn").addEventListener("click", handleSubmit);
-    if(inputs[0]) setTimeout(()=>inputs[0].focus(), 100);
+    const first = document.querySelector(".cloze-wa .rest-input");
+    if(first) setTimeout(()=>first.focus(), 100);
   } else {
-    const inp = document.getElementById("ansInput");
-    inp.addEventListener("keydown", e=>{
-      if(e.key === "Enter") handleSubmit();
-    });
+    const container = document.getElementById("wordAnswer");
+    renderWordAnswer(container, container.dataset.answer);
     document.getElementById("submitBtn").addEventListener("click", handleSubmit);
-    setTimeout(()=>inp.focus(), 100);
+    const first = container.querySelector(".rest-input");
+    if(first) setTimeout(()=>first.focus(), 100);
     if(mode === "listening"){
       setTimeout(()=>speak(word.w), 250);
       document.getElementById("lisBtn").addEventListener("click", ()=>speak(word.w));
@@ -2048,58 +2086,50 @@ function handleSubmit(){
   if(state.quizAnswered) return;
   const { word, mode } = state.quizCurrent;
 
-  // ── 심화: 콜로케이션 영작 ──────────────────────────────
-  if(mode === "colloc-write"){
-    const inp = document.getElementById("ansInput");
-    const val = normalizeAnswer(inp.value);
-    if(!val) return;
-    state.quizAnswered = true;
-    const correct = normalizeAnswer(state.quizCurrent.colloc.en);
-    const isCorrect = val === correct;
-    inp.classList.add(isCorrect ? "correct" : "wrong");
-    inp.disabled = true;
-    document.getElementById("submitBtn").disabled = true;
-    if(!isCorrect){
-      document.getElementById("feedback").innerHTML = `정답: <b style="color:var(--grade)">${escape(state.quizCurrent.colloc.en)}</b>`;
-    }
-    finishQuestion(isCorrect);
-    return;
-  }
-
-  // ── 심화: 예문 빈칸 채우기 · 문법 빈칸 채우기 ────────────
+  // ── 심화: 예문 빈칸 · 문법 빈칸 ────────────────────────
   if(mode === "cloze" || mode === "grammar-fill"){
-    const inputs = Array.from(document.querySelectorAll(".cloze-input"));
-    if(inputs.some(i => !i.value.trim())) return;
+    const containers = Array.from(document.querySelectorAll(".cloze-wa"));
+    if(containers.some(anyWordEmpty)) return;
     state.quizAnswered = true;
     let allOk = true;
-    inputs.forEach(i => {
-      const guess = normalizeAnswer(i.value);
-      const ans = normalizeAnswer(i.dataset.ans);
-      const ok = guess === ans;
-      i.classList.add(ok ? "correct" : "wrong");
-      i.disabled = true;
-      if(!ok) allOk = false;
+    containers.forEach(function(c){
+      const guess = normalizeAnswer(collectWordAnswer(c));
+      const ans = normalizeAnswer(c.dataset.answer);
+      const okAll = guess === ans;
+      const perGroup = Array.from(c.querySelectorAll('.word-group')).map(function(g, i){
+        const w = (c.dataset.answer || '').split(/\s+/)[i] || '';
+        const combined = (g.dataset.first || '') + (g.querySelector('.rest-input') ? g.querySelector('.rest-input').value : '');
+        return normalizeAnswer(combined) === normalizeAnswer(w);
+      });
+      markWordAnswer(c, perGroup);
+      if(!okAll) allOk = false;
     });
     document.getElementById("submitBtn").disabled = true;
     if(!allOk){
-      const answers = inputs.map(i => `<b style="color:var(--grade)">${escape(i.dataset.ans)}</b>`).join(" , ");
+      const answers = containers.map(function(c){ return `<b style="color:var(--grade)">${escape(c.dataset.answer)}</b>`; }).join(" , ");
       document.getElementById("feedback").innerHTML = `정답: ${answers}`;
     }
     finishQuestion(allOk);
     return;
   }
 
-  // ── 기본: 철자·리스닝 ────────────────────────────────
-  const inp = document.getElementById("ansInput");
-  const val = (inp.value||"").trim().toLowerCase();
-  if(!val) return;
+  // ── 기본/심화 단일 컨테이너: spelling / listening / colloc-write
+  const container = document.getElementById("wordAnswer");
+  if(!container) return;
+  if(anyWordEmpty(container)) return;
   state.quizAnswered = true;
-  const isCorrect = val === word.w.toLowerCase();
-  inp.classList.add(isCorrect ? "correct" : "wrong");
-  inp.disabled = true;
+  const correctAns = container.dataset.answer;
+  const guess = normalizeAnswer(collectWordAnswer(container));
+  const isCorrect = guess === normalizeAnswer(correctAns);
+  const perGroup = Array.from(container.querySelectorAll('.word-group')).map(function(g, i){
+    const w = (correctAns || '').split(/\s+/)[i] || '';
+    const combined = (g.dataset.first || '') + (g.querySelector('.rest-input') ? g.querySelector('.rest-input').value : '');
+    return normalizeAnswer(combined) === normalizeAnswer(w);
+  });
+  markWordAnswer(container, perGroup);
   document.getElementById("submitBtn").disabled = true;
   if(!isCorrect){
-    document.getElementById("feedback").innerHTML = `정답: <b style="color:var(--grade)">${escape(word.w)}</b>`;
+    document.getElementById("feedback").innerHTML = `정답: <b style="color:var(--grade)">${escape(correctAns)}</b>`;
   }
   finishQuestion(isCorrect);
 }
@@ -2224,8 +2254,7 @@ function finishSession(){
        <button class="start-btn alt" id="homeBtn">🏠 Home</button>`
     : `<button class="start-btn" id="retryBtn">🔁 다시 보기</button>
        ${hasWrong ? `<button class="start-btn wrong-only" id="retryWrongBtn">🔴 틀린문제만 (${state.quizWrongItems.length})</button>` : ""}
-       ${canGoAdvanced ? `<button class="start-btn adv" id="goAdvBtn">🎯 심화단계 도전</button>`
-                       : `<button class="start-btn alt" id="nextBtn">▶ 다음 챕터</button>`}`;
+       ${canGoAdvanced ? `<button class="start-btn adv" id="goAdvBtn">🎯 심화단계 도전</button>` : ""}`;
 
   main.innerHTML = `
     <div class="result">
@@ -2374,6 +2403,115 @@ function showHighGradeCelebration(msg){
    예: "appeared" → "a…"  ·  "in the absence of" → "i… t… a… o…"  ·  "feel bad" → "f… b…"  */
 function firstCharsHint(s){
   return (s||'').trim().split(/\s+/).filter(Boolean).map(w => (w.charAt(0)||'') + '…').join(' ');
+}
+/* 빈칸 프리필: 정답 각 단어의 첫 글자를 공백으로 이어붙여 반환 (인풋 value 로 채워둠)
+   예: "appeared" → "a"  ·  "in the absence of" → "i t a o"  ·  "feel bad" → "f b"  */
+function firstCharsPrefill(s){
+  return (s||'').trim().split(/\s+/).filter(Boolean).map(w => (w.charAt(0)||'')).join(' ');
+}
+/* 인풋에 프리필된 첫 글자 잠금 + 커서 이동 훅 부착 */
+function attachPrefillGuard(inp){
+  const prefill = inp.dataset.prefill || '';
+  if(!prefill) return;
+  const moveCursorEnd = () => { try{ inp.setSelectionRange(inp.value.length, inp.value.length); }catch(e){} };
+  inp.addEventListener('focus', () => setTimeout(moveCursorEnd, 0));
+  inp.addEventListener('click', () => {
+    if(inp.selectionStart < prefill.length) moveCursorEnd();
+  });
+  inp.addEventListener('keydown', e => {
+    // 프리필 영역 보호: 첫 글자들을 지우거나 그 앞으로 이동하는 키 방지
+    const s = inp.selectionStart, e2 = inp.selectionEnd;
+    if(e.key === 'Backspace' && s <= prefill.length && s === e2){ e.preventDefault(); moveCursorEnd(); return; }
+    if(e.key === 'Delete'    && s <  prefill.length){ e.preventDefault(); moveCursorEnd(); return; }
+    if((e.key === 'ArrowLeft' || e.key === 'Home') && s <= prefill.length){ e.preventDefault(); moveCursorEnd(); return; }
+  });
+  inp.addEventListener('input', () => {
+    // 사용자 값이 프리필로 시작하지 않으면 프리필을 앞에 다시 붙임 (드래그·잘라내기 등 방지)
+    if(!inp.value.startsWith(prefill)){
+      inp.value = prefill + inp.value.replace(new RegExp('^' + prefill.replace(/[.*+?^${}()|[\]\\]/g,'\\$&').slice(0,0)),'');
+      moveCursorEnd();
+    }
+  });
+}
+/* 프리필 인풋에서 사용자가 실제로 추가 입력한 부분이 있는지 (첫 글자만 남은 상태는 미제출) */
+function hasUserInput(inp){
+  const prefill = inp.dataset.prefill || '';
+  return (inp.value||'').trim().length > prefill.trim().length;
+}
+/* ============================================================
+   낱말박스 (자동완성 방어) — 각 단어당 [잠금 첫글자] + [빈 인풋]
+   ============================================================ */
+function renderWordAnswer(container, answer){
+  container.innerHTML = '';
+  const words = String(answer || '').trim().split(/\s+/).filter(Boolean);
+  words.forEach((word, wi) => {
+    const group = document.createElement('span');
+    const isSingle = word.length <= 1;
+    group.className = 'word-group' + (isSingle ? ' single-letter' : '');
+    group.dataset.first = isSingle ? '' : (word[0] || '');
+    group.dataset.full = word;
+    if(!isSingle){
+      const first = document.createElement('span');
+      first.className = 'first-letter';
+      first.textContent = word[0] || '';
+      group.appendChild(first);
+    }
+    const inp = document.createElement('input');
+    inp.className = 'rest-input';
+    inp.type = 'text';
+    inp.autocomplete = 'off';
+    inp.autocorrect = 'off';
+    inp.setAttribute('autocapitalize','off');
+    inp.spellcheck = false;
+    inp.inputMode = 'text';
+    inp.name = 'wa-' + Math.random().toString(36).slice(2,8);
+    inp.dataset.wi = wi;
+    inp.setAttribute('aria-label', (wi+1) + '번째 단어의 나머지 스펠링');
+    group.appendChild(inp);
+    container.appendChild(group);
+  });
+  wireWordInputs(container);
+}
+function wireWordInputs(container){
+  const inputs = Array.from(container.querySelectorAll('.rest-input'));
+  inputs.forEach((inp, i) => {
+    inp.addEventListener('input', () => {
+      inp.value = (inp.value || '').toLowerCase().replace(/[^a-z'\-]/g,'');
+    });
+    inp.addEventListener('keydown', e => {
+      if(e.key === 'Enter'){
+        const next = inputs[i+1];
+        if(next){ e.preventDefault(); next.focus(); }
+        else { e.preventDefault(); handleSubmit(); }
+      } else if(e.key === 'Tab' && !e.shiftKey){
+        const next = inputs[i+1];
+        if(next){ e.preventDefault(); next.focus(); }
+      } else if(e.key === 'Backspace' && !inp.value && i > 0){
+        e.preventDefault();
+        const prev = inputs[i-1];
+        prev.focus();
+        try{ prev.setSelectionRange(prev.value.length, prev.value.length); }catch(_e){}
+      }
+    });
+  });
+}
+function collectWordAnswer(container){
+  const groups = Array.from(container.querySelectorAll('.word-group'));
+  return groups.map(function(g){
+    var inp = g.querySelector('.rest-input');
+    return (g.dataset.first || '') + (inp ? inp.value : '');
+  }).join(' ');
+}
+function anyWordEmpty(container){
+  return Array.from(container.querySelectorAll('.rest-input')).some(function(i){ return !i.value.trim(); });
+}
+function markWordAnswer(container, perGroupOk){
+  const groups = Array.from(container.querySelectorAll('.word-group'));
+  groups.forEach(function(g, i){
+    g.classList.add(perGroupOk[i] ? 'correct' : 'wrong');
+    var inp = g.querySelector('.rest-input');
+    if(inp) inp.disabled = true;
+  });
 }
 function shuffle(arr){
   for(let i=arr.length-1;i>0;i--){

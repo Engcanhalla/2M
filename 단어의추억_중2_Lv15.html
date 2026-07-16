@@ -257,6 +257,60 @@
   .cloze-input.correct{border-color:var(--grade);background:rgba(16,185,129,.15);color:#a7f3d0;}
   .cloze-input.wrong{border-color:var(--danger);background:rgba(239,68,68,.15);color:#fca5a5;}
   .input-box.only-btn{justify-content:center;}
+  /* 첫글자 프리필 인풋 — 미리 채워진 첫 글자를 시각적으로 강조 */
+  .prefill-input{caret-color:#fef3c7;font-family:'Courier New',ui-monospace,monospace;letter-spacing:.05em;font-weight:700;}
+  .prefill-hint{color:#c4b5fd;font-size:.82rem;font-weight:500;margin-left:6px;letter-spacing:0;}
+  /* ---------- 낱말박스 (자동완성 방어) ---------- */
+  .word-answer{display:flex;flex-wrap:wrap;gap:12px 14px;align-items:center;margin:6px 0;}
+  .word-answer.inline{display:inline-flex;gap:8px;vertical-align:middle;margin:0 4px;}
+  .word-group{
+    display:inline-flex;align-items:center;gap:0;
+    background:rgba(11,18,32,.7);border:1.5px solid #334155;border-radius:8px;
+    padding:0;transition:all .15s;overflow:hidden;flex-shrink:0;
+  }
+  .word-group:focus-within{border-color:#a78bfa;box-shadow:0 0 0 3px rgba(168,139,250,.22);}
+  .word-group.correct{border-color:var(--grade);background:rgba(16,185,129,.10);}
+  .word-group.wrong{border-color:var(--danger);background:rgba(239,68,68,.10);}
+  /* 폰트: body 상속 sans-serif (이전 .input-box input과 동일한 스타일) */
+  .first-letter{
+    display:inline-flex;align-items:center;justify-content:center;
+    min-width:26px;padding:0 8px;height:44px;line-height:44px;
+    background:linear-gradient(180deg,#3b2966 0%,#2a1e4d 100%);
+    color:#fef3c7;
+    font-family:inherit;
+    font-size:1.15rem;font-weight:600;letter-spacing:.5px;
+    text-transform:lowercase;
+    border-right:1px solid #8b5cf6;user-select:none;
+  }
+  .rest-input{
+    border:0;background:transparent;color:var(--text);outline:none;
+    font-family:inherit;
+    font-size:1.15rem;font-weight:600;letter-spacing:.5px;
+    padding:0 10px;height:44px;line-height:44px;width:120px;min-width:90px;
+    text-transform:lowercase;
+  }
+  .rest-input::placeholder{color:#475569;font-weight:400;}
+  .word-group.correct .rest-input{color:#a7f3d0;}
+  .word-group.wrong .rest-input{color:#fca5a5;}
+  .cloze-sentence .word-answer{display:inline-flex;flex-wrap:wrap;gap:6px 8px;margin:0 4px;vertical-align:middle;}
+  .cloze-sentence .word-group{border-radius:6px;}
+  .cloze-sentence .first-letter{height:38px;line-height:38px;font-size:1.05rem;min-width:22px;padding:0 7px;}
+  .cloze-sentence .rest-input{height:38px;line-height:38px;font-size:1.05rem;width:100px;min-width:70px;padding:0 9px;}
+  /* .input-box input 스타일이 .rest-input을 override 하는 문제 해결 */
+  .input-box .word-answer input.rest-input{
+    background:transparent;border:0;padding:0 10px;
+    min-height:44px;height:44px;line-height:44px;text-align:left;
+    font-family:inherit;
+    font-size:1.15rem;font-weight:600;letter-spacing:.5px;
+    text-transform:lowercase;
+    width:120px;min-width:90px;box-shadow:none;
+  }
+  .input-box .word-answer input.rest-input:focus{border:0;box-shadow:none;}
+  /* single-letter 그룹 */
+  .word-group.single-letter{background:rgba(11,18,32,.5);}
+  .word-group.single-letter input.rest-input{width:80px;min-width:60px;}
+  .hint-line{margin-top:12px;padding:10px 14px;background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.35);border-radius:10px;color:#c4b5fd;font-size:.95rem;line-height:1.55;text-align:center;letter-spacing:.03em;}
+  .hint-line b{color:#fef3c7;font-weight:800;font-family:'Courier New',ui-monospace,monospace;font-size:1.05rem;letter-spacing:.15em;margin:0 2px;}
 
   /* ---------- CARD STUDY ---------- */
   .stage{position:relative;padding:14px 2px;perspective:1200px;flex:1;display:flex;flex-direction:column;}
@@ -852,36 +906,36 @@ const DATA = {
   chapter: { id:"중2-L15", title:"중2 Lv.15", index:15, totalCount:30 },
   gradeColor: "#3b82f6",
   newWords: [
-    {"id":"w03003","w":"hint","pos":["n","v"],"ph":"/hɪnt/","cefr":"A2","kr":["힌트","암시하다"],"ex":[{"en":"Give me a hint about the answer.","ko":"정답에 대한 힌트를 주세요."}],"mnemonic":{"soundHint":"힌트","story":"퀴즈쇼에서 '힌트(hint) 좀 주세요!' 외치면 사회자가 살짝 암시한다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"clue","ko":"단서","reason":"hint와 함께 '실마리' 의미로 자주 쓰이는 동의어"},{"w":"suggest","ko":"암시하다","reason":"hint의 동사 의미와 겹치는 짝"},{"w":"reveal","ko":"드러내다","reason":"숨기지 않고 밝힌다는 점에서 hint와 반대 시나리오"}],"collocBest":[{"en":"give a hint","ko":"힌트를 주다"},{"en":"drop a hint","ko":"힌트를 흘리다"}]},"nuance":{"koSimple":"정답에 다가가게 해주는 살짝 알려주는 말이에요.","whenToUse":"퀴즈나 문제에서 살짝 알려줄 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w03010","w":"history","pos":["n"],"ph":"/ˈhɪstri/","cefr":"A1","kr":["역사","이력"],"ex":[{"en":"She loves studying history.","ko":"그녀는 역사 공부를 좋아한다."}],"mnemonic":{"soundHint":"히스토리","story":"브라우저 '히스토리(history)' 열면 내가 검색한 역사와 이력이 다 나온다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"past","ko":"과거","reason":"history의 핵심 개념인 지나간 시간과 동의"},{"w":"record","ko":"기록","reason":"역사와 이력을 남긴다는 시나리오 짝"},{"w":"future","ko":"미래","reason":"history와 정확히 반대되는 시간 축"}],"collocBest":[{"en":"natural history","ko":"자연사"},{"en":"history lesson","ko":"역사 수업"}]},"nuance":{"koSimple":"옛날에 일어난 일들을 모아 놓은 이야기예요.","whenToUse":"옛날 사건이나 과거 기록을 말할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w03017","w":"hole","pos":["n"],"ph":"/hoʊl/","cefr":"A2","kr":["구멍","홀"],"ex":[{"en":"There is a hole in the wall.","ko":"벽에 구멍이 있다."}],"mnemonic":{"soundHint":"홀","story":"골프에서 공을 '홀(hole)'에 넣는다 — 잔디에 뚫린 구멍이 바로 홀.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"gap","ko":"틈","reason":"hole과 같은 '비어 있는 공간' 동의"},{"w":"dig","ko":"파다","reason":"구멍을 만드는 행위 시나리오 짝"},{"w":"fill","ko":"채우다","reason":"구멍을 없애는 반대 행위"}],"collocBest":[{"en":"dig a hole","ko":"구멍을 파다"},{"en":"black hole","ko":"블랙홀"}]},"nuance":{"koSimple":"뭔가 뚫려서 뻥 비어 있는 자리예요.","whenToUse":"벽·양말·땅에 뚫린 자리를 말할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w03018","w":"holiday","pos":["n"],"ph":"/ˈhɒlɪdeɪ/","cefr":"A1","kr":["휴일","휴가"],"ex":[{"en":"We took a holiday trip abroad.","ko":"우리는 해외로 휴가 여행을 갔다."}],"mnemonic":{"soundHint":"홀리데이","story":"'해피 홀리데이(holiday)!' 하면 크리스마스 휴가 분위기가 확 산다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"vacation","ko":"휴가","reason":"holiday와 사실상 같은 뜻의 미국식 표현"},{"w":"festival","ko":"축제","reason":"휴일에 열리는 이벤트 시나리오 짝"},{"w":"weekday","ko":"평일","reason":"휴일이 아닌 일하는 날, 반대 개념"}],"collocBest":[{"en":"public holiday","ko":"공휴일"},{"en":"holiday season","ko":"휴가철"}]},"nuance":{"koSimple":"학교나 회사에 안 가고 쉬는 날이에요.","whenToUse":"방학·공휴일·휴가 여행 말할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w03025","w":"homework","pos":["n"],"ph":"/ˈhoʊmwɜːrk/","cefr":"A1","kr":["숙제","과제"],"ex":[{"en":"She finished her homework early.","ko":"그녀는 일찍 숙제를 마쳤다."}],"mnemonic":{"soundHint":null,"story":"Homework는 home(집) + work(일), 집에서 해야 하는 학교 과제다.","hintConfidence":2},"pairs":{"buddyWords":[{"w":"school","ko":"학교","reason":"숙제를 내는 장소"},{"w":"task","ko":"과제","reason":"동의어로 과업 확장"},{"w":"study","ko":"공부하다","reason":"숙제의 목적 행위"}],"collocBest":[{"en":"do homework","ko":"숙제를 하다"},{"en":"homework assignment","ko":"숙제 과제"}]},"nuance":{"koSimple":"선생님이 집에 가서 하라고 내주는 공부예요.","whenToUse":"학교에서 내준 과제를 말할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w03031","w":"hook","pos":["n","v"],"ph":"/hʊk/","cefr":"A2","kr":["갈고리","걸다"],"ex":[{"en":"Hang your coat on the hook.","ko":"코트를 갈고리에 걸어 두세요."}],"mnemonic":{"soundHint":"훅","story":"권투에서 '훅(hook)' 날리듯 갈고리로 확 걸어당긴다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"catch","ko":"잡다","reason":"갈고리로 걸어 잡는 동작의 동의"},{"w":"fish","ko":"낚시하다","reason":"낚싯바늘(hook)을 쓰는 대표 시나리오"},{"w":"release","ko":"풀어주다","reason":"걸린 것을 놓아주는 반대 행위"}],"collocBest":[{"en":"off the hook","ko":"책임에서 벗어난"},{"en":"hook and eye","ko":"갈고리와 고리"}]},"nuance":{"koSimple":"물건을 걸어 두는 구부러진 쇠고리예요.","whenToUse":"옷걸이·낚싯바늘처럼 걸거나 낚을 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w03042","w":"hospital","pos":["n"],"ph":"/ˈhɒspɪtl/","cefr":"A1","kr":["병원"],"ex":[{"en":"He was taken to the hospital.","ko":"그는 병원으로 이송되었다."}],"mnemonic":{"soundHint":"호스피탈","story":"'호스피탈(hospital)' 앞에 응급차가 서면 병원 문이 자동으로 열린다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"clinic","ko":"진료소","reason":"hospital보다 작지만 같은 의료 기관"},{"w":"doctor","ko":"의사","reason":"병원에서 만나는 대표 인물"},{"w":"discharge","ko":"퇴원시키다","reason":"병원에서 나오는 시나리오"}],"collocBest":[{"en":"check into hospital","ko":"병원에 입원하다"},{"en":"hospital bed","ko":"병원 침대"}]},"nuance":{"koSimple":"아픈 사람을 치료해 주는 큰 건물이에요.","whenToUse":"치료 받으러 가거나 입원할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w03060","w":"huge","pos":["adj"],"ph":"/hjuːdʒ/","cefr":"A2","kr":["거대한","엄청난"],"ex":[{"en":"The stadium is huge.","ko":"경기장은 거대하다."}],"mnemonic":{"soundHint":"휴즈","story":"'휴즈'(huge)한 세일 — 엄청 큰 할인 폭.","hintConfidence":2},"pairs":{"buddyWords":[{"w":"enormous","ko":"거대한","reason":"가장 가까운 동의어"},{"w":"tiny","ko":"아주 작은","reason":"명확한 반의어"},{"w":"success","ko":"성공","reason":"huge success로 자주 결합"}],"collocBest":[{"en":"huge impact","ko":"엄청난 영향"},{"en":"huge success","ko":"엄청난 성공"}]},"nuance":{"koSimple":"눈이 휘둥그레질 만큼 어마어마하게 큰 상태예요.","whenToUse":"경기장·성공·영향처럼 엄청 큰 걸 말할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w03071","w":"hundred","pos":["num","n"],"ph":"/ˈhʌndrəd/","cefr":"A1","kr":["백","100"],"ex":[{"en":"There are a hundred students at school.","ko":"학교에 학생이 100명 있다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"thousand","ko":"천","reason":"hundred 다음 자리 숫자 짝"},{"w":"number","ko":"숫자","reason":"hundred가 속하는 상위 개념"},{"w":"count","ko":"세다","reason":"숫자를 다루는 대표 동사"}],"collocBest":[{"en":"a hundred times","ko":"백 번"},{"en":"hundreds of","ko":"수백의"}]},"nuance":{"koSimple":"손가락 열 개씩 열 번 세는 숫자 100이에요.","whenToUse":"숫자 100이나 '수백의'라고 말할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w03073","w":"hungry","pos":["adj"],"ph":"/ˈhʌŋɡri/","cefr":"A1","kr":["배고픈","굶주린"],"ex":[{"en":"I am hungry after the long walk.","ko":"긴 산책 후에 배가 고프다."}],"mnemonic":{"soundHint":"헝그리","story":"'헝그리(hungry) 정신'! 배고픈 복서가 더 절박하게 링에 오른다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"starving","ko":"굶주린","reason":"hungry의 강조 동의어"},{"w":"meal","ko":"식사","reason":"배고픔을 달래는 시나리오 짝"},{"w":"full","ko":"배부른","reason":"hungry의 정반대 상태"}],"collocBest":[{"en":"feel hungry","ko":"배가 고프다"},{"en":"go hungry","ko":"굶다"}]},"nuance":{"koSimple":"배에서 꼬르륵 소리 나며 밥이 먹고 싶은 상태예요.","whenToUse":"밥때 놓쳐서 배가 고플 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w03080","w":"hurt","pos":["v","adj"],"ph":"/hɜːrt/","cefr":"A2","kr":["다치다","아프다"],"ex":[{"en":"She hurt her knee while running.","ko":"그녀는 달리다가 무릎을 다쳤다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"injure","ko":"부상 입히다","reason":"hurt의 격식 있는 동의어"},{"w":"bandage","ko":"붕대","reason":"다친 곳을 감는 시나리오 짝"},{"w":"heal","ko":"낫게 하다","reason":"다친 것을 회복시키는 반대 행위"}],"collocBest":[{"en":"hurt feelings","ko":"감정을 다치게 하다"},{"en":"badly hurt","ko":"심하게 다친"}]},"nuance":{"koSimple":"넘어지거나 부딪혀서 몸이 아프게 된 거예요.","whenToUse":"다쳐서 아프거나 마음 상할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w03081","w":"husband","pos":["n"],"ph":"/ˈhʌzbənd/","cefr":"A1","kr":["남편"],"ex":[{"en":"Her husband is a doctor.","ko":"그녀의 남편은 의사이다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"spouse","ko":"배우자","reason":"husband를 포함하는 상위 개념"},{"w":"marriage","ko":"결혼","reason":"남편이 되는 시나리오 짝"},{"w":"wife","ko":"아내","reason":"husband와 짝을 이루는 반대 성별"}],"collocBest":[{"en":"loving husband","ko":"다정한 남편"},{"en":"husband and wife","ko":"부부"}]},"nuance":{"koSimple":"결혼한 여자의 짝인 남자예요.","whenToUse":"결혼한 부부에서 남편을 가리킬 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w03099","w":"icy","pos":["adj"],"ph":"/ˈaɪsi/","cefr":"A2","kr":["얼음같이 차가운","빙판의"],"ex":[{"en":"The roads were icy this morning.","ko":"오늘 아침 도로가 빙판이었다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"cold","ko":"차가운","reason":"icy의 유사 형용사"},{"w":"warm","ko":"따뜻한","reason":"icy의 대표 반의어"},{"w":"ice","ko":"얼음","reason":"icy의 어원"}],"collocBest":[{"en":"icy road","ko":"빙판길"},{"en":"icy wind","ko":"차가운 바람"}]},"nuance":{"koSimple":"얼음처럼 반짝반짝 얼어붙어 미끄러운 상태예요.","whenToUse":"겨울 빙판길·차가운 바람 말할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w03123","w":"ill","pos":["adj","adv"],"ph":"/ɪl/","cefr":"A2","kr":["아픈","나쁘게"],"ex":[{"en":"She felt ill after dinner.","ko":"그녀는 저녁 식사 후 아팠다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"sick","ko":"아픈","reason":"ill의 가장 흔한 동의어"},{"w":"hospital","ko":"병원","reason":"아플 때 가는 장소"},{"w":"healthy","ko":"건강한","reason":"ill의 정반대 상태"}],"collocBest":[{"en":"fall ill","ko":"병이 나다"},{"en":"seriously ill","ko":"심각하게 아픈"}]},"nuance":{"koSimple":"몸이 안 좋아서 축 늘어져 있는 상태예요.","whenToUse":"감기·병으로 몸 상태 나쁠 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w03185","w":"important","pos":["adj"],"ph":"/ɪmˈpɔːrtənt/","cefr":"A1","kr":["중요한"],"ex":[{"en":"Health is important to everyone.","ko":"건강은 모든 사람에게 중요하다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"significant","ko":"중요한","reason":"important의 동의어"},{"w":"trivial","ko":"사소한","reason":"important의 반대"},{"w":"role","ko":"역할","reason":"important role 콜로케이션"}],"collocBest":[{"en":"most important","ko":"가장 중요한"},{"en":"important role","ko":"중요한 역할"}]},"nuance":{"koSimple":"꼭 챙겨야 할 만큼 큰 가치가 있는 것이에요.","whenToUse":"빼먹으면 안 되는 일·역할 말할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w03229","w":"inch","pos":["n","v"],"ph":"/ɪntʃ/","cefr":"A2","kr":["인치","조금씩 움직이다"],"ex":[{"en":"The ruler measures in inches.","ko":"자는 인치 단위로 측정한다."}],"mnemonic":{"soundHint":"인치","story":"6'인치'(inch) 폰 — 화면 크기를 인치로 잰다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"foot","ko":"피트","reason":"인치와 함께 쓰는 길이 단위"},{"w":"ruler","ko":"자","reason":"인치를 재는 도구"},{"w":"measure","ko":"재다","reason":"인치로 하는 대표 행동"}],"collocBest":[{"en":"an inch away","ko":"아주 가까이"},{"en":"inch by inch","ko":"조금씩"}]},"nuance":{"koSimple":"엄지 손가락 마디만 한 길이 단위예요.","whenToUse":"TV 크기·길이 잴 때 인치라고 말할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w03343","w":"information","pos":["n"],"ph":"/ˌɪnfəˈmeɪʃən/","cefr":"A1","kr":["정보"],"ex":[{"en":"Find information on the internet.","ko":"인터넷에서 정보를 찾아라."}],"mnemonic":{"soundHint":"인포","story":"'인포메이션 데스크'처럼 공항·백화점 안내소에서 그대로 쓰는 그 인포메이션.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"data","ko":"자료","reason":"information의 동의어"},{"w":"news","ko":"소식","reason":"정보의 한 형태"},{"w":"share","ko":"공유하다","reason":"정보에 자주 쓰는 동사"}],"collocBest":[{"en":"useful information","ko":"유용한 정보"},{"en":"gather information","ko":"정보를 수집하다"}]},"nuance":{"koSimple":"궁금한 것을 알려주는 여러 가지 사실들이에요.","whenToUse":"인터넷·책에서 알아본 내용 말할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w03402","w":"inside","pos":["prep","adv","adj","n"],"ph":"/ɪnˈsaɪd/","cefr":"A1","kr":["~안에","내부에","안쪽의"],"ex":[{"en":"Come inside, it's cold out.","ko":"안으로 들어와, 밖이 추워."}],"mnemonic":{"soundHint":"인사이드","story":"축구 '인사이드(inside) 킥' — 발 안쪽으로 차듯, 안쪽 공간을 뜻한다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"within","ko":"~ 안에","reason":"inside의 격식 있는 동의어"},{"w":"enter","ko":"들어가다","reason":"안쪽으로 이동하는 시나리오"},{"w":"outside","ko":"~ 밖에","reason":"inside와 정반대 위치"}],"collocBest":[{"en":"inside out","ko":"안팎이 뒤집혀"},{"en":"inside the house","ko":"집 안에"}]},"nuance":{"koSimple":"문 열고 들어가야 있는 공간의 안쪽이에요.","whenToUse":"집·가방·상자 안쪽을 말할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w03473","w":"interest","pos":["n","v"],"ph":"/ˈɪntrəst/","cefr":"A1","kr":["관심","흥미"],"ex":[{"en":"She has interest in science.","ko":"그녀는 과학에 관심이 있다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"curiosity","ko":"호기심","reason":"interest를 부르는 근본 감정"},{"w":"hobby","ko":"취미","reason":"관심이 지속된 결과 시나리오"},{"w":"boredom","ko":"지루함","reason":"interest의 정반대 감정"}],"collocBest":[{"en":"show interest","ko":"관심을 보이다"},{"en":"area of interest","ko":"관심 분야"}]},"nuance":{"koSimple":"눈이 반짝 빛나며 더 알고 싶은 마음이에요.","whenToUse":"좋아하거나 흥미 있는 분야 말할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w03566","w":"iron","pos":["n","v","adj"],"ph":"/ˈaɪərn/","cefr":"A2","kr":["철","다림질하다","철의"],"ex":[{"en":"She ironed her shirt before the meeting.","ko":"그녀는 회의 전에 셔츠를 다림질했다."}],"mnemonic":{"soundHint":"아이언","story":"골프채 '아이언(iron)'은 쇠로 만든 클럽 — 철의 대명사.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"metal","ko":"금속","reason":"iron을 포함하는 상위 개념"},{"w":"steel","ko":"강철","reason":"철을 가공한 짝 재료"},{"w":"wrinkle","ko":"주름","reason":"다림질(iron)로 없애는 대상 시나리오"}],"collocBest":[{"en":"iron out","ko":"해결하다"},{"en":"cast iron","ko":"주철"}]},"nuance":{"koSimple":"단단하고 무거운 회색빛 금속이에요.","whenToUse":"쇠붙이나 옷 다림질할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w03593","w":"itch","pos":["n","v"],"ph":"/ɪtʃ/","cefr":"A2","kr":["가려움","가렵다"],"ex":[{"en":"The mosquito bite made his arm itch.","ko":"모기에 물려 팔이 가려웠다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"scratch","ko":"긁다","reason":"itch에 대한 대표 반응 시나리오"},{"w":"mosquito","ko":"모기","reason":"가려움을 일으키는 대표 원인"},{"w":"soothe","ko":"진정시키다","reason":"가려움을 가라앉히는 반대 행위"}],"collocBest":[{"en":"scratch an itch","ko":"가려움을 긁다"},{"en":"itch to do","ko":"~하고 싶어 근질거리다"}]},"nuance":{"koSimple":"긁고 싶어서 근질근질한 느낌이에요.","whenToUse":"모기 물린 데·간지러운 곳 말할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w03595","w":"item","pos":["n"],"ph":"/ˈaɪtəm/","cefr":"A2","kr":["항목","물품"],"ex":[{"en":"Check each item on the list.","ko":"목록의 각 항목을 확인하라."}],"mnemonic":{"soundHint":"아이템","story":"게임 '아이템(item)' 창을 열면 항목별 물품이 쭉 정렬돼 있다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"product","ko":"제품","reason":"판매되는 item의 대표적 짝"},{"w":"list","ko":"목록","reason":"item들을 정리하는 시나리오 짝"},{"w":"collect","ko":"모으다","reason":"아이템을 수집하는 행위"}],"collocBest":[{"en":"news item","ko":"뉴스 항목"},{"en":"item on the agenda","ko":"안건 항목"}]},"nuance":{"koSimple":"목록에 하나씩 적힌 물건이나 낱개예요.","whenToUse":"장바구니 목록·안건 하나 말할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w03606","w":"jam","pos":["n","v"],"ph":"/dʒæm/","cefr":"A2","kr":["잼","막히다"],"ex":[{"en":"Traffic jam caused delays.","ko":"교통 정체가 지연을 일으켰다."}],"mnemonic":{"soundHint":"잼","story":"딸기 '잼(jam)'을 빵에 발라 먹거나, 길이 '잼(jam)' 걸리면 꽉 막힌다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"traffic","ko":"교통","reason":"traffic jam으로 자주 짝지어지는 짝"},{"w":"block","ko":"막다","reason":"jam의 동사 의미와 겹치는 동의"},{"w":"flow","ko":"흐르다","reason":"막힌 것과 반대되는 원활한 흐름"}],"collocBest":[{"en":"traffic jam","ko":"교통 정체"},{"en":"jam-packed","ko":"꽉 찬"}]},"nuance":{"koSimple":"빵에 발라 먹는 달콤한 과일 반죽이에요.","whenToUse":"딸기잼이나 교통 정체 얘기할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w03608","w":"jar","pos":["n","v"],"ph":"/dʒɑːr/","cefr":"A2","kr":["항아리","충격을 주다"],"ex":[{"en":"She opened the jar of honey.","ko":"그녀는 꿀 항아리를 열었다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"bottle","ko":"병","reason":"jar와 비슷한 용기 짝"},{"w":"lid","ko":"뚜껑","reason":"항아리를 덮는 짝 부품"},{"w":"shatter","ko":"산산조각 내다","reason":"jar의 충격 시나리오 결과"}],"collocBest":[{"en":"glass jar","ko":"유리 항아리"},{"en":"jar of jam","ko":"잼 한 병"}]},"nuance":{"koSimple":"잼이나 꿀 담아 두는 뚜껑 있는 병이에요.","whenToUse":"유리병에 든 잼·꿀 말할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w01727","w":"device","pos":["n"],"ph":"/dɪˈvaɪs/","cefr":"A2","kr":["장치","기기"],"ex":[{"en":"This device helps save energy.","ko":"이 장치는 에너지 절약에 도움이 된다."}],"mnemonic":{"soundHint":"디바이스","story":"'디바이스(device) 연결하시겠습니까?' — 블루투스로 기기를 연결한다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"gadget","ko":"소형 기기","reason":"device의 캐주얼 동의어"},{"w":"connect","ko":"연결하다","reason":"장치를 잇는 대표 시나리오"},{"w":"manual","ko":"수동의","reason":"자동 장치와 대비되는 짝"}],"collocBest":[{"en":"mobile device","ko":"모바일 기기"},{"en":"electronic device","ko":"전자 기기"}]},"nuance":{"koSimple":"전기로 움직이는 작은 기계 도구예요.","whenToUse":"스마트폰·리모컨 같은 전자 기기 말할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w02991","w":"hide","pos":["v"],"ph":"/haɪd/","cefr":"A2","kr":["숨다","숨기다"],"ex":[{"en":"He tried to hide his feelings.","ko":"그는 감정을 숨기려 했다."}],"mnemonic":{"soundHint":"하이드","story":"숨바꼭질에서 '하이드(hide) 앤 시크' — 숨는 사람과 찾는 사람.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"conceal","ko":"감추다","reason":"hide의 격식 있는 동의어"},{"w":"secret","ko":"비밀","reason":"숨긴 것의 대표 결과물"},{"w":"reveal","ko":"드러내다","reason":"hide의 정반대 행위"}],"collocBest":[{"en":"hide the truth","ko":"진실을 숨기다"},{"en":"hide from view","ko":"시야에서 숨다"}]},"nuance":{"koSimple":"안 보이는 곳에 몰래 넣어 두는 거예요.","whenToUse":"숨바꼭질하거나 비밀 감출 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w02912","w":"hang","pos":["v"],"ph":"/hæŋ/","cefr":"A2","kr":["걸다","매달다"],"ex":[{"en":"She hung a picture on the wall.","ko":"그녀는 벽에 그림을 걸었다."}],"mnemonic":{"soundHint":"행","story":"옷'행'(hang)거에 옷을 걸어둔다 — 행거가 곧 hang.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"hanger","ko":"옷걸이","reason":"hang에서 파생된 도구"},{"w":"wall","ko":"벽","reason":"그림·옷을 거는 장소 짝"},{"w":"friend","ko":"친구","reason":"hang out(어울리다)의 짝"}],"collocBest":[{"en":"hang out","ko":"어울려 놀다"},{"en":"hang on","ko":"기다리다"}]},"nuance":{"koSimple":"무언가를 위쪽에 매달아 늘어뜨리는 거예요.","whenToUse":"옷걸이·그림·빨래 걸어 둘 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w01669","w":"department","pos":["n"],"ph":"/dɪˈpɑːrtmənt/","cefr":"A2","kr":["부서","학과"],"ex":[{"en":"She works in the sales department.","ko":"그녀는 영업부에서 일한다."}],"mnemonic":{"soundHint":"디파트먼트","story":"'디파트먼트(department) 스토어'에는 부서별로 다른 층을 쓴다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"division","ko":"부서","reason":"department와 같은 조직 단위 동의"},{"w":"manager","ko":"관리자","reason":"부서를 이끄는 대표 인물"},{"w":"merge","ko":"합병하다","reason":"부서가 통합되는 시나리오"}],"collocBest":[{"en":"department store","ko":"백화점"},{"en":"academic department","ko":"학과"}]},"nuance":{"koSimple":"회사나 학교 안의 나뉘어진 팀이에요.","whenToUse":"회사 부서, 학교 학과, 백화점 말할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w01903","w":"drug","pos":["n"],"ph":"/drʌɡ/","cefr":"A2","kr":["약물","마약"],"ex":[{"en":"The drug had strong side effects.","ko":"그 약물은 강한 부작용이 있었다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"medicine","ko":"약","reason":"drug의 치료 목적 동의어"},{"w":"prescription","ko":"처방전","reason":"약을 받는 시나리오 짝"},{"w":"cure","ko":"치료하다","reason":"약의 목적 시나리오"}],"collocBest":[{"en":"drug abuse","ko":"약물 남용"},{"en":"prescription drug","ko":"처방약"}]},"nuance":{"koSimple":"몸에 영향을 주는 약이나 위험한 물질이에요.","whenToUse":"치료약이나 마약 얘기할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null},
-    {"id":"w01666","w":"dental","pos":["adj"],"ph":"/ˈdentəl/","cefr":"A2","kr":["치과의","이의"],"ex":[{"en":"She has a dental appointment tomorrow.","ko":"그녀는 내일 치과 예약이 있다."}],"mnemonic":{"soundHint":"덴탈","story":"'덴탈(dental) 케어' 광고를 보면 치과 치료 이미지가 뜬다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"tooth","ko":"이","reason":"dental이 관련되는 신체 부위"},{"w":"dentist","ko":"치과의사","reason":"dental 치료를 하는 대표 인물"},{"w":"cavity","ko":"충치","reason":"치과 치료가 필요한 시나리오"}],"collocBest":[{"en":"dental care","ko":"치과 치료"},{"en":"dental hygiene","ko":"구강 위생"}]},"nuance":{"koSimple":"치아나 치과와 관련된 것들이에요.","whenToUse":"치과 예약·치과 치료 말할 때 써요."},"krDetail":null,"usageExamples":null,"grammarNote":null,"grammarQuiz":null}
+    {"id":"w03003","w":"hint","pos":["n","v"],"ph":"/hɪnt/","cefr":"A2","kr":["힌트","암시하다"],"ex":[{"en":"Give me a hint about the answer.","ko":"정답에 대한 힌트를 주세요."}],"mnemonic":{"soundHint":"힌트","story":"퀴즈쇼에서 '힌트(hint) 좀 주세요!' 외치면 사회자가 살짝 암시한다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"clue","ko":"단서","reason":"hint와 함께 '실마리' 의미로 자주 쓰이는 동의어"},{"w":"suggest","ko":"암시하다","reason":"hint의 동사 의미와 겹치는 짝"},{"w":"reveal","ko":"드러내다","reason":"숨기지 않고 밝힌다는 점에서 hint와 반대 시나리오"}],"collocBest":[{"en":"give a hint","ko":"힌트를 주다"},{"en":"drop a hint","ko":"힌트를 흘리다"}]},"nuance":{"koSimple":"정답에 다가가게 해주는 살짝 알려주는 말이에요.","whenToUse":"퀴즈나 문제에서 살짝 알려줄 때 써요."},"krDetail":[{"ko":"힌트","explain":"문제를 푸는 작은 도움말"},{"ko":"암시하다","explain":"넌지시 알려 주다"}],"usageExamples":[{"en":"Can you give me a hint?","ko":"나에게 힌트 좀 줄래?"},{"en":"She hinted that she was leaving.","ko":"그녀는 떠날 거라고 넌지시 말했다."}],"grammarNote":"hint는 명사(힌트)와 동사(암시하다)로 쓰인다.","grammarQuiz":null},
+    {"id":"w03010","w":"history","pos":["n"],"ph":"/ˈhɪstri/","cefr":"A1","kr":["역사","이력"],"ex":[{"en":"She loves studying history.","ko":"그녀는 역사 공부를 좋아한다."}],"mnemonic":{"soundHint":"히스토리","story":"브라우저 '히스토리(history)' 열면 내가 검색한 역사와 이력이 다 나온다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"past","ko":"과거","reason":"history의 핵심 개념인 지나간 시간과 동의"},{"w":"record","ko":"기록","reason":"역사와 이력을 남긴다는 시나리오 짝"},{"w":"future","ko":"미래","reason":"history와 정확히 반대되는 시간 축"}],"collocBest":[{"en":"natural history","ko":"자연사"},{"en":"history lesson","ko":"역사 수업"}]},"nuance":{"koSimple":"옛날에 일어난 일들을 모아 놓은 이야기예요.","whenToUse":"옛날 사건이나 과거 기록을 말할 때 써요."},"krDetail":[{"ko":"역사","explain":"지난 일들의 기록"},{"ko":"이력","explain":"겪어 온 경력"}],"usageExamples":[{"en":"We study world history at school.","ko":"우리는 학교에서 세계 역사를 배운다."},{"en":"The city has a long history.","ko":"그 도시는 오랜 역사를 가지고 있다."}],"grammarNote":"history는 보통 셀 수 없는 명사로 쓴다.","grammarQuiz":null},
+    {"id":"w03017","w":"hole","pos":["n"],"ph":"/hoʊl/","cefr":"A2","kr":["구멍","홀"],"ex":[{"en":"There is a hole in the wall.","ko":"벽에 구멍이 있다."}],"mnemonic":{"soundHint":"홀","story":"골프에서 공을 '홀(hole)'에 넣는다 — 잔디에 뚫린 구멍이 바로 홀.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"gap","ko":"틈","reason":"hole과 같은 '비어 있는 공간' 동의"},{"w":"dig","ko":"파다","reason":"구멍을 만드는 행위 시나리오 짝"},{"w":"fill","ko":"채우다","reason":"구멍을 없애는 반대 행위"}],"collocBest":[{"en":"dig a hole","ko":"구멍을 파다"},{"en":"black hole","ko":"블랙홀"}]},"nuance":{"koSimple":"뭔가 뚫려서 뻥 비어 있는 자리예요.","whenToUse":"벽·양말·땅에 뚫린 자리를 말할 때 써요."},"krDetail":[{"ko":"구멍","explain":"뚫려서 비어 있는 곳"},{"ko":"홀","explain":"골프에서 공을 넣는 구멍"}],"usageExamples":[{"en":"There is a hole in my sock.","ko":"내 양말에 구멍이 났다."},{"en":"The dog dug a hole in the garden.","ko":"개가 정원에 구멍을 팠다."}],"grammarNote":"hole(구멍)은 whole(전체)과 발음이 같다.","grammarQuiz":null},
+    {"id":"w03018","w":"holiday","pos":["n"],"ph":"/ˈhɒlɪdeɪ/","cefr":"A1","kr":["휴일","휴가"],"ex":[{"en":"We took a holiday trip abroad.","ko":"우리는 해외로 휴가 여행을 갔다."}],"mnemonic":{"soundHint":"홀리데이","story":"'해피 홀리데이(holiday)!' 하면 크리스마스 휴가 분위기가 확 산다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"vacation","ko":"휴가","reason":"holiday와 사실상 같은 뜻의 미국식 표현"},{"w":"festival","ko":"축제","reason":"휴일에 열리는 이벤트 시나리오 짝"},{"w":"weekday","ko":"평일","reason":"휴일이 아닌 일하는 날, 반대 개념"}],"collocBest":[{"en":"public holiday","ko":"공휴일"},{"en":"holiday season","ko":"휴가철"}]},"nuance":{"koSimple":"학교나 회사에 안 가고 쉬는 날이에요.","whenToUse":"방학·공휴일·휴가 여행 말할 때 써요."},"krDetail":[{"ko":"휴일","explain":"일을 쉬는 날"},{"ko":"휴가","explain":"일에서 벗어나 쉬는 기간"}],"usageExamples":[{"en":"Christmas is my favorite holiday.","ko":"크리스마스는 내가 가장 좋아하는 휴일이다."},{"en":"They went on holiday to the beach.","ko":"그들은 바닷가로 휴가를 갔다."}],"grammarNote":"영국에서는 휴가를 흔히 holiday라고 부른다.","grammarQuiz":null},
+    {"id":"w03025","w":"homework","pos":["n"],"ph":"/ˈhoʊmwɜːrk/","cefr":"A1","kr":["숙제","과제"],"ex":[{"en":"She finished her homework early.","ko":"그녀는 일찍 숙제를 마쳤다."}],"mnemonic":{"soundHint":null,"story":"Homework는 home(집) + work(일), 집에서 해야 하는 학교 과제다.","hintConfidence":2},"pairs":{"buddyWords":[{"w":"school","ko":"학교","reason":"숙제를 내는 장소"},{"w":"task","ko":"과제","reason":"동의어로 과업 확장"},{"w":"study","ko":"공부하다","reason":"숙제의 목적 행위"}],"collocBest":[{"en":"do homework","ko":"숙제를 하다"},{"en":"homework assignment","ko":"숙제 과제"}]},"nuance":{"koSimple":"선생님이 집에 가서 하라고 내주는 공부예요.","whenToUse":"학교에서 내준 과제를 말할 때 써요."},"krDetail":[{"ko":"숙제","explain":"집에서 하는 학교 공부"},{"ko":"과제","explain":"해내야 할 학습 문제"}],"usageExamples":[{"en":"I have a lot of homework tonight.","ko":"나는 오늘 밤 숙제가 많다."},{"en":"Did you finish your homework?","ko":"너 숙제 다 했니?"}],"grammarNote":"homework는 셀 수 없어 a homework로 쓰지 않는다.","grammarQuiz":null},
+    {"id":"w03031","w":"hook","pos":["n","v"],"ph":"/hʊk/","cefr":"A2","kr":["갈고리","걸다"],"ex":[{"en":"Hang your coat on the hook.","ko":"코트를 갈고리에 걸어 두세요."}],"mnemonic":{"soundHint":"훅","story":"권투에서 '훅(hook)' 날리듯 갈고리로 확 걸어당긴다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"catch","ko":"잡다","reason":"갈고리로 걸어 잡는 동작의 동의"},{"w":"fish","ko":"낚시하다","reason":"낚싯바늘(hook)을 쓰는 대표 시나리오"},{"w":"release","ko":"풀어주다","reason":"걸린 것을 놓아주는 반대 행위"}],"collocBest":[{"en":"off the hook","ko":"책임에서 벗어난"},{"en":"hook and eye","ko":"갈고리와 고리"}]},"nuance":{"koSimple":"물건을 걸어 두는 구부러진 쇠고리예요.","whenToUse":"옷걸이·낚싯바늘처럼 걸거나 낚을 때 써요."},"krDetail":[{"ko":"갈고리","explain":"끝이 굽은 걸이"},{"ko":"걸다","explain":"고리에 매달다"}],"usageExamples":[{"en":"Hang the towel on the hook.","ko":"수건을 갈고리에 걸어라."},{"en":"He hooked the fish easily.","ko":"그는 물고기를 쉽게 낚았다."}],"grammarNote":"hook은 명사(갈고리)와 동사(걸다)로 쓰인다.","grammarQuiz":null},
+    {"id":"w03042","w":"hospital","pos":["n"],"ph":"/ˈhɒspɪtl/","cefr":"A1","kr":["병원"],"ex":[{"en":"He was taken to the hospital.","ko":"그는 병원으로 이송되었다."}],"mnemonic":{"soundHint":"호스피탈","story":"'호스피탈(hospital)' 앞에 응급차가 서면 병원 문이 자동으로 열린다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"clinic","ko":"진료소","reason":"hospital보다 작지만 같은 의료 기관"},{"w":"doctor","ko":"의사","reason":"병원에서 만나는 대표 인물"},{"w":"discharge","ko":"퇴원시키다","reason":"병원에서 나오는 시나리오"}],"collocBest":[{"en":"check into hospital","ko":"병원에 입원하다"},{"en":"hospital bed","ko":"병원 침대"}]},"nuance":{"koSimple":"아픈 사람을 치료해 주는 큰 건물이에요.","whenToUse":"치료 받으러 가거나 입원할 때 써요."},"krDetail":[{"ko":"병원","explain":"아픈 사람을 치료하는 곳"}],"usageExamples":[{"en":"My mother works at a hospital.","ko":"우리 어머니는 병원에서 일하신다."},{"en":"He stayed in the hospital for a week.","ko":"그는 일주일 동안 병원에 입원했다."}],"grammarNote":"'입원하다'는 흔히 be in the hospital로 쓴다.","grammarQuiz":null},
+    {"id":"w03060","w":"huge","pos":["adj"],"ph":"/hjuːdʒ/","cefr":"A2","kr":["거대한","엄청난"],"ex":[{"en":"The stadium is huge.","ko":"경기장은 거대하다."}],"mnemonic":{"soundHint":"휴즈","story":"'휴즈'(huge)한 세일 — 엄청 큰 할인 폭.","hintConfidence":2},"pairs":{"buddyWords":[{"w":"enormous","ko":"거대한","reason":"가장 가까운 동의어"},{"w":"tiny","ko":"아주 작은","reason":"명확한 반의어"},{"w":"success","ko":"성공","reason":"huge success로 자주 결합"}],"collocBest":[{"en":"huge impact","ko":"엄청난 영향"},{"en":"huge success","ko":"엄청난 성공"}]},"nuance":{"koSimple":"눈이 휘둥그레질 만큼 어마어마하게 큰 상태예요.","whenToUse":"경기장·성공·영향처럼 엄청 큰 걸 말할 때 써요."},"krDetail":[{"ko":"거대한","explain":"아주 크고 넓은"},{"ko":"엄청난","explain":"정도가 매우 큰"}],"usageExamples":[{"en":"They live in a huge house.","ko":"그들은 거대한 집에 산다."},{"en":"The movie was a huge success.","ko":"그 영화는 엄청난 성공이었다."}],"grammarNote":"huge는 big보다 훨씬 크다는 뜻의 형용사다.","grammarQuiz":null},
+    {"id":"w03071","w":"hundred","pos":["num","n"],"ph":"/ˈhʌndrəd/","cefr":"A1","kr":["백","100"],"ex":[{"en":"There are a hundred students at school.","ko":"학교에 학생이 100명 있다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"thousand","ko":"천","reason":"hundred 다음 자리 숫자 짝"},{"w":"number","ko":"숫자","reason":"hundred가 속하는 상위 개념"},{"w":"count","ko":"세다","reason":"숫자를 다루는 대표 동사"}],"collocBest":[{"en":"a hundred times","ko":"백 번"},{"en":"hundreds of","ko":"수백의"}]},"nuance":{"koSimple":"손가락 열 개씩 열 번 세는 숫자 100이에요.","whenToUse":"숫자 100이나 '수백의'라고 말할 때 써요."},"krDetail":[{"ko":"백","explain":"숫자 100"},{"ko":"100","explain":"열의 열 배 수"}],"usageExamples":[{"en":"There are a hundred pages in this book.","ko":"이 책에는 백 페이지가 있다."},{"en":"Hundreds of people came to the fair.","ko":"수백 명의 사람이 축제에 왔다."}],"grammarNote":"정확한 수 앞의 hundred는 s를 붙이지 않는다.","grammarQuiz":null},
+    {"id":"w03073","w":"hungry","pos":["adj"],"ph":"/ˈhʌŋɡri/","cefr":"A1","kr":["배고픈","굶주린"],"ex":[{"en":"I am hungry after the long walk.","ko":"긴 산책 후에 배가 고프다."}],"mnemonic":{"soundHint":"헝그리","story":"'헝그리(hungry) 정신'! 배고픈 복서가 더 절박하게 링에 오른다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"starving","ko":"굶주린","reason":"hungry의 강조 동의어"},{"w":"meal","ko":"식사","reason":"배고픔을 달래는 시나리오 짝"},{"w":"full","ko":"배부른","reason":"hungry의 정반대 상태"}],"collocBest":[{"en":"feel hungry","ko":"배가 고프다"},{"en":"go hungry","ko":"굶다"}]},"nuance":{"koSimple":"배에서 꼬르륵 소리 나며 밥이 먹고 싶은 상태예요.","whenToUse":"밥때 놓쳐서 배가 고플 때 써요."},"krDetail":[{"ko":"배고픈","explain":"먹고 싶어 배가 빈"},{"ko":"굶주린","explain":"오래 먹지 못한"}],"usageExamples":[{"en":"I feel hungry before lunch.","ko":"나는 점심 전에 배가 고프다."},{"en":"The hungry dog ate quickly.","ko":"배고픈 개가 빠르게 먹었다."}],"grammarNote":"'배고프다'는 be동사와 함께 be hungry로 쓴다.","grammarQuiz":null},
+    {"id":"w03080","w":"hurt","pos":["v","adj"],"ph":"/hɜːrt/","cefr":"A2","kr":["다치다","아프다"],"ex":[{"en":"She hurt her knee while running.","ko":"그녀는 달리다가 무릎을 다쳤다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"injure","ko":"부상 입히다","reason":"hurt의 격식 있는 동의어"},{"w":"bandage","ko":"붕대","reason":"다친 곳을 감는 시나리오 짝"},{"w":"heal","ko":"낫게 하다","reason":"다친 것을 회복시키는 반대 행위"}],"collocBest":[{"en":"hurt feelings","ko":"감정을 다치게 하다"},{"en":"badly hurt","ko":"심하게 다친"}]},"nuance":{"koSimple":"넘어지거나 부딪혀서 몸이 아프게 된 거예요.","whenToUse":"다쳐서 아프거나 마음 상할 때 써요."},"krDetail":[{"ko":"다치다","explain":"몸을 상하게 하다"},{"ko":"아프다","explain":"통증을 느끼다"}],"usageExamples":[{"en":"He hurt his hand playing soccer.","ko":"그는 축구를 하다 손을 다쳤다."},{"en":"My back hurts a little today.","ko":"오늘 등이 조금 아프다."}],"grammarNote":"hurt는 과거형도 hurt로 형태가 같다.","grammarQuiz":null},
+    {"id":"w03081","w":"husband","pos":["n"],"ph":"/ˈhʌzbənd/","cefr":"A1","kr":["남편"],"ex":[{"en":"Her husband is a doctor.","ko":"그녀의 남편은 의사이다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"spouse","ko":"배우자","reason":"husband를 포함하는 상위 개념"},{"w":"marriage","ko":"결혼","reason":"남편이 되는 시나리오 짝"},{"w":"wife","ko":"아내","reason":"husband와 짝을 이루는 반대 성별"}],"collocBest":[{"en":"loving husband","ko":"다정한 남편"},{"en":"husband and wife","ko":"부부"}]},"nuance":{"koSimple":"결혼한 여자의 짝인 남자예요.","whenToUse":"결혼한 부부에서 남편을 가리킬 때 써요."},"krDetail":[{"ko":"남편","explain":"결혼한 남자 배우자"}],"usageExamples":[{"en":"Her husband cooks dinner every night.","ko":"그녀의 남편은 매일 밤 저녁을 요리한다."},{"en":"He is a kind and loving husband.","ko":"그는 친절하고 다정한 남편이다."}],"grammarNote":"husband의 반대말은 wife(아내)이다.","grammarQuiz":null},
+    {"id":"w03099","w":"icy","pos":["adj"],"ph":"/ˈaɪsi/","cefr":"A2","kr":["얼음같이 차가운","빙판의"],"ex":[{"en":"The roads were icy this morning.","ko":"오늘 아침 도로가 빙판이었다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"cold","ko":"차가운","reason":"icy의 유사 형용사"},{"w":"warm","ko":"따뜻한","reason":"icy의 대표 반의어"},{"w":"ice","ko":"얼음","reason":"icy의 어원"}],"collocBest":[{"en":"icy road","ko":"빙판길"},{"en":"icy wind","ko":"차가운 바람"}]},"nuance":{"koSimple":"얼음처럼 반짝반짝 얼어붙어 미끄러운 상태예요.","whenToUse":"겨울 빙판길·차가운 바람 말할 때 써요."},"krDetail":[{"ko":"얼음같이 차가운","explain":"몹시 차가운"},{"ko":"빙판의","explain":"얼음으로 덮인"}],"usageExamples":[{"en":"The icy wind made us shiver.","ko":"얼음같이 찬 바람에 우리는 떨었다."},{"en":"Be careful on the icy sidewalk.","ko":"빙판 인도에서 조심해라."}],"grammarNote":"icy는 ice(얼음)에 -y를 붙인 형용사다.","grammarQuiz":null},
+    {"id":"w03123","w":"ill","pos":["adj","adv"],"ph":"/ɪl/","cefr":"A2","kr":["아픈","나쁘게"],"ex":[{"en":"She felt ill after dinner.","ko":"그녀는 저녁 식사 후 아팠다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"sick","ko":"아픈","reason":"ill의 가장 흔한 동의어"},{"w":"hospital","ko":"병원","reason":"아플 때 가는 장소"},{"w":"healthy","ko":"건강한","reason":"ill의 정반대 상태"}],"collocBest":[{"en":"fall ill","ko":"병이 나다"},{"en":"seriously ill","ko":"심각하게 아픈"}]},"nuance":{"koSimple":"몸이 안 좋아서 축 늘어져 있는 상태예요.","whenToUse":"감기·병으로 몸 상태 나쁠 때 써요."},"krDetail":[{"ko":"아픈","explain":"몸이 편치 않은"},{"ko":"나쁘게","explain":"좋지 않게"}],"usageExamples":[{"en":"He was ill and stayed in bed.","ko":"그는 아파서 침대에 누워 있었다."},{"en":"She has been ill all week.","ko":"그녀는 일주일 내내 아팠다."}],"grammarNote":"ill은 주로 be동사 뒤에 오는 형용사로 쓴다.","grammarQuiz":null},
+    {"id":"w03185","w":"important","pos":["adj"],"ph":"/ɪmˈpɔːrtənt/","cefr":"A1","kr":["중요한"],"ex":[{"en":"Health is important to everyone.","ko":"건강은 모든 사람에게 중요하다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"significant","ko":"중요한","reason":"important의 동의어"},{"w":"trivial","ko":"사소한","reason":"important의 반대"},{"w":"role","ko":"역할","reason":"important role 콜로케이션"}],"collocBest":[{"en":"most important","ko":"가장 중요한"},{"en":"important role","ko":"중요한 역할"}]},"nuance":{"koSimple":"꼭 챙겨야 할 만큼 큰 가치가 있는 것이에요.","whenToUse":"빼먹으면 안 되는 일·역할 말할 때 써요."},"krDetail":[{"ko":"중요한","explain":"매우 소중하고 필요한"}],"usageExamples":[{"en":"It is important to be honest.","ko":"정직한 것이 중요하다."},{"en":"This is an important meeting.","ko":"이것은 중요한 회의이다."}],"grammarNote":"important 뒤에 to부정사가 자주 온다.","grammarQuiz":null},
+    {"id":"w03229","w":"inch","pos":["n","v"],"ph":"/ɪntʃ/","cefr":"A2","kr":["인치","조금씩 움직이다"],"ex":[{"en":"The ruler measures in inches.","ko":"자는 인치 단위로 측정한다."}],"mnemonic":{"soundHint":"인치","story":"6'인치'(inch) 폰 — 화면 크기를 인치로 잰다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"foot","ko":"피트","reason":"인치와 함께 쓰는 길이 단위"},{"w":"ruler","ko":"자","reason":"인치를 재는 도구"},{"w":"measure","ko":"재다","reason":"인치로 하는 대표 행동"}],"collocBest":[{"en":"an inch away","ko":"아주 가까이"},{"en":"inch by inch","ko":"조금씩"}]},"nuance":{"koSimple":"엄지 손가락 마디만 한 길이 단위예요.","whenToUse":"TV 크기·길이 잴 때 인치라고 말할 때 써요."},"krDetail":[{"ko":"인치","explain":"약 2.54cm의 길이 단위"},{"ko":"조금씩 움직이다","explain":"천천히 조금씩 가다"}],"usageExamples":[{"en":"The snow was two inches deep.","ko":"눈이 2인치 깊이로 쌓였다."},{"en":"The car inched forward in traffic.","ko":"차가 정체 속에서 조금씩 앞으로 나갔다."}],"grammarNote":"inch의 복수형은 inches로 -es를 붙인다.","grammarQuiz":null},
+    {"id":"w03343","w":"information","pos":["n"],"ph":"/ˌɪnfəˈmeɪʃən/","cefr":"A1","kr":["정보"],"ex":[{"en":"Find information on the internet.","ko":"인터넷에서 정보를 찾아라."}],"mnemonic":{"soundHint":"인포","story":"'인포메이션 데스크'처럼 공항·백화점 안내소에서 그대로 쓰는 그 인포메이션.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"data","ko":"자료","reason":"information의 동의어"},{"w":"news","ko":"소식","reason":"정보의 한 형태"},{"w":"share","ko":"공유하다","reason":"정보에 자주 쓰는 동사"}],"collocBest":[{"en":"useful information","ko":"유용한 정보"},{"en":"gather information","ko":"정보를 수집하다"}]},"nuance":{"koSimple":"궁금한 것을 알려주는 여러 가지 사실들이에요.","whenToUse":"인터넷·책에서 알아본 내용 말할 때 써요."},"krDetail":[{"ko":"정보","explain":"알려 주는 지식이나 사실"}],"usageExamples":[{"en":"I need more information about the trip.","ko":"그 여행에 대한 정보가 더 필요하다."},{"en":"The website gives useful information.","ko":"그 웹사이트는 유용한 정보를 준다."}],"grammarNote":"information은 셀 수 없어 informations로 쓰지 않는다.","grammarQuiz":null},
+    {"id":"w03402","w":"inside","pos":["prep","adv","adj","n"],"ph":"/ɪnˈsaɪd/","cefr":"A1","kr":["~안에","내부에","안쪽의"],"ex":[{"en":"Come inside, it's cold out.","ko":"안으로 들어와, 밖이 추워."}],"mnemonic":{"soundHint":"인사이드","story":"축구 '인사이드(inside) 킥' — 발 안쪽으로 차듯, 안쪽 공간을 뜻한다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"within","ko":"~ 안에","reason":"inside의 격식 있는 동의어"},{"w":"enter","ko":"들어가다","reason":"안쪽으로 이동하는 시나리오"},{"w":"outside","ko":"~ 밖에","reason":"inside와 정반대 위치"}],"collocBest":[{"en":"inside out","ko":"안팎이 뒤집혀"},{"en":"inside the house","ko":"집 안에"}]},"nuance":{"koSimple":"문 열고 들어가야 있는 공간의 안쪽이에요.","whenToUse":"집·가방·상자 안쪽을 말할 때 써요."},"krDetail":[{"ko":"~안에","explain":"어떤 것의 속에"},{"ko":"내부에","explain":"안쪽 공간에"},{"ko":"안쪽의","explain":"속에 있는"}],"usageExamples":[{"en":"The keys are inside the bag.","ko":"열쇠는 가방 안에 있다."},{"en":"Let's wait inside until it stops raining.","ko":"비가 그칠 때까지 안에서 기다리자."}],"grammarNote":"inside는 outside(바깥)의 반대말이다.","grammarQuiz":null},
+    {"id":"w03473","w":"interest","pos":["n","v"],"ph":"/ˈɪntrəst/","cefr":"A1","kr":["관심","흥미"],"ex":[{"en":"She has interest in science.","ko":"그녀는 과학에 관심이 있다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"curiosity","ko":"호기심","reason":"interest를 부르는 근본 감정"},{"w":"hobby","ko":"취미","reason":"관심이 지속된 결과 시나리오"},{"w":"boredom","ko":"지루함","reason":"interest의 정반대 감정"}],"collocBest":[{"en":"show interest","ko":"관심을 보이다"},{"en":"area of interest","ko":"관심 분야"}]},"nuance":{"koSimple":"눈이 반짝 빛나며 더 알고 싶은 마음이에요.","whenToUse":"좋아하거나 흥미 있는 분야 말할 때 써요."},"krDetail":[{"ko":"관심","explain":"마음이 끌리는 것"},{"ko":"흥미","explain":"재미를 느끼는 마음"}],"usageExamples":[{"en":"He has a strong interest in music.","ko":"그는 음악에 강한 관심이 있다."},{"en":"The book lost my interest quickly.","ko":"그 책은 금방 내 흥미를 잃게 했다."}],"grammarNote":"'~에 관심 있다'는 interest in처럼 in을 쓴다.","grammarQuiz":null},
+    {"id":"w03566","w":"iron","pos":["n","v","adj"],"ph":"/ˈaɪərn/","cefr":"A2","kr":["철","다림질하다","철의"],"ex":[{"en":"She ironed her shirt before the meeting.","ko":"그녀는 회의 전에 셔츠를 다림질했다."}],"mnemonic":{"soundHint":"아이언","story":"골프채 '아이언(iron)'은 쇠로 만든 클럽 — 철의 대명사.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"metal","ko":"금속","reason":"iron을 포함하는 상위 개념"},{"w":"steel","ko":"강철","reason":"철을 가공한 짝 재료"},{"w":"wrinkle","ko":"주름","reason":"다림질(iron)로 없애는 대상 시나리오"}],"collocBest":[{"en":"iron out","ko":"해결하다"},{"en":"cast iron","ko":"주철"}]},"nuance":{"koSimple":"단단하고 무거운 회색빛 금속이에요.","whenToUse":"쇠붙이나 옷 다림질할 때 써요."},"krDetail":[{"ko":"철","explain":"단단한 금속"},{"ko":"다림질하다","explain":"옷 주름을 펴다"},{"ko":"철의","explain":"철로 된"}],"usageExamples":[{"en":"The gate is made of iron.","ko":"그 문은 철로 만들어졌다."},{"en":"I need to iron this shirt.","ko":"나는 이 셔츠를 다림질해야 한다."}],"grammarNote":"iron은 명사(철)와 동사(다림질하다)로 모두 쓰인다.","grammarQuiz":null},
+    {"id":"w03593","w":"itch","pos":["n","v"],"ph":"/ɪtʃ/","cefr":"A2","kr":["가려움","가렵다"],"ex":[{"en":"The mosquito bite made his arm itch.","ko":"모기에 물려 팔이 가려웠다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"scratch","ko":"긁다","reason":"itch에 대한 대표 반응 시나리오"},{"w":"mosquito","ko":"모기","reason":"가려움을 일으키는 대표 원인"},{"w":"soothe","ko":"진정시키다","reason":"가려움을 가라앉히는 반대 행위"}],"collocBest":[{"en":"scratch an itch","ko":"가려움을 긁다"},{"en":"itch to do","ko":"~하고 싶어 근질거리다"}]},"nuance":{"koSimple":"긁고 싶어서 근질근질한 느낌이에요.","whenToUse":"모기 물린 데·간지러운 곳 말할 때 써요."},"krDetail":[{"ko":"가려움","explain":"긁고 싶은 느낌"},{"ko":"가렵다","explain":"긁고 싶게 되다"}],"usageExamples":[{"en":"I have an itch on my back.","ko":"등에 가려움이 있다."},{"en":"My leg itches after the bug bite.","ko":"벌레에 물린 뒤 다리가 가렵다."}],"grammarNote":"itch는 명사(가려움)와 동사(가렵다)로 쓰인다.","grammarQuiz":null},
+    {"id":"w03595","w":"item","pos":["n"],"ph":"/ˈaɪtəm/","cefr":"A2","kr":["항목","물품"],"ex":[{"en":"Check each item on the list.","ko":"목록의 각 항목을 확인하라."}],"mnemonic":{"soundHint":"아이템","story":"게임 '아이템(item)' 창을 열면 항목별 물품이 쭉 정렬돼 있다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"product","ko":"제품","reason":"판매되는 item의 대표적 짝"},{"w":"list","ko":"목록","reason":"item들을 정리하는 시나리오 짝"},{"w":"collect","ko":"모으다","reason":"아이템을 수집하는 행위"}],"collocBest":[{"en":"news item","ko":"뉴스 항목"},{"en":"item on the agenda","ko":"안건 항목"}]},"nuance":{"koSimple":"목록에 하나씩 적힌 물건이나 낱개예요.","whenToUse":"장바구니 목록·안건 하나 말할 때 써요."},"krDetail":[{"ko":"항목","explain":"목록의 하나하나"},{"ko":"물품","explain":"낱낱의 물건"}],"usageExamples":[{"en":"Please check each item carefully.","ko":"각 항목을 꼼꼼히 확인해 주세요."},{"en":"This item is on sale today.","ko":"이 물품은 오늘 할인 중이다."}],"grammarNote":"item은 셀 수 있는 명사로 복수형은 items이다.","grammarQuiz":null},
+    {"id":"w03606","w":"jam","pos":["n","v"],"ph":"/dʒæm/","cefr":"A2","kr":["잼","막히다"],"ex":[{"en":"Traffic jam caused delays.","ko":"교통 정체가 지연을 일으켰다."}],"mnemonic":{"soundHint":"잼","story":"딸기 '잼(jam)'을 빵에 발라 먹거나, 길이 '잼(jam)' 걸리면 꽉 막힌다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"traffic","ko":"교통","reason":"traffic jam으로 자주 짝지어지는 짝"},{"w":"block","ko":"막다","reason":"jam의 동사 의미와 겹치는 동의"},{"w":"flow","ko":"흐르다","reason":"막힌 것과 반대되는 원활한 흐름"}],"collocBest":[{"en":"traffic jam","ko":"교통 정체"},{"en":"jam-packed","ko":"꽉 찬"}]},"nuance":{"koSimple":"빵에 발라 먹는 달콤한 과일 반죽이에요.","whenToUse":"딸기잼이나 교통 정체 얘기할 때 써요."},"krDetail":[{"ko":"잼","explain":"과일로 만든 단 음식"},{"ko":"막히다","explain":"꽉 차서 움직이지 못하다"}],"usageExamples":[{"en":"I like strawberry jam on toast.","ko":"나는 토스트에 딸기잼을 좋아한다."},{"en":"The road was jammed with cars.","ko":"도로가 차로 꽉 막혔다."}],"grammarNote":"교통 정체는 흔히 traffic jam이라고 한다.","grammarQuiz":null},
+    {"id":"w03608","w":"jar","pos":["n","v"],"ph":"/dʒɑːr/","cefr":"A2","kr":["항아리","충격을 주다"],"ex":[{"en":"She opened the jar of honey.","ko":"그녀는 꿀 항아리를 열었다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"bottle","ko":"병","reason":"jar와 비슷한 용기 짝"},{"w":"lid","ko":"뚜껑","reason":"항아리를 덮는 짝 부품"},{"w":"shatter","ko":"산산조각 내다","reason":"jar의 충격 시나리오 결과"}],"collocBest":[{"en":"glass jar","ko":"유리 항아리"},{"en":"jar of jam","ko":"잼 한 병"}]},"nuance":{"koSimple":"잼이나 꿀 담아 두는 뚜껑 있는 병이에요.","whenToUse":"유리병에 든 잼·꿀 말할 때 써요."},"krDetail":[{"ko":"항아리","explain":"입 넓은 유리 그릇"},{"ko":"충격을 주다","explain":"갑자기 흔들거나 놀라게 하다"}],"usageExamples":[{"en":"She kept cookies in a glass jar.","ko":"그녀는 유리 항아리에 쿠키를 보관했다."},{"en":"The loud noise jarred me awake.","ko":"큰 소리가 나를 놀라 깨웠다."}],"grammarNote":"jar는 뚜껑 있는 유리 용기를 흔히 가리킨다.","grammarQuiz":null},
+    {"id":"w01727","w":"device","pos":["n"],"ph":"/dɪˈvaɪs/","cefr":"A2","kr":["장치","기기"],"ex":[{"en":"This device helps save energy.","ko":"이 장치는 에너지 절약에 도움이 된다."}],"mnemonic":{"soundHint":"디바이스","story":"'디바이스(device) 연결하시겠습니까?' — 블루투스로 기기를 연결한다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"gadget","ko":"소형 기기","reason":"device의 캐주얼 동의어"},{"w":"connect","ko":"연결하다","reason":"장치를 잇는 대표 시나리오"},{"w":"manual","ko":"수동의","reason":"자동 장치와 대비되는 짝"}],"collocBest":[{"en":"mobile device","ko":"모바일 기기"},{"en":"electronic device","ko":"전자 기기"}]},"nuance":{"koSimple":"전기로 움직이는 작은 기계 도구예요.","whenToUse":"스마트폰·리모컨 같은 전자 기기 말할 때 써요."},"krDetail":[{"ko":"장치","explain":"일하는 기계 도구"},{"ko":"기기","explain":"특정 기능의 물건"}],"usageExamples":[{"en":"A smartphone is a useful device.","ko":"스마트폰은 유용한 기기이다."},{"en":"This device measures the temperature.","ko":"이 장치는 온도를 측정한다."}],"grammarNote":"동사 devise(고안하다)와 철자를 구별하세요.","grammarQuiz":null},
+    {"id":"w02991","w":"hide","pos":["v"],"ph":"/haɪd/","cefr":"A2","kr":["숨다","숨기다"],"ex":[{"en":"He tried to hide his feelings.","ko":"그는 감정을 숨기려 했다."}],"mnemonic":{"soundHint":"하이드","story":"숨바꼭질에서 '하이드(hide) 앤 시크' — 숨는 사람과 찾는 사람.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"conceal","ko":"감추다","reason":"hide의 격식 있는 동의어"},{"w":"secret","ko":"비밀","reason":"숨긴 것의 대표 결과물"},{"w":"reveal","ko":"드러내다","reason":"hide의 정반대 행위"}],"collocBest":[{"en":"hide the truth","ko":"진실을 숨기다"},{"en":"hide from view","ko":"시야에서 숨다"}]},"nuance":{"koSimple":"안 보이는 곳에 몰래 넣어 두는 거예요.","whenToUse":"숨바꼭질하거나 비밀 감출 때 써요."},"krDetail":[{"ko":"숨다","explain":"안 보이게 몸을 감추다"},{"ko":"숨기다","explain":"물건을 안 보이게 두다"}],"usageExamples":[{"en":"The cat likes to hide under the bed.","ko":"고양이는 침대 밑에 숨는 걸 좋아한다."},{"en":"He hid the gift in the closet.","ko":"그는 선물을 옷장에 숨겼다."}],"grammarNote":"hide의 과거형은 hid, 과거분사는 hidden이다.","grammarQuiz":null},
+    {"id":"w02912","w":"hang","pos":["v"],"ph":"/hæŋ/","cefr":"A2","kr":["걸다","매달다"],"ex":[{"en":"She hung a picture on the wall.","ko":"그녀는 벽에 그림을 걸었다."}],"mnemonic":{"soundHint":"행","story":"옷'행'(hang)거에 옷을 걸어둔다 — 행거가 곧 hang.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"hanger","ko":"옷걸이","reason":"hang에서 파생된 도구"},{"w":"wall","ko":"벽","reason":"그림·옷을 거는 장소 짝"},{"w":"friend","ko":"친구","reason":"hang out(어울리다)의 짝"}],"collocBest":[{"en":"hang out","ko":"어울려 놀다"},{"en":"hang on","ko":"기다리다"}]},"nuance":{"koSimple":"무언가를 위쪽에 매달아 늘어뜨리는 거예요.","whenToUse":"옷걸이·그림·빨래 걸어 둘 때 써요."},"krDetail":[{"ko":"걸다","explain":"높이 달아 놓다"},{"ko":"매달다","explain":"늘어뜨려 붙이다"}],"usageExamples":[{"en":"Please hang your coat on the hook.","ko":"코트를 고리에 걸어 주세요."},{"en":"They hung lights on the tree.","ko":"그들은 나무에 전구를 매달았다."}],"grammarNote":"물건을 걸 때 과거형은 hung을 쓴다.","grammarQuiz":null},
+    {"id":"w01669","w":"department","pos":["n"],"ph":"/dɪˈpɑːrtmənt/","cefr":"A2","kr":["부서","학과"],"ex":[{"en":"She works in the sales department.","ko":"그녀는 영업부에서 일한다."}],"mnemonic":{"soundHint":"디파트먼트","story":"'디파트먼트(department) 스토어'에는 부서별로 다른 층을 쓴다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"division","ko":"부서","reason":"department와 같은 조직 단위 동의"},{"w":"manager","ko":"관리자","reason":"부서를 이끄는 대표 인물"},{"w":"merge","ko":"합병하다","reason":"부서가 통합되는 시나리오"}],"collocBest":[{"en":"department store","ko":"백화점"},{"en":"academic department","ko":"학과"}]},"nuance":{"koSimple":"회사나 학교 안의 나뉘어진 팀이에요.","whenToUse":"회사 부서, 학교 학과, 백화점 말할 때 써요."},"krDetail":[{"ko":"부서","explain":"회사의 나뉜 부분"},{"ko":"학과","explain":"대학의 전공 부문"}],"usageExamples":[{"en":"My father works in the marketing department.","ko":"우리 아버지는 마케팅 부서에서 일한다."},{"en":"She studies in the English department.","ko":"그녀는 영어 학과에서 공부한다."}],"grammarNote":"department store는 '백화점'이라는 뜻입니다.","grammarQuiz":null},
+    {"id":"w01903","w":"drug","pos":["n"],"ph":"/drʌɡ/","cefr":"A2","kr":["약물","마약"],"ex":[{"en":"The drug had strong side effects.","ko":"그 약물은 강한 부작용이 있었다."}],"mnemonic":{"soundHint":null,"story":null,"hintConfidence":0},"pairs":{"buddyWords":[{"w":"medicine","ko":"약","reason":"drug의 치료 목적 동의어"},{"w":"prescription","ko":"처방전","reason":"약을 받는 시나리오 짝"},{"w":"cure","ko":"치료하다","reason":"약의 목적 시나리오"}],"collocBest":[{"en":"drug abuse","ko":"약물 남용"},{"en":"prescription drug","ko":"처방약"}]},"nuance":{"koSimple":"몸에 영향을 주는 약이나 위험한 물질이에요.","whenToUse":"치료약이나 마약 얘기할 때 써요."},"krDetail":[{"ko":"약물","explain":"병을 치료하는 약"},{"ko":"마약","explain":"몸에 해로운 약물"}],"usageExamples":[{"en":"This drug helps reduce pain.","ko":"이 약물은 통증을 줄이는 데 도움이 된다."},{"en":"Using drugs is against the law.","ko":"마약을 사용하는 것은 법에 어긋난다."}],"grammarNote":"drugstore는 '약국'을 뜻합니다.","grammarQuiz":null},
+    {"id":"w01666","w":"dental","pos":["adj"],"ph":"/ˈdentəl/","cefr":"A2","kr":["치과의","이의"],"ex":[{"en":"She has a dental appointment tomorrow.","ko":"그녀는 내일 치과 예약이 있다."}],"mnemonic":{"soundHint":"덴탈","story":"'덴탈(dental) 케어' 광고를 보면 치과 치료 이미지가 뜬다.","hintConfidence":3},"pairs":{"buddyWords":[{"w":"tooth","ko":"이","reason":"dental이 관련되는 신체 부위"},{"w":"dentist","ko":"치과의사","reason":"dental 치료를 하는 대표 인물"},{"w":"cavity","ko":"충치","reason":"치과 치료가 필요한 시나리오"}],"collocBest":[{"en":"dental care","ko":"치과 치료"},{"en":"dental hygiene","ko":"구강 위생"}]},"nuance":{"koSimple":"치아나 치과와 관련된 것들이에요.","whenToUse":"치과 예약·치과 치료 말할 때 써요."},"krDetail":[{"ko":"치과의","explain":"치과와 관련된"},{"ko":"이의","explain":"이빨에 관한"}],"usageExamples":[{"en":"I have a dental checkup today.","ko":"나는 오늘 치과 검진이 있다."},{"en":"Good dental care keeps teeth healthy.","ko":"좋은 치아 관리가 이를 건강하게 한다."}],"grammarNote":"형용사라 dental clinic처럼 명사 앞에 씁니다.","grammarQuiz":null}
   ],
   reviewPolicy:{ leitnerBoxes:5 },
   xpTable:{ correct:10, streakBonus:5, perfectChapter:200, firstClear:100 },
@@ -1881,56 +1935,51 @@ function renderQuiz(){
   } else if(mode === "spelling"){
     promptHTML = `
       <div class="quiz-prompt">
-        <div class="label">뜻을 보고 영어 단어를 입력하세요</div>
+        <div class="label">뜻을 보고 영어 단어를 입력하세요 <span class="prefill-hint">(첫 글자는 잠겨 있음)</span></div>
         <div class="qkr">${escape(word.kr.join(" · "))}</div>
         <div class="qph">${escape(word.ph||"")}</div>
       </div>`;
     answerHTML = `
       <div class="input-box">
-        <input type="text" id="ansInput" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="영어로 입력...">
+        <div class="word-answer" id="wordAnswer" data-answer="${escape(word.w)}"></div>
         <button class="submit-btn" id="submitBtn">제출</button>
       </div>`;
   } else if(mode === "listening"){
     promptHTML = `
       <div class="quiz-prompt">
-        <div class="label">발음을 듣고 단어를 입력하세요</div>
+        <div class="label">발음을 듣고 단어를 입력하세요 <span class="prefill-hint">(첫 글자는 잠겨 있음)</span></div>
         <button class="lis-btn" id="lisBtn">🔊 다시 듣기</button>
         <div class="qph">${escape(word.ph||"")}</div>
       </div>`;
     answerHTML = `
       <div class="input-box">
-        <input type="text" id="ansInput" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="영어로 입력...">
+        <div class="word-answer" id="wordAnswer" data-answer="${escape(word.w)}"></div>
         <button class="submit-btn" id="submitBtn">제출</button>
       </div>`;
   } else if(mode === "colloc-write"){
     const c = state.quizCurrent.colloc;
-    const hint = firstCharsHint(c.en);
     promptHTML = `
       <div class="quiz-prompt">
-        <div class="label">뜻에 맞는 <b>콜로케이션</b>을 영어로 쓰세요</div>
+        <div class="label">뜻에 맞는 <b>콜로케이션</b>을 영어로 쓰세요 <span class="prefill-hint">(각 단어 첫 글자 잠금)</span></div>
         <div class="qkr">${escape(c.ko)}</div>
       </div>`;
     answerHTML = `
       <div class="input-box">
-        <input type="text" id="ansInput" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="${escape(hint)}">
+        <div class="word-answer" id="wordAnswer" data-answer="${escape(c.en)}"></div>
         <button class="submit-btn" id="submitBtn">제출</button>
       </div>`;
   } else if(mode === "cloze"){
     const { tokens, blankIdxs, sentence } = state.quizCurrent;
-    // 문장 렌더 — 빈칸 위치에 인풋 (정답의 첫 글자 placeholder 힌트)
     const sentHTML = tokens.map((t, i) => {
       const bIdx = blankIdxs.indexOf(i);
       if(bIdx >= 0){
-        const ans = t.text;
-        const size = Math.max(4, Math.min(14, ans.length + 2));
-        const hint = firstCharsHint(ans);
-        return `<input type="text" class="cloze-input" data-blank-idx="${bIdx}" data-ans="${escape(ans)}" size="${size}" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="${escape(hint)}">`;
+        return `<span class="word-answer inline cloze-wa" data-blank-idx="${bIdx}" data-answer="${escape(t.text)}"></span>`;
       }
       return escape(t.text);
     }).join("");
     promptHTML = `
       <div class="quiz-prompt cloze-prompt">
-        <div class="label">해석에 맞게 <b>${blankIdxs.length}개 빈칸</b>을 채우세요</div>
+        <div class="label">해석에 맞게 <b>${blankIdxs.length}개 빈칸</b>을 채우세요 <span class="prefill-hint">(각 단어 첫 글자 잠금)</span></div>
         <div class="qkr">${escape(sentence.ko)}</div>
         <div class="cloze-sentence">${sentHTML}</div>
       </div>`;
@@ -1940,19 +1989,16 @@ function renderQuiz(){
       </div>`;
   } else if(mode === "grammar-fill"){
     const { quiz } = state.quizCurrent;
-    // sentence 안의 _____ (밑줄 3개 이상)을 인풋으로 대체 · 각 빈칸에 정답의 첫 글자만 placeholder 로 힌트
     const ansList = Array.isArray(quiz.answer) ? quiz.answer : [quiz.answer];
     let blankSeq = 0;
     const sentHTML = escape(quiz.sentence).replace(/_{3,}/g, () => {
       const ans = ansList[blankSeq] ?? ansList[0];
-      const size = Math.max(5, Math.min(20, (ans||'').length + 2));
       const idx = blankSeq++;
-      const hint = firstCharsHint(ans);
-      return `<input type="text" class="cloze-input grammar-input" data-blank-idx="${idx}" data-ans="${escape(ans)}" size="${size}" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="${escape(hint)}">`;
+      return `<span class="word-answer inline cloze-wa" data-blank-idx="${idx}" data-answer="${escape(ans)}"></span>`;
     });
     promptHTML = `
       <div class="quiz-prompt cloze-prompt grammar-prompt">
-        <div class="label">📌 <b>문법 포인트</b> — 해석에 맞게 빈칸을 채우세요</div>
+        <div class="label">📌 <b>문법 포인트</b> — 해석에 맞게 빈칸을 채우세요 <span class="prefill-hint">(각 단어 첫 글자 잠금)</span></div>
         <div class="qkr">${escape(quiz.ko)}</div>
         <div class="cloze-sentence">${sentHTML}</div>
       </div>`;
@@ -1982,25 +2028,17 @@ function renderQuiz(){
       btn.addEventListener("click", ()=> handleChoice(btn));
     });
   } else if(mode === "cloze" || mode === "grammar-fill"){
-    const inputs = document.querySelectorAll(".cloze-input");
-    inputs.forEach((inp, i)=>{
-      inp.addEventListener("keydown", e=>{
-        if(e.key === "Enter"){
-          const next = inputs[i+1];
-          if(next) next.focus();
-          else handleSubmit();
-        }
-      });
-    });
+    const containers = Array.from(document.querySelectorAll(".cloze-wa"));
+    containers.forEach(c => renderWordAnswer(c, c.dataset.answer));
     document.getElementById("submitBtn").addEventListener("click", handleSubmit);
-    if(inputs[0]) setTimeout(()=>inputs[0].focus(), 100);
+    const first = document.querySelector(".cloze-wa .rest-input");
+    if(first) setTimeout(()=>first.focus(), 100);
   } else {
-    const inp = document.getElementById("ansInput");
-    inp.addEventListener("keydown", e=>{
-      if(e.key === "Enter") handleSubmit();
-    });
+    const container = document.getElementById("wordAnswer");
+    renderWordAnswer(container, container.dataset.answer);
     document.getElementById("submitBtn").addEventListener("click", handleSubmit);
-    setTimeout(()=>inp.focus(), 100);
+    const first = container.querySelector(".rest-input");
+    if(first) setTimeout(()=>first.focus(), 100);
     if(mode === "listening"){
       setTimeout(()=>speak(word.w), 250);
       document.getElementById("lisBtn").addEventListener("click", ()=>speak(word.w));
@@ -2046,58 +2084,50 @@ function handleSubmit(){
   if(state.quizAnswered) return;
   const { word, mode } = state.quizCurrent;
 
-  // ── 심화: 콜로케이션 영작 ──────────────────────────────
-  if(mode === "colloc-write"){
-    const inp = document.getElementById("ansInput");
-    const val = normalizeAnswer(inp.value);
-    if(!val) return;
-    state.quizAnswered = true;
-    const correct = normalizeAnswer(state.quizCurrent.colloc.en);
-    const isCorrect = val === correct;
-    inp.classList.add(isCorrect ? "correct" : "wrong");
-    inp.disabled = true;
-    document.getElementById("submitBtn").disabled = true;
-    if(!isCorrect){
-      document.getElementById("feedback").innerHTML = `정답: <b style="color:var(--grade)">${escape(state.quizCurrent.colloc.en)}</b>`;
-    }
-    finishQuestion(isCorrect);
-    return;
-  }
-
-  // ── 심화: 예문 빈칸 채우기 · 문법 빈칸 채우기 ────────────
+  // ── 심화: 예문 빈칸 · 문법 빈칸 ────────────────────────
   if(mode === "cloze" || mode === "grammar-fill"){
-    const inputs = Array.from(document.querySelectorAll(".cloze-input"));
-    if(inputs.some(i => !i.value.trim())) return;
+    const containers = Array.from(document.querySelectorAll(".cloze-wa"));
+    if(containers.some(anyWordEmpty)) return;
     state.quizAnswered = true;
     let allOk = true;
-    inputs.forEach(i => {
-      const guess = normalizeAnswer(i.value);
-      const ans = normalizeAnswer(i.dataset.ans);
-      const ok = guess === ans;
-      i.classList.add(ok ? "correct" : "wrong");
-      i.disabled = true;
-      if(!ok) allOk = false;
+    containers.forEach(function(c){
+      const guess = normalizeAnswer(collectWordAnswer(c));
+      const ans = normalizeAnswer(c.dataset.answer);
+      const okAll = guess === ans;
+      const perGroup = Array.from(c.querySelectorAll('.word-group')).map(function(g, i){
+        const w = (c.dataset.answer || '').split(/\s+/)[i] || '';
+        const combined = (g.dataset.first || '') + (g.querySelector('.rest-input') ? g.querySelector('.rest-input').value : '');
+        return normalizeAnswer(combined) === normalizeAnswer(w);
+      });
+      markWordAnswer(c, perGroup);
+      if(!okAll) allOk = false;
     });
     document.getElementById("submitBtn").disabled = true;
     if(!allOk){
-      const answers = inputs.map(i => `<b style="color:var(--grade)">${escape(i.dataset.ans)}</b>`).join(" , ");
+      const answers = containers.map(function(c){ return `<b style="color:var(--grade)">${escape(c.dataset.answer)}</b>`; }).join(" , ");
       document.getElementById("feedback").innerHTML = `정답: ${answers}`;
     }
     finishQuestion(allOk);
     return;
   }
 
-  // ── 기본: 철자·리스닝 ────────────────────────────────
-  const inp = document.getElementById("ansInput");
-  const val = (inp.value||"").trim().toLowerCase();
-  if(!val) return;
+  // ── 기본/심화 단일 컨테이너: spelling / listening / colloc-write
+  const container = document.getElementById("wordAnswer");
+  if(!container) return;
+  if(anyWordEmpty(container)) return;
   state.quizAnswered = true;
-  const isCorrect = val === word.w.toLowerCase();
-  inp.classList.add(isCorrect ? "correct" : "wrong");
-  inp.disabled = true;
+  const correctAns = container.dataset.answer;
+  const guess = normalizeAnswer(collectWordAnswer(container));
+  const isCorrect = guess === normalizeAnswer(correctAns);
+  const perGroup = Array.from(container.querySelectorAll('.word-group')).map(function(g, i){
+    const w = (correctAns || '').split(/\s+/)[i] || '';
+    const combined = (g.dataset.first || '') + (g.querySelector('.rest-input') ? g.querySelector('.rest-input').value : '');
+    return normalizeAnswer(combined) === normalizeAnswer(w);
+  });
+  markWordAnswer(container, perGroup);
   document.getElementById("submitBtn").disabled = true;
   if(!isCorrect){
-    document.getElementById("feedback").innerHTML = `정답: <b style="color:var(--grade)">${escape(word.w)}</b>`;
+    document.getElementById("feedback").innerHTML = `정답: <b style="color:var(--grade)">${escape(correctAns)}</b>`;
   }
   finishQuestion(isCorrect);
 }
@@ -2222,8 +2252,7 @@ function finishSession(){
        <button class="start-btn alt" id="homeBtn">🏠 Home</button>`
     : `<button class="start-btn" id="retryBtn">🔁 다시 보기</button>
        ${hasWrong ? `<button class="start-btn wrong-only" id="retryWrongBtn">🔴 틀린문제만 (${state.quizWrongItems.length})</button>` : ""}
-       ${canGoAdvanced ? `<button class="start-btn adv" id="goAdvBtn">🎯 심화단계 도전</button>`
-                       : `<button class="start-btn alt" id="nextBtn">▶ 다음 챕터</button>`}`;
+       ${canGoAdvanced ? `<button class="start-btn adv" id="goAdvBtn">🎯 심화단계 도전</button>` : ""}`;
 
   main.innerHTML = `
     <div class="result">
@@ -2372,6 +2401,115 @@ function showHighGradeCelebration(msg){
    예: "appeared" → "a…"  ·  "in the absence of" → "i… t… a… o…"  ·  "feel bad" → "f… b…"  */
 function firstCharsHint(s){
   return (s||'').trim().split(/\s+/).filter(Boolean).map(w => (w.charAt(0)||'') + '…').join(' ');
+}
+/* 빈칸 프리필: 정답 각 단어의 첫 글자를 공백으로 이어붙여 반환 (인풋 value 로 채워둠)
+   예: "appeared" → "a"  ·  "in the absence of" → "i t a o"  ·  "feel bad" → "f b"  */
+function firstCharsPrefill(s){
+  return (s||'').trim().split(/\s+/).filter(Boolean).map(w => (w.charAt(0)||'')).join(' ');
+}
+/* 인풋에 프리필된 첫 글자 잠금 + 커서 이동 훅 부착 */
+function attachPrefillGuard(inp){
+  const prefill = inp.dataset.prefill || '';
+  if(!prefill) return;
+  const moveCursorEnd = () => { try{ inp.setSelectionRange(inp.value.length, inp.value.length); }catch(e){} };
+  inp.addEventListener('focus', () => setTimeout(moveCursorEnd, 0));
+  inp.addEventListener('click', () => {
+    if(inp.selectionStart < prefill.length) moveCursorEnd();
+  });
+  inp.addEventListener('keydown', e => {
+    // 프리필 영역 보호: 첫 글자들을 지우거나 그 앞으로 이동하는 키 방지
+    const s = inp.selectionStart, e2 = inp.selectionEnd;
+    if(e.key === 'Backspace' && s <= prefill.length && s === e2){ e.preventDefault(); moveCursorEnd(); return; }
+    if(e.key === 'Delete'    && s <  prefill.length){ e.preventDefault(); moveCursorEnd(); return; }
+    if((e.key === 'ArrowLeft' || e.key === 'Home') && s <= prefill.length){ e.preventDefault(); moveCursorEnd(); return; }
+  });
+  inp.addEventListener('input', () => {
+    // 사용자 값이 프리필로 시작하지 않으면 프리필을 앞에 다시 붙임 (드래그·잘라내기 등 방지)
+    if(!inp.value.startsWith(prefill)){
+      inp.value = prefill + inp.value.replace(new RegExp('^' + prefill.replace(/[.*+?^${}()|[\]\\]/g,'\\$&').slice(0,0)),'');
+      moveCursorEnd();
+    }
+  });
+}
+/* 프리필 인풋에서 사용자가 실제로 추가 입력한 부분이 있는지 (첫 글자만 남은 상태는 미제출) */
+function hasUserInput(inp){
+  const prefill = inp.dataset.prefill || '';
+  return (inp.value||'').trim().length > prefill.trim().length;
+}
+/* ============================================================
+   낱말박스 (자동완성 방어) — 각 단어당 [잠금 첫글자] + [빈 인풋]
+   ============================================================ */
+function renderWordAnswer(container, answer){
+  container.innerHTML = '';
+  const words = String(answer || '').trim().split(/\s+/).filter(Boolean);
+  words.forEach((word, wi) => {
+    const group = document.createElement('span');
+    const isSingle = word.length <= 1;
+    group.className = 'word-group' + (isSingle ? ' single-letter' : '');
+    group.dataset.first = isSingle ? '' : (word[0] || '');
+    group.dataset.full = word;
+    if(!isSingle){
+      const first = document.createElement('span');
+      first.className = 'first-letter';
+      first.textContent = word[0] || '';
+      group.appendChild(first);
+    }
+    const inp = document.createElement('input');
+    inp.className = 'rest-input';
+    inp.type = 'text';
+    inp.autocomplete = 'off';
+    inp.autocorrect = 'off';
+    inp.setAttribute('autocapitalize','off');
+    inp.spellcheck = false;
+    inp.inputMode = 'text';
+    inp.name = 'wa-' + Math.random().toString(36).slice(2,8);
+    inp.dataset.wi = wi;
+    inp.setAttribute('aria-label', (wi+1) + '번째 단어의 나머지 스펠링');
+    group.appendChild(inp);
+    container.appendChild(group);
+  });
+  wireWordInputs(container);
+}
+function wireWordInputs(container){
+  const inputs = Array.from(container.querySelectorAll('.rest-input'));
+  inputs.forEach((inp, i) => {
+    inp.addEventListener('input', () => {
+      inp.value = (inp.value || '').toLowerCase().replace(/[^a-z'\-]/g,'');
+    });
+    inp.addEventListener('keydown', e => {
+      if(e.key === 'Enter'){
+        const next = inputs[i+1];
+        if(next){ e.preventDefault(); next.focus(); }
+        else { e.preventDefault(); handleSubmit(); }
+      } else if(e.key === 'Tab' && !e.shiftKey){
+        const next = inputs[i+1];
+        if(next){ e.preventDefault(); next.focus(); }
+      } else if(e.key === 'Backspace' && !inp.value && i > 0){
+        e.preventDefault();
+        const prev = inputs[i-1];
+        prev.focus();
+        try{ prev.setSelectionRange(prev.value.length, prev.value.length); }catch(_e){}
+      }
+    });
+  });
+}
+function collectWordAnswer(container){
+  const groups = Array.from(container.querySelectorAll('.word-group'));
+  return groups.map(function(g){
+    var inp = g.querySelector('.rest-input');
+    return (g.dataset.first || '') + (inp ? inp.value : '');
+  }).join(' ');
+}
+function anyWordEmpty(container){
+  return Array.from(container.querySelectorAll('.rest-input')).some(function(i){ return !i.value.trim(); });
+}
+function markWordAnswer(container, perGroupOk){
+  const groups = Array.from(container.querySelectorAll('.word-group'));
+  groups.forEach(function(g, i){
+    g.classList.add(perGroupOk[i] ? 'correct' : 'wrong');
+    var inp = g.querySelector('.rest-input');
+    if(inp) inp.disabled = true;
+  });
 }
 function shuffle(arr){
   for(let i=arr.length-1;i>0;i--){
