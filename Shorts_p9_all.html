@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<title>Shorts_p9_all - Vocab Practice</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:"Segoe UI","Malgun Gothic",sans-serif;background:#f5f6fa;color:#222;font-size:16px;line-height:1.8;padding:0;min-height:100vh;}
+.header{background:linear-gradient(135deg,#1a237e,#3949ab);color:#fff;padding:16px 20px;text-align:center;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.2);}
+.header h1{font-size:18px;font-weight:700;}
+.header .level-info{font-size:14px;opacity:.85;margin-top:4px;}
+.header .sentence-info{font-size:12px;opacity:.7;margin-top:2px;}
+.progress-bar{height:6px;background:rgba(255,255,255,.2);border-radius:3px;margin-top:8px;overflow:hidden;}
+.progress-fill{height:100%;background:#81c784;border-radius:3px;transition:width .3s;}
+.content{max-width:700px;margin:0 auto;padding:20px 16px;}
+.ref-toggle-row{text-align:right;margin-bottom:10px;}
+.btn-ref{background:#fff;border:2px solid #3949ab;color:#3949ab;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer;}
+.ref-box{background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:12px 16px;margin-bottom:14px;font-size:14px;color:#5d4037;}
+.ref-box strong{display:block;font-size:12px;color:#e65100;margin-bottom:4px;}
+.passage{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,.06);line-height:2.5;font-size:16px;margin-bottom:16px;}
+.blank-select{display:inline-block;position:relative;}
+.blank-select select{appearance:none;-webkit-appearance:none;background:#e3f2fd;border:2px solid #90caf9;border-radius:6px;padding:4px 28px 4px 10px;font-size:15px;font-weight:600;color:#1565c0;cursor:pointer;min-width:100px;font-family:inherit;}
+.blank-select select:focus{border-color:#1565c0;outline:none;box-shadow:0 0 0 3px rgba(21,101,192,.15);}
+.blank-select.correct select{background:#c8e6c9;border-color:#66bb6a;color:#2e7d32;}
+.blank-select.wrong select{background:#ffcdd2;border-color:#ef5350;color:#c62828;animation:shake .3s;}
+.blank-input{display:inline-block;}
+.blank-input input{background:#e3f2fd;border:2px solid #90caf9;border-radius:6px;padding:4px 10px;font-size:15px;font-weight:600;color:#1565c0;font-family:inherit;width:auto;min-width:80px;}
+.blank-input input::placeholder{color:#90a4ae;font-weight:700;letter-spacing:2px;}
+.blank-input input:focus{border-color:#1565c0;outline:none;box-shadow:0 0 0 3px rgba(21,101,192,.15);}
+.blank-input.correct input{background:#c8e6c9;border-color:#66bb6a;color:#2e7d32;}
+.blank-input.wrong input{background:#ffcdd2;border-color:#ef5350;color:#c62828;animation:shake .3s;}
+.check-btn{font-size:12px;padding:4px 8px;margin-left:2px;border:1px solid #90caf9;border-radius:4px;background:#e3f2fd;cursor:pointer;}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-4px);}75%{transform:translateX(4px);}}
+.retry-badge{display:inline-block;background:#fff3e0;color:#e65100;font-size:12px;padding:2px 8px;border-radius:10px;margin-left:6px;font-weight:600;}
+.action-bar{text-align:center;padding:16px;position:sticky;bottom:0;background:#f5f6fa;}
+.btn{padding:12px 28px;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:8px;}
+.btn:active{transform:scale(.97);}
+.btn-retry{background:#f57c00;color:#fff;box-shadow:0 4px 12px rgba(245,124,0,.3);}
+.btn-next{background:#2e7d32;color:#fff;box-shadow:0 4px 12px rgba(46,125,50,.3);}
+.btn-outline2{background:#eee;color:#333;}
+.result-card{background:#fff;border-radius:12px;padding:24px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,.1);margin:10px 0;}
+.result-card h2{font-size:20px;margin-bottom:8px;color:#1a237e;}
+.result-card .score{font-size:48px;font-weight:800;margin:12px 0;}
+.result-card .score.pass{color:#2e7d32;}
+.result-card .score.fail{color:#c62828;}
+.result-card p{font-size:15px;color:#666;margin:4px 0;}
+.congrats{background:linear-gradient(135deg,#1a237e,#3949ab);color:#fff;border-radius:12px;padding:32px;text-align:center;margin:16px 0;}
+.congrats h2{font-size:22px;margin-bottom:10px;}
+.congrats .emoji{font-size:44px;margin-bottom:10px;}
+.congrats p{font-size:15px;opacity:.9;}
+.mode-selector{background:transparent;box-shadow:none;padding:0;}
+.mode-selector h2{font-size:18px;color:#1a237e;text-align:center;margin-bottom:16px;}
+.mode-grid{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;}
+.mode-card{background:#fff;border:2px solid #e0e0e0;border-radius:14px;padding:24px 20px;width:220px;text-align:center;cursor:pointer;transition:.15s;box-shadow:0 2px 10px rgba(0,0,0,.05);}
+.mode-card:hover{border-color:#3949ab;transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.1);}
+.mode-icon{font-size:36px;margin-bottom:8px;}
+.mode-title{font-size:16px;font-weight:700;color:#1a237e;margin-bottom:6px;}
+.mode-desc{font-size:13px;color:#777;margin-bottom:10px;}
+.mode-status{font-size:12px;color:#2e7d32;font-weight:700;}
+.back-btn{background:none;border:none;color:#3949ab;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:14px;padding:0;}
+.level-selector{text-align:center;margin:10px 0;}
+.level-btn{padding:14px 24px;margin:6px;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;transition:.15s;min-width:140px;}
+.level-btn.easy-btn{background:#e8f5e9;color:#2e7d32;border:2px solid #a5d6a7;}
+.level-btn.med-btn{background:#fff3e0;color:#e65100;border:2px solid #ffcc80;}
+.level-btn.hard-btn{background:#fce4ec;color:#c62828;border:2px solid #ef9a9a;}
+.level-btn.locked{opacity:.4;cursor:not-allowed;}
+.level-btn.done::after{content:"\2713";margin-left:6px;}
+</style></head><body>
+<div class="header" id="header">
+<h1 id="headerTitle">Shorts_p9_all</h1>
+<div class="level-info" id="levelInfo"></div>
+<div class="sentence-info" id="sentenceInfo"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+</div>
+<div class="content" id="content"></div>
+<div class="action-bar" id="actionBar"></div>
+<script>
+var DATA={"sentences":[{"en":{"words":[{"t":"In","c":"In","tr":""},{"t":"children,","c":"children","tr":","},{"t":"play","c":"play","tr":""},{"t":"has","c":"has","tr":""},{"t":"important","c":"important","tr":""},{"t":"functions","c":"functions","tr":""},{"t":"during","c":"during","tr":""},{"t":"development.","c":"development","tr":"."}],"blanks":{"easy":[2,5],"medium":[6],"hard":[]},"choices":{"2":{"choices":["work","play","clay","plan"],"correct":1},"5":{"choices":["dysfunctions","functionals","functions","junctions"],"correct":2},"6":{"choices":["while","for","during","through"],"correct":2}}},"kr":{"words":[{"t":"아이들에게","c":"아이들에게","tr":""},{"t":"있어서,","c":"있어서","tr":","},{"t":"놀이는","c":"놀이는","tr":""},{"t":"발달","c":"발달","tr":""},{"t":"동안","c":"동안","tr":""},{"t":"중요한","c":"중요한","tr":""},{"t":"기능들을","c":"기능들을","tr":""},{"t":"가진다.","c":"가진다","tr":"."}],"blanks":{"easy":[2,6],"medium":[],"hard":[]},"choices":{"2":{"choices":["노래는","놀임은","놀이는","놀이를"],"correct":2},"6":{"choices":["기능들을","기관들을","기능들이","기분들을"],"correct":0}}}},{"en":{"words":[{"t":"From","c":"From","tr":""},{"t":"its","c":"its","tr":""},{"t":"earliest","c":"earliest","tr":""},{"t":"beginnings","c":"beginnings","tr":""},{"t":"in","c":"in","tr":""},{"t":"infancy,","c":"infancy","tr":","},{"t":"play","c":"play","tr":""},{"t":"is","c":"is","tr":""},{"t":"a","c":"a","tr":""},{"t":"way","c":"way","tr":""},{"t":"in","c":"in","tr":""},{"t":"which","c":"which","tr":""},{"t":"children","c":"children","tr":""},{"t":"learn","c":"learn","tr":""},{"t":"about","c":"about","tr":""},{"t":"the","c":"the","tr":""},{"t":"world","c":"world","tr":""},{"t":"and","c":"and","tr":""},{"t":"their","c":"their","tr":""},{"t":"place","c":"place","tr":""},{"t":"in","c":"in","tr":""},{"t":"it.","c":"it","tr":"."}],"blanks":{"easy":[5,11],"medium":[2,10],"hard":[]},"choices":{"2":{"choices":["earlier","early","earliest","more early"],"correct":2},"5":{"choices":["adulthood","infantry","infamy","infancy"],"correct":3},"10":{"choices":["on","in","at","by"],"correct":1},"11":{"choices":["which","that","witch","whisk"],"correct":0}}},"kr":{"words":[{"t":"유아기에서의","c":"유아기에서의","tr":""},{"t":"가장","c":"가장","tr":""},{"t":"이른","c":"이른","tr":""},{"t":"시작들로부터,","c":"시작들로부터","tr":","},{"t":"놀이는","c":"놀이는","tr":""},{"t":"아이들이","c":"아이들이","tr":""},{"t":"세계에","c":"세계에","tr":""},{"t":"대해","c":"대해","tr":""},{"t":"그리고","c":"그리고","tr":""},{"t":"그","c":"그","tr":""},{"t":"안에서의","c":"안에서의","tr":""},{"t":"그들의","c":"그들의","tr":""},{"t":"위치에","c":"위치에","tr":""},{"t":"대해","c":"대해","tr":""},{"t":"배우는","c":"배우는","tr":""},{"t":"하나의","c":"하나의","tr":""},{"t":"방식이다.","c":"방식이다","tr":"."}],"blanks":{"easy":[10,16],"medium":[],"hard":[]},"choices":{"10":{"choices":["안에서의","밖에서의","안으로의","앞에서의"],"correct":0},"16":{"choices":["방법이다","방식이라","방침이다","방식이다"],"correct":3}}}},{"en":{"words":[{"t":"Children’s","c":"Children’s","tr":""},{"t":"play","c":"play","tr":""},{"t":"serves","c":"serves","tr":""},{"t":"as","c":"as","tr":""},{"t":"a","c":"a","tr":""},{"t":"training","c":"training","tr":""},{"t":"ground","c":"ground","tr":""},{"t":"for","c":"for","tr":""},{"t":"developing","c":"developing","tr":""},{"t":"physical","c":"physical","tr":""},{"t":"abilities","c":"abilities","tr":""},{"t":"―","c":"―","tr":""},{"t":"skills","c":"skills","tr":""},{"t":"like","c":"like","tr":""},{"t":"walking,","c":"walking","tr":","},{"t":"running,","c":"running","tr":","},{"t":"and","c":"and","tr":""},{"t":"jumping","c":"jumping","tr":""},{"t":"that","c":"that","tr":""},{"t":"are","c":"are","tr":""},{"t":"necessary","c":"necessary","tr":""},{"t":"for","c":"for","tr":""},{"t":"everyday","c":"everyday","tr":""},{"t":"living.","c":"living","tr":"."}],"blanks":{"easy":[2,9,20],"medium":[3],"hard":[]},"choices":{"2":{"choices":["hinders","nerves","serves","curves"],"correct":2},"3":{"choices":["like","for","of","as"],"correct":3},"9":{"choices":["physical","mental","physician","physique"],"correct":0},"20":{"choices":["unnecessary","necessary","necessitate","neccessary"],"correct":1}}},"kr":{"words":[{"t":"아이들의","c":"아이들의","tr":""},{"t":"놀이는","c":"놀이는","tr":""},{"t":"신체적","c":"신체적","tr":""},{"t":"능력들을","c":"능력들을","tr":""},{"t":"발달시키기","c":"발달시키기","tr":""},{"t":"위한","c":"위한","tr":""},{"t":"훈련","c":"훈련","tr":""},{"t":"장(場)으로서","c":"장(場)으로서","tr":""},{"t":"기능한다","c":"기능한다","tr":""},{"t":"―","c":"―","tr":""},{"t":"일상적인","c":"일상적인","tr":""},{"t":"생활에","c":"생활에","tr":""},{"t":"필요한","c":"필요한","tr":""},{"t":"걷기,","c":"걷기","tr":","},{"t":"달리기,","c":"달리기","tr":","},{"t":"그리고","c":"그리고","tr":""},{"t":"뛰기와","c":"뛰기와","tr":""},{"t":"같은","c":"같은","tr":""},{"t":"기술들.","c":"기술들","tr":"."}],"blanks":{"easy":[2,8,18],"medium":[],"hard":[]},"choices":{"2":{"choices":["정신적","신체적","사회적","신체를"],"correct":1},"8":{"choices":["기능한다","기능했다","작용된다","기능하며"],"correct":0},"18":{"choices":["기능들","기질들","기술들","기억들"],"correct":2}}}},{"en":{"words":[{"t":"Play","c":"Play","tr":""},{"t":"also","c":"also","tr":""},{"t":"allows","c":"allows","tr":""},{"t":"children","c":"children","tr":""},{"t":"to","c":"to","tr":""},{"t":"try","c":"try","tr":""},{"t":"out","c":"out","tr":""},{"t":"and","c":"and","tr":""},{"t":"learn","c":"learn","tr":""},{"t":"social","c":"social","tr":""},{"t":"behaviors","c":"behaviors","tr":""},{"t":"and","c":"and","tr":""},{"t":"to","c":"to","tr":""},{"t":"acquire","c":"acquire","tr":""},{"t":"values","c":"values","tr":""},{"t":"and","c":"and","tr":""},{"t":"personality","c":"personality","tr":""},{"t":"traits","c":"traits","tr":""},{"t":"that","c":"that","tr":""},{"t":"will","c":"will","tr":""},{"t":"be","c":"be","tr":""},{"t":"important","c":"important","tr":""},{"t":"in","c":"in","tr":""},{"t":"adulthood.","c":"adulthood","tr":"."}],"blanks":{"easy":[2,5,10,16],"medium":[4,13,17,23],"hard":[]},"choices":{"2":{"choices":["prevents","alloys","arrows","allows"],"correct":3},"4":{"choices":["for","of","into","to"],"correct":3},"5":{"choices":["try","avoid","dry","prey"],"correct":0},"10":{"choices":["instincts","behaviors","behaviors","behaviours"],"correct":1},"13":{"choices":["acquiring","acquire","acquired","to acquiring"],"correct":1},"16":{"choices":["impersonality","personality","personalty","personally"],"correct":1},"17":{"choices":["trait","traited","traiting","traits"],"correct":3},"23":{"choices":["adult","adults","adulting","adulthood"],"correct":3}}},"kr":{"words":[{"t":"놀이는","c":"놀이는","tr":""},{"t":"또한","c":"또한","tr":""},{"t":"아이들이","c":"아이들이","tr":""},{"t":"사회적","c":"사회적","tr":""},{"t":"행동들을","c":"행동들을","tr":""},{"t":"시도해보고","c":"시도해보고","tr":""},{"t":"배울","c":"배울","tr":""},{"t":"수","c":"수","tr":""},{"t":"있게","c":"있게","tr":""},{"t":"하며,","c":"하며","tr":","},{"t":"그리고","c":"그리고","tr":""},{"t":"성인기에","c":"성인기에","tr":""},{"t":"중요하게","c":"중요하게","tr":""},{"t":"될","c":"될","tr":""},{"t":"가치들과","c":"가치들과","tr":""},{"t":"성격","c":"성격","tr":""},{"t":"특성들을","c":"특성들을","tr":""},{"t":"획득할","c":"획득할","tr":""},{"t":"수","c":"수","tr":""},{"t":"있게","c":"있게","tr":""},{"t":"한다.","c":"한다","tr":"."}],"blanks":{"easy":[3,15],"medium":[],"hard":[]},"choices":{"3":{"choices":["신체적","사교적","사회를","사회적"],"correct":3},"15":{"choices":["성질","성향","성적","성격"],"correct":3}}}}],"thresholds":{"en":{"easy":90,"medium":90,"hard":90},"kr":{"easy":90,"medium":90,"hard":90}},"includeKR":true};
+
+var CHO=['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+function choseong(str){
+  var out='';
+  for(var i=0;i<str.length;i++){
+    var code=str.charCodeAt(i)-0xAC00;
+    if(code>=0&&code<=11171) out+=CHO[Math.floor(code/588)];
+    else out+=str[i];
+  }
+  return out;
+}
+
+var MODE_NAMES={en:'영어 빈칸',kr:'한글 해석 빈칸'};
+var LEVEL_NAMES={easy:'쉬움',medium:'중간',hard:'심화'};
+
+var currentMode=null, currentLevel=null, currentSentence=0;
+var blankStates={}, sentenceResults=[], sentenceRecorded={}, showRef=false;
+var progress={
+  en:{unlocked:{easy:true,medium:false,hard:false}, completed:{easy:false,medium:false,hard:false}},
+  kr:{unlocked:{easy:true,medium:false,hard:false}, completed:{easy:false,medium:false,hard:false}}
+};
+
+function init(){ if(!DATA.includeKR){ showLevelSelector('en'); } else { showModeSelector(); } }
+
+function modeCard(mode,icon,title,desc){
+  var p=progress[mode];
+  var done=['easy','medium','hard'].filter(function(l){return p.completed[l];}).length;
+  var h='<div class="mode-card"';
+  h+=' onclick="showLevelSelector(\''+mode+'\')"';
+  h+='>';
+  h+='<div class="mode-icon">'+icon+'</div>';
+  h+='<div class="mode-title">'+title+'</div>';
+  h+='<div class="mode-desc">'+desc+'</div>';
+  h+='<div class="mode-status">완료 '+done+'/3</div></div>';
+  return h;
+}
+
+function showModeSelector(){
+  currentMode=null;
+  document.getElementById('levelInfo').textContent='모드를 선택하세요';
+  document.getElementById('sentenceInfo').textContent='';
+  document.getElementById('progressFill').style.width='0%';
+  document.getElementById('actionBar').innerHTML='';
+  var h='<div class="mode-selector"><h2>연습 모드를 선택하세요</h2><div class="mode-grid">';
+  h+=modeCard('en','🔤','영어 빈칸','영어 단어·표현을 채워보세요');
+  h+=modeCard('kr','🇰🇷','한글 해석 빈칸','문장의 한글 해석을 채워보세요');
+  h+='</div></div>';
+  document.getElementById('content').innerHTML=h;
+}
+
+function showLevelSelector(mode){
+  currentMode=mode;
+  document.getElementById('levelInfo').textContent=MODE_NAMES[mode];
+  document.getElementById('sentenceInfo').textContent='';
+  document.getElementById('progressFill').style.width='0%';
+  document.getElementById('actionBar').innerHTML='';
+  var p=progress[mode];
+  var h='';
+  if(DATA.includeKR) h+='<button class="back-btn" onclick="showModeSelector()">← 모드 선택으로</button>';
+  h+='<div class="mode-selector"><h2>단계를 선택하세요</h2><div class="level-selector">';
+  ['easy','medium','hard'].forEach(function(lv){
+    var locked=!p.unlocked[lv], done=p.completed[lv];
+    var cls=lv==='medium'?'med':lv;
+    h+='<button class="level-btn '+cls+'-btn'+(locked?' locked':'')+(done?' done':'')+'"';
+    if(!locked) h+=' onclick="startLevel(\''+mode+'_'+lv+'\')"';
+    h+='>'+LEVEL_NAMES[lv]+'</button><br>';
+  });
+  h+='</div></div>';
+  document.getElementById('content').innerHTML=h;
+}
+
+function getCumulativeBlanks(blanksObj, level){
+  if(level==='easy') return blanksObj.easy.slice();
+  if(level==='medium') return blanksObj.easy.concat(blanksObj.medium);
+  return blanksObj.easy.concat(blanksObj.medium, blanksObj.hard);
+}
+
+function startLevel(key){
+  var parts=key.split('_');
+  var mode=parts[0], level=parts[1];
+  if(!progress[mode].unlocked[level]) return;
+  currentMode=mode; currentLevel=level; currentSentence=0;
+  blankStates={}; sentenceResults=[]; sentenceRecorded={}; showRef=false;
+  renderSentence();
+}
+
+function getChoicesFor(idx){ return DATA.sentences[currentSentence][currentMode].choices[idx]; }
+
+function renderSentence(){
+  var s=DATA.sentences[currentSentence];
+  var track=s[currentMode];
+  var blanks=getCumulativeBlanks(track.blanks, currentLevel);
+  var total=blanks.length, answered=0;
+  blanks.forEach(function(idx){ var st=blankStates[idx]; if(st&&st.answered) answered++; });
+
+  var otherWords = currentMode==='en' ? (s.kr && s.kr.words) : (s.en && s.en.words);
+  var showRefBtn = !!(otherWords && otherWords.length>0);
+  var h='';
+  if(showRefBtn) h+='<div class="ref-toggle-row"><button class="btn-ref" id="refBtn" onclick="toggleRef()"></button></div>';
+  h+='<div class="ref-box" id="refBox" style="display:none;"></div>';
+  h+='<div class="passage">';
+  track.words.forEach(function(w,idx){
+    if(blanks.indexOf(idx)!==-1){
+      var st=blankStates[idx]||{answered:false,correct:false,attempts:0};
+      h += (currentLevel==='hard') ? renderTypingBlank(idx,w,st) : renderSelectBlank(idx,w,st);
+      if(w.tr) h+=w.tr;
+    } else { h+=w.t; }
+    h+=' ';
+  });
+  h+='</div>';
+  document.getElementById('content').innerHTML=h;
+
+  document.getElementById('levelInfo').textContent=MODE_NAMES[currentMode]+' · '+LEVEL_NAMES[currentLevel]+' 단계';
+  document.getElementById('sentenceInfo').textContent='문장 '+(currentSentence+1)+' / '+DATA.sentences.length;
+  document.getElementById('progressFill').style.width=((currentSentence+(total?answered/total:1))/DATA.sentences.length*100)+'%';
+
+  if(showRefBtn){ updateRefButtonLabel(); renderRefBox(); }
+
+  var ab=document.getElementById('actionBar');
+  if(total===0 || answered===total){
+    recordSentenceResultIfNeeded();
+    var isLastSentence=currentSentence>=DATA.sentences.length-1;
+    ab.innerHTML='<button class="btn btn-next" onclick="nextSentence()">'+(isLastSentence?'결과 보기':'다음 문장 →')+'</button>';
+  } else {
+    ab.innerHTML='';
+  }
+}
+
+function renderSelectBlank(idx,w,st){
+  var cfg=getChoicesFor(idx);
+  if(st.answered && st.correct){
+    return '<span class="blank-select correct"><select disabled><option>'+cfg.choices[cfg.correct]+'</option></select></span>';
+  }
+  if(st.answered && !st.correct && st.attempts>=2){
+    return '<span class="blank-select wrong"><select disabled><option>'+cfg.choices[cfg.correct]+' ✗</option></select></span>';
+  }
+  var opts='<option value="">___</option>';
+  cfg.choices.forEach(function(c,ci){ if(c) opts+='<option value="'+ci+'">'+c+'</option>'; });
+  var rb = st.attempts===1 ? '<span class="retry-badge">재도전</span>' : '';
+  return '<span class="blank-select" id="bs'+idx+'"><select onchange="checkSelect('+idx+',this.value)">'+opts+'</select>'+rb+'</span>';
+}
+
+function renderTypingBlank(idx,w,st){
+  var answer=w.c;
+  var hint = currentMode==='kr' ? choseong(answer) : '타이핑';
+  if(st.answered && st.correct){
+    return '<span class="blank-input correct"><input disabled value="'+answer+'"></span>';
+  }
+  if(st.answered && !st.correct && st.attempts>=2){
+    return '<span class="blank-input wrong"><input disabled value="'+answer+' ✗"></span>';
+  }
+  var rb = st.attempts===1 ? '<span class="retry-badge">재도전</span>' : '';
+  var sz = Math.max(answer.length+2, 6);
+  return '<span class="blank-input" id="bs'+idx+'">'
+    +'<input size="'+sz+'" placeholder="'+hint+'" onkeydown="if(event.key===\'Enter\')checkType('+idx+',this.value)">'
+    +'<button class="check-btn" onclick="checkType('+idx+',this.previousElementSibling.value)">확인</button>'
+    +rb+'</span>';
+}
+
+function checkSelect(idx,val){
+  if(val==='') return;
+  var cfg=getChoicesFor(idx);
+  var st=blankStates[idx]||{answered:false,correct:false,attempts:0};
+  st.attempts++;
+  if(parseInt(val)===cfg.correct){
+    st.answered=true; st.correct=(st.attempts===1);
+    blankStates[idx]=st; renderSentence();
+  } else if(st.attempts>=2){
+    st.answered=true; st.correct=false;
+    blankStates[idx]=st; renderSentence();
+  } else {
+    blankStates[idx]=st; shake(idx);
+  }
+}
+
+function checkType(idx,val){
+  if(!val.trim()) return;
+  var w=DATA.sentences[currentSentence][currentMode].words[idx];
+  var st=blankStates[idx]||{answered:false,correct:false,attempts:0};
+  st.attempts++;
+  var ok = val.trim().toLowerCase()===w.c.toLowerCase();
+  if(ok){
+    st.answered=true; st.correct=true;
+    blankStates[idx]=st; renderSentence();
+  } else if(st.attempts>=2){
+    st.answered=true; st.correct=false;
+    blankStates[idx]=st; renderSentence();
+  } else {
+    blankStates[idx]=st; shake(idx);
+  }
+}
+
+function shake(idx){
+  var el=document.getElementById('bs'+idx);
+  if(el){ el.classList.add('wrong'); setTimeout(function(){ el.classList.remove('wrong'); renderSentence(); },600); }
+}
+
+function updateRefButtonLabel(){
+  var btn=document.getElementById('refBtn');
+  if(!btn) return;
+  var label = currentMode==='en' ? '해석' : '원문';
+  btn.textContent = showRef ? (label+' 숨기기') : (label+' 보기');
+}
+
+function renderRefBox(){
+  var box=document.getElementById('refBox');
+  if(!box) return;
+  if(!showRef){ box.style.display='none'; box.innerHTML=''; return; }
+  var s=DATA.sentences[currentSentence];
+  var otherMode = currentMode==='en' ? 'kr' : 'en';
+  var label = currentMode==='en' ? '한글 해석 (직역)' : '영어 원문';
+  var text = s[otherMode].words.map(function(w){return w.t;}).join(' ');
+  box.style.display='block';
+  box.innerHTML='<strong>'+label+'</strong><div>'+text+'</div>';
+}
+
+function toggleRef(){
+  showRef=!showRef;
+  updateRefButtonLabel();
+  renderRefBox();
+}
+
+function recordSentenceResultIfNeeded(){
+  if(sentenceRecorded[currentSentence]) return;
+  var s=DATA.sentences[currentSentence];
+  var blanks=getCumulativeBlanks(s[currentMode].blanks, currentLevel);
+  var correct=0;
+  blanks.forEach(function(idx){ var st=blankStates[idx]; if(st&&st.correct) correct++; });
+  sentenceResults.push({correct:correct,total:blanks.length});
+  sentenceRecorded[currentSentence]=true;
+}
+
+function nextSentence(){
+  if(currentSentence<DATA.sentences.length-1){
+    currentSentence++;
+    blankStates={}; showRef=false;
+    renderSentence();
+  } else {
+    finishLevel();
+  }
+}
+
+function finishLevel(){
+  var totalCorrect=sentenceResults.reduce(function(a,r){return a+r.correct;},0);
+  var totalBlanks=sentenceResults.reduce(function(a,r){return a+r.total;},0);
+  var pct= totalBlanks>0 ? Math.round(totalCorrect/totalBlanks*100) : 100;
+  var threshold=DATA.thresholds[currentMode][currentLevel];
+  var pass=pct>=threshold;
+  if(pass){
+    progress[currentMode].completed[currentLevel]=true;
+    var order=['easy','medium','hard'];
+    var ni=order.indexOf(currentLevel)+1;
+    if(ni<order.length) progress[currentMode].unlocked[order[ni]]=true;
+  }
+  renderResultScreen(pass,pct,totalCorrect,totalBlanks,threshold);
+}
+
+function renderResultScreen(pass,pct,correct,total,threshold){
+  document.getElementById('sentenceInfo').textContent='';
+  document.getElementById('progressFill').style.width='100%';
+
+  var h='<div class="result-card"><h2>'+MODE_NAMES[currentMode]+' · '+LEVEL_NAMES[currentLevel]+' 단계 결과</h2>';
+  h+='<div class="score '+(pass?'pass':'fail')+'">'+pct+'%</div>';
+  h+='<p>'+total+'개 빈칸 중 '+correct+'개 정답 (기준 '+threshold+'%)</p></div>';
+
+  var order=['easy','medium','hard'];
+  var isLast = currentLevel==='hard';
+  if(pass && isLast){
+    h+='<div class="congrats"><div class="emoji">🎉</div><h2>'+MODE_NAMES[currentMode]+' 트랙 완료!</h2>'
+      +'<p>쉬움 · 중간 · 심화 단계를 모두 통과했습니다.</p></div>';
+  }
+  document.getElementById('content').innerHTML=h;
+
+  var ah='';
+  if(!pass){
+    ah='<button class="btn btn-retry"';
+    ah+=' onclick="startLevel(\''+currentMode+'_'+currentLevel+'\')"';
+    ah+='>재도전</button>';
+    ah+=' <button class="btn btn-outline2"';
+    ah+=' onclick="showLevelSelector(\''+currentMode+'\')"';
+    ah+='>단계 선택으로</button>';
+  } else if(!isLast){
+    var next=order[order.indexOf(currentLevel)+1];
+    ah='<button class="btn btn-next"';
+    ah+=' onclick="startLevel(\''+currentMode+'_'+next+'\')"';
+    ah+='>다음 단계 →</button>';
+    ah+=' <button class="btn btn-outline2"';
+    ah+=' onclick="showLevelSelector(\''+currentMode+'\')"';
+    ah+='>단계 선택으로</button>';
+  } else {
+    ah='<button class="btn btn-outline2" onclick="showModeSelector()">모드 선택으로</button>';
+  }
+  document.getElementById('actionBar').innerHTML=ah;
+}
+
+init();
+</script></body></html>
