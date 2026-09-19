@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>연습문제지 — M2Lesson8_main1 (기본이해)</title>
+<style>
+body{margin:0;background:#e9e9e9;font-family:'Noto Sans KR','Malgun Gothic',sans-serif;}
+.toolbar{position:sticky;top:0;z-index:50;max-width:860px;margin:0 auto;padding:10px 14px;background:#fff;border-bottom:2px solid #3f8a83;display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.toolbar button{font-family:inherit;font-size:13px;padding:7px 14px;cursor:pointer;border:1.5px solid #3f8a83;background:#fff;color:#2f6f69;border-radius:5px;font-weight:700;}
+.toolbar button.active{background:#3f8a83;color:#fff;}
+.toolbar button:disabled{cursor:not-allowed;opacity:.45;background:#eee;color:#888;border-color:#bbb;}
+
+.ws{--ink:#1a1a1a;--soft:#444;--line:#1a1a1a;max-width:800px;margin:16px auto;background:#fff;color:var(--ink);
+  padding:26px 30px 40px;border:1px solid #ccc;font-family:'Noto Sans KR','Malgun Gothic',sans-serif;}
+.ws h1{font-size:21px;margin:0 0 6px;}
+.ws .meta{font-size:13.5px;color:var(--soft);margin-bottom:6px;}
+.ws .namebar{font-size:14px;margin:10px 0 18px;border:1px solid #999;border-radius:6px;padding:8px 12px;display:flex;gap:26px;}
+.ws .namebar span{display:inline-flex;align-items:center;gap:6px;}
+.ws .passage{border:1.5px solid var(--line);border-radius:8px;padding:18px 22px 8px;}
+.ws-seg{display:flex;align-items:stretch;gap:0;}
+.ws-seg + .ws-seg{border-top:1.5px dashed #999;}
+.ws-seg-text{flex:1;min-width:0;padding:4px 18px 6px 0;}
+.ws .stag{display:inline-block;min-width:20px;text-align:center;font-size:12px;color:#999;border:1px solid #ccc;border-radius:4px;padding:1px 5px;margin-right:6px;vertical-align:middle;}
+.ws-sentence{font-size:16.5px;line-height:2.05;margin-bottom:4px;}
+.ws-tag{display:inline-block;font-size:12px;font-weight:800;border:1.5px solid var(--line);border-radius:4px;padding:1px 7px;margin-right:6px;vertical-align:middle;}
+.tag-svoc{background:#fff;}
+.interp-underline{border-bottom:2px dotted var(--ink);padding-bottom:1px;}
+.ws-blank{font-size:14px;color:#333;margin:2px 0 12px 26px;}
+.blank-fill{display:inline-block;border-bottom:1px dotted #666;min-width:220px;height:1px;vertical-align:middle;margin-left:2px;}
+.blank-fill.short{min-width:40px;}
+.blank-lines{display:block;margin-top:4px;}
+.blank-lines .ln{display:block;border-bottom:1px dotted #888;height:22px;}
+.para-box{width:190px;flex:0 0 190px;border-left:1.5px solid var(--line);padding:14px 12px;display:flex;flex-direction:column;gap:8px;background:#fbfbfb;}
+.para-range{font-size:13px;font-weight:700;color:#555;}
+.para-write .ln{display:block;border-bottom:1px dotted #888;height:24px;}
+.task-block{border-top:2px solid var(--line);margin-top:22px;padding-top:14px;}
+.task-title{font-size:15.5px;font-weight:800;margin-bottom:6px;}
+.task-instr{font-size:13.5px;color:var(--soft);margin-bottom:10px;line-height:1.6;}
+.kw-match{display:flex;gap:30px;margin-bottom:8px;}
+.kw-col{flex:1;display:flex;flex-direction:column;gap:14px;}
+.kw-chip{border:1.5px solid var(--line);border-radius:16px;padding:6px 14px;font-size:13.5px;}
+.kw-order-blank{font-size:12.5px;color:#555;margin-right:4px;}
+.kw-desc-block{background:#f6f6f6;border:1px dashed #999;border-radius:6px;padding:8px 12px;}
+.kw-desc-ans{font-size:13.5px;line-height:1.7;}
+.paraphrase-ko{font-size:14.5px;font-weight:700;background:#f6f6f6;border:1px dashed #999;border-radius:6px;padding:8px 12px;margin-bottom:8px;}
+.hint-box{font-size:13px;color:var(--soft);border:1px dashed #999;border-radius:6px;padding:6px 10px;margin-bottom:8px;}
+.gw-item{margin-bottom:16px;}
+.gw-hint{font-size:13.5px;margin-bottom:4px;color:var(--soft);}
+.gw-grammar-ans{font-size:13px;margin-bottom:4px;background:#f6f6f6;border:1px dashed #999;border-radius:6px;padding:4px 10px;display:inline-block;}
+.gw-ko{font-size:14.5px;font-weight:700;background:#f6f6f6;border:1px dashed #999;border-radius:6px;padding:6px 12px;margin-bottom:6px;}
+.ws .footnote{font-size:12.5px;color:#777;margin-top:18px;border-top:1px dashed #bbb;padding-top:8px;}
+.ws .ans{display:none;}
+.ws.answer-mode .ans{display:inline;color:#111;font-weight:700;}
+.ws.answer-mode .kw-desc-block.ans{display:block;}
+.ws.answer-mode .interp-blank .blank-fill,
+.ws.answer-mode .ws-blank .blank-fill.short{display:none;}
+.ws.answer-mode .blank-lines{display:none;}
+.ws.answer-mode .svoc-answer{display:block;}
+.ws.answer-mode .para-write{display:none;}
+.ws.answer-mode .para-ans{display:block;}
+.svoc-answer{background:#f6f6f6;border:1px dashed #999;border-radius:6px;padding:6px 10px;margin-left:0;}
+
+/* --- 인터랙티브(화면 입력형) 요소 --- */
+.ws-input{font-family:inherit;font-size:14.5px;color:#111;border:none;border-bottom:1.5px solid #666;background:#fff;padding:3px 6px;min-width:240px;outline:none;}
+.ws-input:focus{border-bottom-color:#3f8a83;background:#f7fdfc;}
+.ws-input.wide{width:70%;min-width:260px;}
+.ws-select{font-family:inherit;font-size:14px;color:#111;border:1.5px solid #666;border-radius:6px;padding:3px 8px;background:#fff;cursor:pointer;}
+.qtag{display:inline-block;font-size:11px;font-weight:700;color:#2f6f69;background:#eef6f5;border:1px solid #bcdcd8;border-radius:5px;padding:1px 7px;margin-right:6px;vertical-align:middle;letter-spacing:.3px;}
+.pts{display:inline-block;font-size:11.5px;font-weight:700;color:#a15c00;background:#fff6e6;border:1px solid #f0d29a;border-radius:5px;padding:1px 6px;margin-left:4px;vertical-align:middle;}
+.q-row{margin:10px 0 16px;padding-left:2px;}
+.q-label{font-size:13.5px;color:#333;margin-bottom:5px;}
+.hint-btn{font-family:inherit;font-size:12px;font-weight:700;color:#2f6f69;border:1px solid #3f8a83;background:#fff;border-radius:5px;padding:2px 10px;cursor:pointer;margin-left:8px;vertical-align:middle;}
+.hint-btn:hover{background:#eef6f5;}
+.hint-ko{display:none;font-size:13.5px;color:#2f6f69;background:#eef6f5;border:1px dashed #7fc7bf;border-radius:6px;padding:5px 10px;margin-top:6px;}
+.hint-ko.show{display:block;}
+.arrange-tray{display:flex;flex-wrap:wrap;gap:8px;padding:12px;border:1.5px dashed #999;border-radius:8px;background:#fafafa;min-height:46px;margin-top:2px;}
+.tile{font-family:inherit;font-size:15px;background:#fff;border:1.5px solid #333;border-radius:7px;padding:6px 13px 6px 8px;cursor:grab;user-select:none;box-shadow:0 1px 0 #ccc;white-space:nowrap;display:inline-flex;align-items:center;gap:7px;touch-action:none;}
+.tile.dragging{opacity:.4;}
+.tile.dragging.tile-ghost{position:fixed;opacity:.97;box-shadow:0 8px 20px rgba(0,0,0,.35);transform:scale(1.04);z-index:9999;pointer-events:none;cursor:grabbing;}
+.arrange-caret{display:inline-block;width:4px;flex-shrink:0;align-self:center;background:#3f8a83;border-radius:2px;}
+.tile:active{cursor:grabbing;}
+.num-badge{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:#3f8a83;color:#fff;font-size:12px;font-weight:800;pointer-events:none;}
+.arrange-answer{display:none;font-size:14.5px;font-weight:700;color:#111;background:#f6f6f6;border:1px dashed #999;border-radius:6px;padding:6px 10px;margin-top:8px;}
+.ws.answer-mode .arrange-answer{display:block;}
+.correct-tag{display:none;font-size:12.5px;}
+.ws.answer-mode .correct-tag{display:inline-block;color:#127a4f;font-weight:700;margin-left:8px;}
+.grade-box{margin-top:22px;border:2px solid #3f8a83;border-radius:8px;padding:14px 16px;background:#f4fbfa;display:none;}
+.grade-box.show{display:block;}
+.grade-box h3{margin:0 0 8px;font-size:15px;color:#2f6f69;}
+.grade-json{white-space:pre-wrap;font-family:ui-monospace,Consolas,monospace;font-size:12px;background:#fff;border:1px solid #cde;border-radius:6px;padding:8px;max-height:260px;overflow:auto;}
+.mc-mark{font-weight:700;margin:0 3px 0 1px;}
+.mc-choices{display:flex;flex-direction:column;gap:6px;margin-top:8px;}
+.mc-choices label{font-size:14px;cursor:pointer;display:flex;gap:7px;align-items:flex-start;}
+.ws-para{line-height:1.95;margin:8px 0;font-size:15px;}
+
+.score-banner{display:none;position:sticky;top:0;z-index:40;margin:0 0 18px;padding:12px 16px;border-radius:9px;border:2px solid #3f8a83;background:#f4fbfa;box-shadow:0 2px 6px rgba(0,0,0,.08);}
+.score-banner.show{display:block;}
+.score-banner.pass{border-color:#2f9e6b;background:#eafaf1;}
+.score-banner.fail{border-color:#d0555f;background:#fdeeef;}
+.score-banner .sb-main{font-size:16.5px;font-weight:800;color:#1c1c1c;}
+.score-banner .sb-sub{font-size:12.5px;color:#555;margin-top:3px;}
+.qgrade{display:none;font-size:11.5px;font-weight:800;padding:1px 8px;border-radius:999px;margin-left:6px;vertical-align:middle;white-space:nowrap;}
+.ws.answer-mode .qgrade.show{display:inline-block;}
+.qgrade.ok{background:#e3f7ee;color:#127a4f;border:1px solid #8fd9b6;}
+.qgrade.bad{background:#fdecee;color:#b23a48;border:1px solid #f3b7bd;}
+.qgrade.partial{background:#fff6e6;color:#a15c00;border:1px solid #f0d29a;}
+.qgrade.pending{background:#eef2f7;color:#555;border:1px solid #cfd8e3;}
+.gc-student-ans{display:block;width:70%;min-width:260px;margin-top:2px;padding:6px 9px;font-size:14.5px;color:#111;background:#f7fdfc;border:1px solid #666;border-radius:5px;white-space:pre-wrap;overflow-wrap:break-word;word-break:break-word;line-height:1.55;}
+.gc-student-ans.empty{color:#999;font-style:italic;}
+.gc-partial-reason{margin-top:6px;font-size:12.5px;color:#a15c00;background:#fff6e6;border:1px dashed #f0d29a;border-radius:6px;padding:6px 10px;line-height:1.5;white-space:pre-wrap;overflow-wrap:break-word;}
+
+/* ===== 재시험(오답만 다시 풀기) ===== */
+.retry-banner{display:none;margin:0 0 16px;padding:11px 15px;border:1.5px dashed #3f8a83;border-radius:8px;background:#eef6f5;font-size:13px;color:#2f6f69;line-height:1.6;}
+.ws.retry-mode .retry-banner{display:block;}
+[data-qid].q-locked{position:relative;opacity:.6;background:#f4f4f4;border-radius:6px;}
+[data-qid].q-locked input,[data-qid].q-locked select,[data-qid].q-locked textarea,[data-qid].q-locked .tile{pointer-events:none;}
+[data-qid].q-locked::after{content:attr(data-lock-label);position:absolute;top:-10px;right:8px;font-size:11px;font-weight:800;color:#2f6f69;background:#eafaf1;border:1px solid #8fd9b6;border-radius:999px;padding:2px 10px;white-space:nowrap;}
+[data-qid].q-retry-target{position:relative;box-shadow:0 0 0 2px #f0d29a inset;border-radius:6px;}
+[data-qid].q-retry-target::after{content:attr(data-retry-label);position:absolute;top:-10px;right:8px;font-size:11px;font-weight:800;color:#a15c00;background:#fff6e6;border:1px solid #f0d29a;border-radius:999px;padding:2px 10px;white-space:nowrap;}
+#bRetryWrong{display:none;}
+#bRetryWrong.show{display:inline-block;}
+
+@media print{
+  .retry-banner{display:none;}
+  .toolbar{display:none;}
+  body{background:#fff;}
+  .ws{border:none;margin:0;max-width:none;padding:14mm 14mm 10mm;}
+  .task-block{page-break-inside:avoid;}
+  .s-wrap{page-break-inside:avoid;}
+  .score-banner{position:static;box-shadow:none;}
+}
+</style>
+</head>
+<body>
+<div class="toolbar"><button id="bSubmit" onclick="submitTest()">✅ 테스트 제출</button><button id="bRetryWrong" onclick="startRetryMode()">🎯 오답만 재시험</button><button id="bRetry" class="active" onclick="retryTest()">🔁 전체 초기화</button><button onclick="window.print()">🖨 인쇄 / PDF</button></div>
+<div class="ws" id="wsRoot">
+<div class="retry-banner" id="retryBanner"></div>
+<div class="score-banner" id="scoreBanner"><div class="sb-main" id="sbMain"></div><div class="sb-sub" id="sbSub"></div></div>
+<h1>📝 연습문제지 — 순서OX</h1>
+<div class="meta">지문: <b>M2Lesson8_main1</b> · 대상 학년: <b>중2</b></div>
+<div class="namebar"><span>이름: <input type="text" class="ws-input" data-role="studentName" style="min-width:150px;" placeholder="이름을 입력"></span><span>학년: <select class="ws-select" data-role="grade"><option value="">선택</option><option>고3</option><option>고2</option><option>고1</option><option>중3</option><option>중2</option><option>중1</option></select></span></div>
+<div class="task-instr" style="margin-bottom:14px;">지문의 순서 배열·문장 삽입·패러프레이징 판별 문제입니다. 각 문항을 읽고 정답을 고르세요.</div>
+<div class="task-block"><div class="task-title">① 순서·삽입</div><div class="q-row" data-qid="ORD-01" data-qtype="choice" data-points="4" data-answer="4"><div class="q-label"><span class="qtag">문제1</span>주어진 글 다음에 이어질 글의 순서로 가장 적절한 것은?<span class="pts">4점</span></div><div class="ws-para" style="font-weight:700;border:1.5px dashed #999;padding:8px 10px;border-radius:6px;margin-bottom:8px;">Years ago, there lived a boy in a small village in Scotland.</div><div class="ws-para" style="white-space:pre-line;">(A) One cold winter morning, Bruce and the other sparrows were in a tree. The tree was covered with snow. Angus saw Bruce raising his feet one by one. &quot;Your feet are cold! Maybe I can help you,&quot; said Angus.
+
+(B) His name was Angus. A sparrow, Bruce, was his close friend. When they played together, Bruce flew into Angus's pocket.
+
+(C) Angus's father owned a small store that made socks, and Angus sometimes helped him. The store used to have many customers, but recently it lost a lot of them. Villagers started buying socks from a big department store.</div><div class="mc-choices"><label><input type="radio" name="ORD-01" data-role="choice" value="1"> 1. (A) - (C) - (B)</label><label><input type="radio" name="ORD-01" data-role="choice" value="2"> 2. (A) - (B) - (C)</label><label><input type="radio" name="ORD-01" data-role="choice" value="3"> 3. (C) - (B) - (A)</label><label><input type="radio" name="ORD-01" data-role="choice" value="4"> 4. (B) - (C) - (A)</label><label><input type="radio" name="ORD-01" data-role="choice" value="5"> 5. (C) - (A) - (B)</label></div><div class="ans" style="margin-top:6px;">정답 ▸ 4번 · 먼저 앵거스와 브루스의 우정을 소개하는 (B)가 이어지고, 이어서 아버지 가게의 상황을 설명하는 (C)가 오며, 마지막으로 추운 겨울 아침 장면인 (A)가 이어지는 것이 자연스럽다. 따라서 (B) - (C) - (A)가 정답이다.</div></div><div class="q-row" data-qid="ORD-02" data-qtype="choice" data-points="4" data-answer="3"><div class="q-label"><span class="qtag">문제2</span>주어진 글 다음에 이어질 글의 순서로 가장 적절한 것은?<span class="pts">4점</span></div><div class="ws-para" style="font-weight:700;border:1.5px dashed #999;padding:8px 10px;border-radius:6px;margin-bottom:8px;">One cold winter morning, Bruce and the other sparrows were in a tree.</div><div class="ws-para" style="white-space:pre-line;">(A) After the store closed for the night, Angus sat in front of the sock machine. Soon, a tiny pair of socks popped out. Warm and soft winter socks with red stripes!
+
+(B) Angus made more and more socks because he knew other sparrows were shaking in the cold weather, too. But he didn't realize that he used up all the wool in the machine.
+
+(C) The tree was covered with snow. Angus saw Bruce raising his feet one by one. &quot;Your feet are cold! Maybe I can help you,&quot; said Angus.</div><div class="mc-choices"><label><input type="radio" name="ORD-02" data-role="choice" value="1"> 1. (B) - (C) - (A)</label><label><input type="radio" name="ORD-02" data-role="choice" value="2"> 2. (B) - (A) - (C)</label><label><input type="radio" name="ORD-02" data-role="choice" value="3"> 3. (C) - (A) - (B)</label><label><input type="radio" name="ORD-02" data-role="choice" value="4"> 4. (A) - (C) - (B)</label><label><input type="radio" name="ORD-02" data-role="choice" value="5"> 5. (A) - (B) - (C)</label></div><div class="ans" style="margin-top:6px;">정답 ▸ 3번 · 나무에 있던 브루스의 모습을 묘사하는 (C)가 먼저 오고, 앵거스가 양말을 만드는 (A)가 이어진 뒤, 다른 참새들을 위해 계속 양말을 만든다는 (B)로 마무리되는 것이 자연스럽다. 따라서 (C) - (A) - (B)가 정답이다.</div></div><div class="q-row" data-qid="INS-01" data-qtype="choice" data-points="4" data-answer="1"><div class="q-label"><span class="qtag">문제3</span>글의 흐름으로 보아, 주어진 문장이 들어가기에 가장 적절한 곳은?<span class="pts">4점</span></div><div class="ws-para" style="font-weight:700;border:1.5px dashed #999;padding:8px 10px;border-radius:6px;margin-bottom:8px;">The store used to have many customers, but recently it lost a lot of them.</div><div class="ws-para" style="white-space:pre-line;">Years ago, there lived a boy in a small village in Scotland. His name was Angus. A sparrow, Bruce, was his close friend. When they played together, Bruce flew into Angus's pocket. Angus's father owned a small store that made socks, and Angus sometimes helped him. ① Villagers started buying socks from a big department store. ② One cold winter morning, Bruce and the other sparrows were in a tree. The tree was covered with snow. Angus saw Bruce raising his feet one by one. &quot;Your feet are cold! Maybe I can help you,&quot; said Angus. ③ After the store closed for the night, Angus sat in front of the sock machine. Soon, a tiny pair of socks popped out. Warm and soft winter socks with red stripes! ④ Angus made more and more socks because he knew other sparrows were shaking in the cold weather, too. But he didn't realize that he used up all the wool in the machine. ⑤</div><div class="mc-choices"><label><input type="radio" name="INS-01" data-role="choice" value="1"> 1. ①</label><label><input type="radio" name="INS-01" data-role="choice" value="2"> 2. ②</label><label><input type="radio" name="INS-01" data-role="choice" value="3"> 3. ③</label><label><input type="radio" name="INS-01" data-role="choice" value="4"> 4. ④</label><label><input type="radio" name="INS-01" data-role="choice" value="5"> 5. ⑤</label></div><div class="ans" style="margin-top:6px;">정답 ▸ 1번 · 주어진 문장은 가게가 손님을 잃었다는 내용으로, 그 원인을 설명하는 '마을 사람들이 백화점에서 양말을 사기 시작했다'는 문장 바로 앞인 ①에 들어가야 자연스럽게 이어진다.</div></div><div class="q-row" data-qid="INS-02" data-qtype="choice" data-points="4" data-answer="3"><div class="q-label"><span class="qtag">문제4</span>글의 흐름으로 보아, 주어진 문장이 들어가기에 가장 적절한 곳은?<span class="pts">4점</span></div><div class="ws-para" style="font-weight:700;border:1.5px dashed #999;padding:8px 10px;border-radius:6px;margin-bottom:8px;">Angus saw Bruce raising his feet one by one.</div><div class="ws-para" style="white-space:pre-line;">Years ago, there lived a boy in a small village in Scotland. His name was Angus. A sparrow, Bruce, was his close friend. When they played together, Bruce flew into Angus's pocket. ① Angus's father owned a small store that made socks, and Angus sometimes helped him. The store used to have many customers, but recently it lost a lot of them. Villagers started buying socks from a big department store. ② One cold winter morning, Bruce and the other sparrows were in a tree. The tree was covered with snow. ③ &quot;Your feet are cold! Maybe I can help you,&quot; said Angus. ④ After the store closed for the night, Angus sat in front of the sock machine. Soon, a tiny pair of socks popped out. Warm and soft winter socks with red stripes! ⑤ Angus made more and more socks because he knew other sparrows were shaking in the cold weather, too. But he didn't realize that he used up all the wool in the machine.</div><div class="mc-choices"><label><input type="radio" name="INS-02" data-role="choice" value="1"> 1. ①</label><label><input type="radio" name="INS-02" data-role="choice" value="2"> 2. ②</label><label><input type="radio" name="INS-02" data-role="choice" value="3"> 3. ③</label><label><input type="radio" name="INS-02" data-role="choice" value="4"> 4. ④</label><label><input type="radio" name="INS-02" data-role="choice" value="5"> 5. ⑤</label></div><div class="ans" style="margin-top:6px;">정답 ▸ 3번 · 눈 덮인 나무 이야기 뒤, 브루스가 발을 하나씩 들어 올리는 모습을 본 뒤에야 앵거스가 '네 발이 차갑구나!'라고 말하는 것이 자연스러우므로 ③에 들어가야 한다.</div></div></div><div class="task-block"><div class="task-title">② 패러프레이징(para) — 아래 지문을 참고하여 푸시오</div><div class="ws-para" style="white-space:pre-line;margin-bottom:12px;">Years ago, there lived a boy in a small village in Scotland. His name was Angus. A sparrow, Bruce, was his close friend. When they played together, Bruce flew into Angus's pocket. Angus's father owned a small store that made socks, and Angus sometimes helped him. The store used to have many customers, but recently it lost a lot of them. Villagers started buying socks from a big department store. One cold winter morning, Bruce and the other sparrows were in a tree. The tree was covered with snow. Angus saw Bruce raising his feet one by one. &quot;Your feet are cold! Maybe I can help you,&quot; said Angus. After the store closed for the night, Angus sat in front of the sock machine. Soon, a tiny pair of socks popped out. Warm and soft winter socks with red stripes! Angus made more and more socks because he knew other sparrows were shaking in the cold weather, too. But he didn't realize that he used up all the wool in the machine.</div><div class="q-row" data-qid="PARA-01" data-qtype="choice" data-points="3" data-answer="2"><div class="q-label"><span class="qtag">문제5</span>다음 중 본문 내용을 올바르게 표현한 것은?<span class="pts">3점</span></div><div class="mc-choices"><label><input type="radio" name="PARA-01" data-role="choice" value="1"> 1. When Angus and Bruce played together, Angus flew into Bruce's pocket.</label><label><input type="radio" name="PARA-01" data-role="choice" value="2"> 2. When Angus and Bruce played together, Bruce flew into Angus's pocket.</label><label><input type="radio" name="PARA-01" data-role="choice" value="3"> 3. When Angus and Bruce played together, Bruce walked into Angus's pocket.</label><label><input type="radio" name="PARA-01" data-role="choice" value="4"> 4. When Angus and Bruce worked together, Bruce flew into Angus's pocket.</label><label><input type="radio" name="PARA-01" data-role="choice" value="5"> 5. When Angus and Bruce played together, Bruce flew into Angus's bag.</label></div><div class="ans" style="margin-top:6px;">정답 ▸ 2번 · 본문에 그들이 함께 놀 때 브루스가 앵거스의 주머니 속으로 날아들었다고 나와 있으므로 3번이 정확하다.</div></div><div class="q-row" data-qid="PARA-02" data-qtype="choice" data-points="3" data-answer="4"><div class="q-label"><span class="qtag">문제6</span>다음 중 본문 내용과 일치하지 않는 것은?<span class="pts">3점</span></div><div class="mc-choices"><label><input type="radio" name="PARA-02" data-role="choice" value="1"> 1. 마을 사람들은 큰 백화점에서 양말을 사기 시작했다.</label><label><input type="radio" name="PARA-02" data-role="choice" value="2"> 2. 앵거스 아버지의 가게는 양말을 만드는 곳이었다.</label><label><input type="radio" name="PARA-02" data-role="choice" value="3"> 3. 앵거스는 가끔 아버지의 가게 일을 도왔다.</label><label><input type="radio" name="PARA-02" data-role="choice" value="4"> 4. 마을 사람들은 작은 시장에서 양말을 사기 시작했다.</label><label><input type="radio" name="PARA-02" data-role="choice" value="5"> 5. 그 가게는 예전에 손님이 많았지만 최근에 많은 손님을 잃었다.</label></div><div class="ans" style="margin-top:6px;">정답 ▸ 4번 · 본문에는 마을 사람들이 '큰 백화점'에서 양말을 사기 시작했다고 나와 있으므로 '작은 시장'이라고 한 4번은 일치하지 않는다.</div></div><div class="q-row" data-qid="PARA-03" data-qtype="choice" data-points="3" data-answer="3"><div class="q-label"><span class="qtag">문제7</span>다음 중 본문 내용을 올바르게 표현한 것은?<span class="pts">3점</span></div><div class="mc-choices"><label><input type="radio" name="PARA-03" data-role="choice" value="1"> 1. On a cold winter morning, Bruce alone was in a tree covered with snow.</label><label><input type="radio" name="PARA-03" data-role="choice" value="2"> 2. On a cold summer morning, Bruce and the other sparrows were in a tree covered with snow.</label><label><input type="radio" name="PARA-03" data-role="choice" value="3"> 3. On a cold winter morning, Bruce and the other sparrows were in a tree covered with snow.</label><label><input type="radio" name="PARA-03" data-role="choice" value="4"> 4. On a cold winter morning, Bruce and the other sparrows were under a tree covered with snow.</label><label><input type="radio" name="PARA-03" data-role="choice" value="5"> 5. On a cold winter morning, Bruce and the other sparrows were in a tree covered with leaves.</label></div><div class="ans" style="margin-top:6px;">정답 ▸ 3번 · 본문에는 브루스와 다른 참새들이 눈으로 덮인 나무 '안(in)'에 있었다고 나와 있으므로 2번이 정확하다.</div></div><div class="q-row" data-qid="PARA-04" data-qtype="choice" data-points="3" data-answer="5"><div class="q-label"><span class="qtag">문제8</span>다음 중 본문 내용을 올바르게 표현한 것은?<span class="pts">3점</span></div><div class="mc-choices"><label><input type="radio" name="PARA-04" data-role="choice" value="1"> 1. 가게 문을 열기 전, 앵거스는 양말 기계 앞에 앉아 작은 양말 한 켤레를 만들었다.</label><label><input type="radio" name="PARA-04" data-role="choice" value="2"> 2. 가게 문을 닫은 후, 앵거스의 아버지는 양말 기계 앞에 앉아 작은 양말 한 켤레를 만들었다.</label><label><input type="radio" name="PARA-04" data-role="choice" value="3"> 3. 가게 문을 닫은 후, 앵거스는 실 뭉치 앞에 앉아 작은 양말 한 켤레를 만들었다.</label><label><input type="radio" name="PARA-04" data-role="choice" value="4"> 4. 가게 문을 닫은 후, 앵거스는 양말 기계 앞에 앉아 큰 양말 한 켤레를 만들었다.</label><label><input type="radio" name="PARA-04" data-role="choice" value="5"> 5. 가게 문을 닫은 후, 앵거스는 양말 기계 앞에 앉아 작은 양말 한 켤레를 만들었다.</label></div><div class="ans" style="margin-top:6px;">정답 ▸ 5번 · 본문에는 가게 문을 닫은 후 앵거스가 양말 기계 앞에 앉아 작은 양말 한 켤레를 만들었다고 나와 있으므로 1번이 정확하다.</div></div><div class="q-row" data-qid="PARA-05" data-qtype="choice" data-points="3" data-answer="1"><div class="q-label"><span class="qtag">문제9</span>다음 중 본문 내용과 일치하지 않는 것은?<span class="pts">3점</span></div><div class="mc-choices"><label><input type="radio" name="PARA-05" data-role="choice" value="1"> 1. The socks were warm and soft winter socks with blue stripes.</label><label><input type="radio" name="PARA-05" data-role="choice" value="2"> 2. The socks were made for the sparrows, including Bruce.</label><label><input type="radio" name="PARA-05" data-role="choice" value="3"> 3. Angus made the socks after the store closed for the night.</label><label><input type="radio" name="PARA-05" data-role="choice" value="4"> 4. The socks were warm and soft winter socks with red stripes.</label><label><input type="radio" name="PARA-05" data-role="choice" value="5"> 5. The socks popped out of the sock machine soon.</label></div><div class="ans" style="margin-top:6px;">정답 ▸ 1번 · 본문에는 양말에 '빨간(red)' 줄무늬가 있다고 나와 있으므로 '파란(blue)' 줄무늬라고 한 2번은 일치하지 않는다.</div></div><div class="q-row" data-qid="PARA-06" data-qtype="choice" data-points="3" data-answer="1"><div class="q-label"><span class="qtag">문제10</span>다음 중 본문 내용을 올바르게 표현한 것은?<span class="pts">3점</span></div><div class="mc-choices"><label><input type="radio" name="PARA-06" data-role="choice" value="1"> 1. 앵거스는 다른 참새들도 추운 날씨에 떨고 있다는 것을 알았기 때문에 양말을 점점 더 많이 만들었다.</label><label><input type="radio" name="PARA-06" data-role="choice" value="2"> 2. 앵거스는 다른 참새들도 추운 날씨에 떨고 있다는 것을 알았지만 양말을 만들지 않았다.</label><label><input type="radio" name="PARA-06" data-role="choice" value="3"> 3. 앵거스는 브루스만 춥다는 것을 알았기 때문에 양말을 점점 더 많이 만들었다.</label><label><input type="radio" name="PARA-06" data-role="choice" value="4"> 4. 앵거스는 다른 참새들이 배고파한다는 것을 알았기 때문에 양말을 점점 더 많이 만들었다.</label><label><input type="radio" name="PARA-06" data-role="choice" value="5"> 5. 앵거스의 아버지는 다른 참새들도 추운 날씨에 떨고 있다는 것을 알았기 때문에 양말을 점점 더 많이 만들었다.</label></div><div class="ans" style="margin-top:6px;">정답 ▸ 1번 · 본문에는 앵거스가 다른 참새들도 추운 날씨에 떨고 있다는 것을 알았기 때문에 양말을 점점 더 많이 만들었다고 나와 있으므로 3번이 정확하다.</div></div><div class="q-row" data-qid="PARA-07" data-qtype="choice" data-points="3" data-answer="4"><div class="q-label"><span class="qtag">문제11</span>다음 중 본문 내용을 올바르게 표현한 것은?<span class="pts">3점</span></div><div class="mc-choices"><label><input type="radio" name="PARA-07" data-role="choice" value="1"> 1. Angus didn't realize that he had used up all the cotton in the machine.</label><label><input type="radio" name="PARA-07" data-role="choice" value="2"> 2. Angus's father didn't realize that he had used up all the wool in the machine.</label><label><input type="radio" name="PARA-07" data-role="choice" value="3"> 3. Angus didn't realize that there was plenty of wool left in the machine.</label><label><input type="radio" name="PARA-07" data-role="choice" value="4"> 4. Angus didn't realize that he had used up all the wool in the machine.</label><label><input type="radio" name="PARA-07" data-role="choice" value="5"> 5. Angus realized that he had used up all the wool in the machine.</label></div><div class="ans" style="margin-top:6px;">정답 ▸ 4번 · 본문에는 앵거스가 기계 안의 실을 모두 써버렸다는 것을 깨닫지 못했다고 나와 있으므로 5번이 정확하다.</div></div><div class="q-row" data-qid="PARA-08" data-qtype="choice" data-points="3" data-answer="2"><div class="q-label"><span class="qtag">문제12</span>다음 중 본문 내용과 일치하지 않는 것은?<span class="pts">3점</span></div><div class="mc-choices"><label><input type="radio" name="PARA-08" data-role="choice" value="1"> 1. 앵거스의 아버지는 양말을 만드는 작은 가게를 소유하고 있었다.</label><label><input type="radio" name="PARA-08" data-role="choice" value="2"> 2. 앵거스는 잉글랜드의 한 작은 마을에 살았다.</label><label><input type="radio" name="PARA-08" data-role="choice" value="3"> 3. 앵거스는 스코틀랜드의 한 작은 마을에 살았다.</label><label><input type="radio" name="PARA-08" data-role="choice" value="4"> 4. 브루스는 앵거스와 함께 놀 때 그의 주머니 속으로 날아들었다.</label><label><input type="radio" name="PARA-08" data-role="choice" value="5"> 5. 참새 브루스는 앵거스의 가까운 친구였다.</label></div><div class="ans" style="margin-top:6px;">정답 ▸ 2번 · 본문에는 앵거스가 '스코틀랜드'의 작은 마을에 살았다고 나와 있으므로 '잉글랜드'라고 한 3번은 일치하지 않는다.</div></div><div class="q-row" data-qid="PARA-09" data-qtype="choice" data-points="3" data-answer="3"><div class="q-label"><span class="qtag">문제13</span>다음 중 본문 내용을 올바르게 표현한 것은?<span class="pts">3점</span></div><div class="mc-choices"><label><input type="radio" name="PARA-09" data-role="choice" value="1"> 1. Bruce saw Angus raising his feet one by one and said he could help him.</label><label><input type="radio" name="PARA-09" data-role="choice" value="2"> 2. Angus saw Bruce raising his feet one by one and said he could not help him.</label><label><input type="radio" name="PARA-09" data-role="choice" value="3"> 3. Angus saw Bruce raising his feet one by one and said he could help him.</label><label><input type="radio" name="PARA-09" data-role="choice" value="4"> 4. Angus saw Bruce lowering his feet one by one and said he could help him.</label><label><input type="radio" name="PARA-09" data-role="choice" value="5"> 5. Angus saw Bruce raising his wings one by one and said he could help him.</label></div><div class="ans" style="margin-top:6px;">정답 ▸ 3번 · 본문에는 앵거스가 브루스가 발을 하나씩 들어 올리는 것을 보고 도와줄 수 있다고 말했다고 나와 있으므로 2번이 정확하다.</div></div><div class="q-row" data-qid="PARA-10" data-qtype="choice" data-points="3" data-answer="2"><div class="q-label"><span class="qtag">문제14</span>다음 중 본문 내용을 올바르게 표현한 것은?<span class="pts">3점</span></div><div class="mc-choices"><label><input type="radio" name="PARA-10" data-role="choice" value="1"> 1. 앵거스는 더위에 지친 참새들을 위해 양말을 만들어 주었다.</label><label><input type="radio" name="PARA-10" data-role="choice" value="2"> 2. 앵거스는 추위에 떠는 참새들을 위해 양말을 만들어 주었다.</label><label><input type="radio" name="PARA-10" data-role="choice" value="3"> 3. 앵거스는 추위에 떠는 참새들을 위해 양말을 사 주었다.</label><label><input type="radio" name="PARA-10" data-role="choice" value="4"> 4. 앵거스는 추위에 떠는 강아지들을 위해 양말을 만들어 주었다.</label><label><input type="radio" name="PARA-10" data-role="choice" value="5"> 5. 앵거스는 추위에 떠는 참새들을 위해 목도리를 만들어 주었다.</label></div><div class="ans" style="margin-top:6px;">정답 ▸ 2번 · 본문 전체 내용에 따르면 앵거스는 추위에 떠는 참새들을 위해 양말을 직접 만들어 주었으므로 4번이 정확하다.</div></div></div><div class="grade-box" id="gradeBox"><h3>📊 채점 결과</h3><div id="gradeBody"></div></div>
+<div class="footnote">모두 객관식으로 자동 채점됩니다. · passage-analysis-map</div>
+</div>
+<script id="wsItemData" type="application/json">{"ws":{"meta":{"title":"M2Lesson8_main1","grade":"중2"},"rawSentences":["Years ago, there lived a boy in a small village in Scotland.","His name was Angus.","A sparrow, Bruce, was his close friend.","When they played together, Bruce flew into Angus's pocket.","Angus's father owned a small store that made socks, and Angus sometimes helped him.","The store used to have many customers, but recently it lost a lot of them.","Villagers started buying socks from a big department store.","One cold winter morning, Bruce and the other sparrows were in a tree.","The tree was covered with snow.","Angus saw Bruce raising his feet one by one.","\"Your feet are cold!","Maybe I can help you,\" said Angus.","After the store closed for the night, Angus sat in front of the sock machine.","Soon, a tiny pair of socks popped out.","Warm and soft winter socks with red stripes!","Angus made more and more socks because he knew other sparrows were shaking in the cold weather, too.","But he didn't realize that he used up all the wool in the machine."],"topicIdx":16,"topicReason":"because절이 동기를 명시하고, 'more and more'가 행동의 확장을 보여주며, 앞 문장의 관찰(발이 차다)에서 결론적 행동(더 많이 만든다)으로 서사가 수렴하는 지점","threadTopic":"앵거스가 참새들의 추위를 알아채고 양말을 만들어 돕는 과정","exceptionsNote":"중2 수준이므로 관계절(Rule 5)은 that절이 선행사를 수식하는 명확한 경우만 표시하고, 단순 지시어·연결어는 배지 없이 plain text로 둠. 전치사구 후치수식은 화살표·박스 없이 plain text.","diagram":{"segments":[{"fromIdx":1,"toIdx":9,"topic":{"ko":"앵거스와 참새 브루스, 그리고 가게 사정 소개","en":"Angus, Bruce, and the small sock store"}},{"fromIdx":10,"toIdx":17,"topic":{"ko":"참새의 추위를 보고 양말을 만들어주는 앵거스","en":"Angus makes tiny socks for the sparrows"}}],"pivot":null},"sentences":[{"idx":1,"html":"Years ago, there lived a boy in a small village in Scotland.","dual":false,"needsArrowLayer":false,"wholeGroup":false,"wholeGroupLabel":"","translation":"오래전, 스코틀랜드의 작은 마을에 한 소년이 살았습니다.","grammarNote":"'there lived+주어'는 'there is/are'의 과거형 도치 구문으로, 주어(a boy)가 동사 뒤에 온다."},{"idx":2,"html":"His name was Angus.","dual":false,"needsArrowLayer":false,"wholeGroup":false,"wholeGroupLabel":"","translation":"그의 이름은 앵거스였습니다.","grammarNote":"단순 2형식 문장(주어+be+보어)."},{"idx":3,"html":"A sparrow, Bruce, was his close friend.","dual":false,"needsArrowLayer":false,"wholeGroup":false,"wholeGroupLabel":"","translation":"참새 브루스는 그의 친한 친구였습니다.","grammarNote":"콤마 사이의 'Bruce'는 동격어구로, 앞의 'A sparrow'를 구체적으로 밝혀준다."},{"idx":4,"html":"When they played together, Bruce flew into Angus's pocket.","dual":false,"needsArrowLayer":false,"wholeGroup":false,"wholeGroupLabel":"","translation":"그들이 함께 놀 때, 브루스는 앵거스의 주머니 안으로 날아 들어갔습니다.","grammarNote":"문두의 When절은 시간 부사절; 주절 동사 flew는 fly의 과거형."},{"idx":5,"html":"Angus's father owned a small store <span class=\"rel-clause\">that made socks</span>, and Angus sometimes helped him.","dual":false,"needsArrowLayer":false,"wholeGroup":false,"wholeGroupLabel":"","translation":"앵거스의 아버지는 양말을 만드는 작은 가게를 소유했고, 앵거스는 때때로 그를 도왔습니다.","grammarNote":"that made socks는 관계절로 앞의 'a small store'를 수식한다."},{"idx":6,"html":"The store <span class=\"idiom-underline\">used to</span><span class=\"note-badge\">예전에는 ~했다</span> have many customers, but recently it lost a lot of them.","dual":false,"needsArrowLayer":false,"wholeGroup":false,"wholeGroupLabel":"","translation":"그 가게는 예전에 손님이 많았지만, 최근에는 많이 잃었습니다.","grammarNote":"'used to+동사원형'은 과거의 습관·상태를 나타내며, 지금은 그렇지 않음을 함의한다."},{"idx":7,"html":"Villagers started buying socks from a big department store.","dual":false,"needsArrowLayer":false,"wholeGroup":false,"wholeGroupLabel":"","translation":"마을 사람들은 큰 백화점에서 양말을 사기 시작했습니다.","grammarNote":"'start+동명사(-ing)'는 '~하기 시작하다'의 의미."},{"idx":8,"html":"One cold winter morning, Bruce and the other sparrows were in a tree.","dual":false,"needsArrowLayer":false,"wholeGroup":false,"wholeGroupLabel":"","translation":"어느 추운 겨울 아침, 브루스와 다른 참새들이 나무 위에 있었습니다.","grammarNote":"'One+형용사+명사' 구조로 특정 시점을 자연스럽게 도입하는 표현."},{"idx":9,"html":"The tree was <span class=\"idiom-underline\">covered with</span><span class=\"note-badge\">~으로 덮여 있었다</span> snow.","dual":false,"needsArrowLayer":false,"wholeGroup":false,"wholeGroupLabel":"","translation":"나무는 눈으로 덮여 있었습니다.","grammarNote":"'be covered with'는 '~으로 덮이다'를 나타내는 수동태 관용 표현."},{"idx":10,"html":"Angus saw Bruce <span class=\"idiom-underline\">raising</span><span class=\"note-badge\">들어 올리는(지각동사+목적어+현재분사)</span> his feet one by one.","dual":false,"needsArrowLayer":false,"wholeGroup":false,"wholeGroupLabel":"","translation":"앵거스는 브루스가 발을 하나씩 들어 올리는 것을 보았습니다.","grammarNote":"지각동사 saw+목적어(Bruce)+현재분사(raising): 목적어가 동작을 하는 중임을 나타낸다."},{"idx":11,"html":"\"Your feet are cold!","dual":false,"needsArrowLayer":false,"wholeGroup":false,"wholeGroupLabel":"","translation":"\"네 발이 차갑구나!","grammarNote":"직접 화법의 시작; 느낌표로 감탄·발견의 어조를 나타낸다."},{"idx":12,"html":"Maybe I can help you,\" said Angus.","dual":false,"needsArrowLayer":false,"wholeGroup":false,"wholeGroupLabel":"","translation":"내가 너를 도울 수 있을지도 몰라,\" 라고 앵거스가 말했습니다.","grammarNote":"직접 화법에서 said Angus처럼 동사+주어 순서로 도치되는 것이 일반적이다."},{"idx":13,"html":"After the store closed for the night, Angus sat in front of the sock machine.","dual":false,"needsArrowLayer":false,"wholeGroup":false,"wholeGroupLabel":"","translation":"가게가 저녁에 문을 닫은 후, 앵거스는 양말 기계 앞에 앉았습니다.","grammarNote":"After절은 시간의 부사절; 'close for the night'는 '밤을 위해 문을 닫다', 즉 영업을 마치다."},{"idx":14,"html":"Soon, a tiny pair of socks <span class=\"idiom-underline\">popped out</span><span class=\"note-badge\">튀어나왔다</span>.","dual":false,"needsArrowLayer":false,"wholeGroup":false,"wholeGroupLabel":"","translation":"곧, 아주 작은 양말 한 켤레가 튀어나왔습니다.","grammarNote":"'pop out'은 '갑자기 나오다·튀어나오다'라는 구동사."},{"idx":15,"html":"Warm and soft winter socks with red stripes!","dual":false,"needsArrowLayer":false,"wholeGroup":false,"wholeGroupLabel":"","translation":"빨간 줄무늬가 있는 따뜻하고 부드러운 겨울 양말!","grammarNote":"동사 없이 명사구만으로 이루어진 감탄 문장; 앞 문장(14번)의 양말을 구체적으로 묘사한다."},{"idx":16,"html":"Angus made more and more socks because he knew <span data-thread='[[\"c1\",1]]'>other sparrows</span> were <span data-thread='[[\"c1\",2]]'>shaking in the cold weather</span>, too.","dual":false,"needsArrowLayer":false,"wholeGroup":false,"wholeGroupLabel":"","translation":"앵거스는 다른 참새들도 추운 날씨에 떨고 있다는 것을 알았기 때문에 점점 더 많은 양말을 만들었습니다.","grammarNote":"because절이 행동의 이유를 설명; 'more and more'는 '점점 더 많은'을 뜻하는 표현."},{"idx":17,"html":"But he didn't realize that he <span class=\"idiom-underline\">used up</span><span class=\"note-badge\">다 써버렸다</span> all the wool in the machine.","dual":false,"needsArrowLayer":false,"wholeGroup":false,"wholeGroupLabel":"","translation":"하지만 그는 기계 안의 양모를 모두 써버렸다는 것을 깨닫지 못했습니다.","grammarNote":"'use up'은 '(재료 등을) 다 쓰다·소진하다'라는 구동사; that절은 realize의 목적어 명사절."}]},"orderOx":{"types":{"order":true,"insert":true,"para":true},"items":[{"id":"ORD-01","type":"order","points":4,"autoGraded":true,"instruction":"주어진 글 다음에 이어질 글의 순서로 가장 적절한 것은?","givenSentence":"Years ago, there lived a boy in a small village in Scotland.","passage":"(A) One cold winter morning, Bruce and the other sparrows were in a tree. The tree was covered with snow. Angus saw Bruce raising his feet one by one. \"Your feet are cold! Maybe I can help you,\" said Angus.\n\n(B) His name was Angus. A sparrow, Bruce, was his close friend. When they played together, Bruce flew into Angus's pocket.\n\n(C) Angus's father owned a small store that made socks, and Angus sometimes helped him. The store used to have many customers, but recently it lost a lot of them. Villagers started buying socks from a big department store.","choices":["(A) - (C) - (B)","(A) - (B) - (C)","(C) - (B) - (A)","(B) - (C) - (A)","(C) - (A) - (B)"],"answer":4,"explanation":"먼저 앵거스와 브루스의 우정을 소개하는 (B)가 이어지고, 이어서 아버지 가게의 상황을 설명하는 (C)가 오며, 마지막으로 추운 겨울 아침 장면인 (A)가 이어지는 것이 자연스럽다. 따라서 (B) - (C) - (A)가 정답이다."},{"id":"ORD-02","type":"order","points":4,"autoGraded":true,"instruction":"주어진 글 다음에 이어질 글의 순서로 가장 적절한 것은?","givenSentence":"One cold winter morning, Bruce and the other sparrows were in a tree.","passage":"(A) After the store closed for the night, Angus sat in front of the sock machine. Soon, a tiny pair of socks popped out. Warm and soft winter socks with red stripes!\n\n(B) Angus made more and more socks because he knew other sparrows were shaking in the cold weather, too. But he didn't realize that he used up all the wool in the machine.\n\n(C) The tree was covered with snow. Angus saw Bruce raising his feet one by one. \"Your feet are cold! Maybe I can help you,\" said Angus.","choices":["(B) - (C) - (A)","(B) - (A) - (C)","(C) - (A) - (B)","(A) - (C) - (B)","(A) - (B) - (C)"],"answer":3,"explanation":"나무에 있던 브루스의 모습을 묘사하는 (C)가 먼저 오고, 앵거스가 양말을 만드는 (A)가 이어진 뒤, 다른 참새들을 위해 계속 양말을 만든다는 (B)로 마무리되는 것이 자연스럽다. 따라서 (C) - (A) - (B)가 정답이다."},{"id":"INS-01","type":"insert","points":4,"autoGraded":true,"instruction":"글의 흐름으로 보아, 주어진 문장이 들어가기에 가장 적절한 곳은?","givenSentence":"The store used to have many customers, but recently it lost a lot of them.","passage":"Years ago, there lived a boy in a small village in Scotland. His name was Angus. A sparrow, Bruce, was his close friend. When they played together, Bruce flew into Angus's pocket. Angus's father owned a small store that made socks, and Angus sometimes helped him. ① Villagers started buying socks from a big department store. ② One cold winter morning, Bruce and the other sparrows were in a tree. The tree was covered with snow. Angus saw Bruce raising his feet one by one. \"Your feet are cold! Maybe I can help you,\" said Angus. ③ After the store closed for the night, Angus sat in front of the sock machine. Soon, a tiny pair of socks popped out. Warm and soft winter socks with red stripes! ④ Angus made more and more socks because he knew other sparrows were shaking in the cold weather, too. But he didn't realize that he used up all the wool in the machine. ⑤","choices":["①","②","③","④","⑤"],"answer":1,"explanation":"주어진 문장은 가게가 손님을 잃었다는 내용으로, 그 원인을 설명하는 '마을 사람들이 백화점에서 양말을 사기 시작했다'는 문장 바로 앞인 ①에 들어가야 자연스럽게 이어진다."},{"id":"INS-02","type":"insert","points":4,"autoGraded":true,"instruction":"글의 흐름으로 보아, 주어진 문장이 들어가기에 가장 적절한 곳은?","givenSentence":"Angus saw Bruce raising his feet one by one.","passage":"Years ago, there lived a boy in a small village in Scotland. His name was Angus. A sparrow, Bruce, was his close friend. When they played together, Bruce flew into Angus's pocket. ① Angus's father owned a small store that made socks, and Angus sometimes helped him. The store used to have many customers, but recently it lost a lot of them. Villagers started buying socks from a big department store. ② One cold winter morning, Bruce and the other sparrows were in a tree. The tree was covered with snow. ③ \"Your feet are cold! Maybe I can help you,\" said Angus. ④ After the store closed for the night, Angus sat in front of the sock machine. Soon, a tiny pair of socks popped out. Warm and soft winter socks with red stripes! ⑤ Angus made more and more socks because he knew other sparrows were shaking in the cold weather, too. But he didn't realize that he used up all the wool in the machine.","choices":["①","②","③","④","⑤"],"answer":3,"explanation":"눈 덮인 나무 이야기 뒤, 브루스가 발을 하나씩 들어 올리는 모습을 본 뒤에야 앵거스가 '네 발이 차갑구나!'라고 말하는 것이 자연스러우므로 ③에 들어가야 한다."},{"id":"PARA-01","type":"para","points":3,"autoGraded":true,"instruction":"다음 중 본문 내용을 올바르게 표현한 것은?","givenSentence":"","passage":"","choices":["When Angus and Bruce played together, Angus flew into Bruce's pocket.","When Angus and Bruce played together, Bruce flew into Angus's pocket.","When Angus and Bruce played together, Bruce walked into Angus's pocket.","When Angus and Bruce worked together, Bruce flew into Angus's pocket.","When Angus and Bruce played together, Bruce flew into Angus's bag."],"answer":2,"explanation":"본문에 그들이 함께 놀 때 브루스가 앵거스의 주머니 속으로 날아들었다고 나와 있으므로 3번이 정확하다."},{"id":"PARA-02","type":"para","points":3,"autoGraded":true,"instruction":"다음 중 본문 내용과 일치하지 않는 것은?","givenSentence":"","passage":"","choices":["마을 사람들은 큰 백화점에서 양말을 사기 시작했다.","앵거스 아버지의 가게는 양말을 만드는 곳이었다.","앵거스는 가끔 아버지의 가게 일을 도왔다.","마을 사람들은 작은 시장에서 양말을 사기 시작했다.","그 가게는 예전에 손님이 많았지만 최근에 많은 손님을 잃었다."],"answer":4,"explanation":"본문에는 마을 사람들이 '큰 백화점'에서 양말을 사기 시작했다고 나와 있으므로 '작은 시장'이라고 한 4번은 일치하지 않는다."},{"id":"PARA-03","type":"para","points":3,"autoGraded":true,"instruction":"다음 중 본문 내용을 올바르게 표현한 것은?","givenSentence":"","passage":"","choices":["On a cold winter morning, Bruce alone was in a tree covered with snow.","On a cold summer morning, Bruce and the other sparrows were in a tree covered with snow.","On a cold winter morning, Bruce and the other sparrows were in a tree covered with snow.","On a cold winter morning, Bruce and the other sparrows were under a tree covered with snow.","On a cold winter morning, Bruce and the other sparrows were in a tree covered with leaves."],"answer":3,"explanation":"본문에는 브루스와 다른 참새들이 눈으로 덮인 나무 '안(in)'에 있었다고 나와 있으므로 2번이 정확하다."},{"id":"PARA-04","type":"para","points":3,"autoGraded":true,"instruction":"다음 중 본문 내용을 올바르게 표현한 것은?","givenSentence":"","passage":"","choices":["가게 문을 열기 전, 앵거스는 양말 기계 앞에 앉아 작은 양말 한 켤레를 만들었다.","가게 문을 닫은 후, 앵거스의 아버지는 양말 기계 앞에 앉아 작은 양말 한 켤레를 만들었다.","가게 문을 닫은 후, 앵거스는 실 뭉치 앞에 앉아 작은 양말 한 켤레를 만들었다.","가게 문을 닫은 후, 앵거스는 양말 기계 앞에 앉아 큰 양말 한 켤레를 만들었다.","가게 문을 닫은 후, 앵거스는 양말 기계 앞에 앉아 작은 양말 한 켤레를 만들었다."],"answer":5,"explanation":"본문에는 가게 문을 닫은 후 앵거스가 양말 기계 앞에 앉아 작은 양말 한 켤레를 만들었다고 나와 있으므로 1번이 정확하다."},{"id":"PARA-05","type":"para","points":3,"autoGraded":true,"instruction":"다음 중 본문 내용과 일치하지 않는 것은?","givenSentence":"","passage":"","choices":["The socks were warm and soft winter socks with blue stripes.","The socks were made for the sparrows, including Bruce.","Angus made the socks after the store closed for the night.","The socks were warm and soft winter socks with red stripes.","The socks popped out of the sock machine soon."],"answer":1,"explanation":"본문에는 양말에 '빨간(red)' 줄무늬가 있다고 나와 있으므로 '파란(blue)' 줄무늬라고 한 2번은 일치하지 않는다."},{"id":"PARA-06","type":"para","points":3,"autoGraded":true,"instruction":"다음 중 본문 내용을 올바르게 표현한 것은?","givenSentence":"","passage":"","choices":["앵거스는 다른 참새들도 추운 날씨에 떨고 있다는 것을 알았기 때문에 양말을 점점 더 많이 만들었다.","앵거스는 다른 참새들도 추운 날씨에 떨고 있다는 것을 알았지만 양말을 만들지 않았다.","앵거스는 브루스만 춥다는 것을 알았기 때문에 양말을 점점 더 많이 만들었다.","앵거스는 다른 참새들이 배고파한다는 것을 알았기 때문에 양말을 점점 더 많이 만들었다.","앵거스의 아버지는 다른 참새들도 추운 날씨에 떨고 있다는 것을 알았기 때문에 양말을 점점 더 많이 만들었다."],"answer":1,"explanation":"본문에는 앵거스가 다른 참새들도 추운 날씨에 떨고 있다는 것을 알았기 때문에 양말을 점점 더 많이 만들었다고 나와 있으므로 3번이 정확하다."},{"id":"PARA-07","type":"para","points":3,"autoGraded":true,"instruction":"다음 중 본문 내용을 올바르게 표현한 것은?","givenSentence":"","passage":"","choices":["Angus didn't realize that he had used up all the cotton in the machine.","Angus's father didn't realize that he had used up all the wool in the machine.","Angus didn't realize that there was plenty of wool left in the machine.","Angus didn't realize that he had used up all the wool in the machine.","Angus realized that he had used up all the wool in the machine."],"answer":4,"explanation":"본문에는 앵거스가 기계 안의 실을 모두 써버렸다는 것을 깨닫지 못했다고 나와 있으므로 5번이 정확하다."},{"id":"PARA-08","type":"para","points":3,"autoGraded":true,"instruction":"다음 중 본문 내용과 일치하지 않는 것은?","givenSentence":"","passage":"","choices":["앵거스의 아버지는 양말을 만드는 작은 가게를 소유하고 있었다.","앵거스는 잉글랜드의 한 작은 마을에 살았다.","앵거스는 스코틀랜드의 한 작은 마을에 살았다.","브루스는 앵거스와 함께 놀 때 그의 주머니 속으로 날아들었다.","참새 브루스는 앵거스의 가까운 친구였다."],"answer":2,"explanation":"본문에는 앵거스가 '스코틀랜드'의 작은 마을에 살았다고 나와 있으므로 '잉글랜드'라고 한 3번은 일치하지 않는다."},{"id":"PARA-09","type":"para","points":3,"autoGraded":true,"instruction":"다음 중 본문 내용을 올바르게 표현한 것은?","givenSentence":"","passage":"","choices":["Bruce saw Angus raising his feet one by one and said he could help him.","Angus saw Bruce raising his feet one by one and said he could not help him.","Angus saw Bruce raising his feet one by one and said he could help him.","Angus saw Bruce lowering his feet one by one and said he could help him.","Angus saw Bruce raising his wings one by one and said he could help him."],"answer":3,"explanation":"본문에는 앵거스가 브루스가 발을 하나씩 들어 올리는 것을 보고 도와줄 수 있다고 말했다고 나와 있으므로 2번이 정확하다."},{"id":"PARA-10","type":"para","points":3,"autoGraded":true,"instruction":"다음 중 본문 내용을 올바르게 표현한 것은?","givenSentence":"","passage":"","choices":["앵거스는 더위에 지친 참새들을 위해 양말을 만들어 주었다.","앵거스는 추위에 떠는 참새들을 위해 양말을 만들어 주었다.","앵거스는 추위에 떠는 참새들을 위해 양말을 사 주었다.","앵거스는 추위에 떠는 강아지들을 위해 양말을 만들어 주었다.","앵거스는 추위에 떠는 참새들을 위해 목도리를 만들어 주었다."],"answer":2,"explanation":"본문 전체 내용에 따르면 앵거스는 추위에 떠는 참새들을 위해 양말을 직접 만들어 주었으므로 4번이 정확하다."}]}}</script>
+<script>window.WS_CONFIG={"testName":"M2Lesson8_main1_순서OX","level":"순서OX","threshold":90,"endpoint":"https://script.google.com/macros/s/AKfycbxHb25T0B2rBRvTMo4kF2hDHy0WlQSYOpLTDi2yUYoU7QPv3VotIjcKdGus6IDQckxs8w/exec"};</script>
+<script>
+(function(){
+window.__WS_START=new Date();
+window.__WS_LOCKED={};
+function refresh(){ if(typeof _wsRefreshRetryButton==='function') _wsRefreshRetryButton(); }
+var nm=document.querySelector('[data-role=studentName]');
+if(nm){ nm.addEventListener('input',refresh); nm.addEventListener('change',refresh); }
+refresh();
+})();
+function wsHint(btn){var k=btn.parentNode.querySelector('.hint-ko');if(k)k.classList.toggle('show');}
+function advSyncGFix(el){var row=el.closest('[data-qtype="interp"]');if(!row)return;var w=row.querySelector('[data-role=gfixWrong]');var c=row.querySelector('[data-role=gfixCorrect]');var hidden=row.querySelector('input[type=hidden][data-role=answer]');if(hidden)hidden.value=(w?w.value.trim():'')+' → '+(c?c.value.trim():'');}
+function _setReveal(on){var r=document.getElementById('wsRoot');r.classList.toggle('answer-mode',on);var s=document.getElementById('bSubmit'),t=document.getElementById('bRetry');if(s){s.classList.toggle('active',on);s.disabled=on;}if(t)t.classList.toggle('active',!on);}
+function _renumberTray(tray){[].slice.call(tray.querySelectorAll('.tile')).forEach(function(t,i){var b=t.querySelector('.num-badge');if(b)b.textContent=(i+1);});}
+(function(){
+var dragEl=null, tray=null, startX=0, startY=0, moved=false, pid=null;
+var ghostOffsetX=0, ghostOffsetY=0, ghostW=0, ghostH=0, caret=null;
+/* (업그레이드 2단계)
+   1단계 수정(2D 거리 비교)만으로는 부족했던 근본 원인: 드래그 중인 타일을 그 자리에 그대로
+   둔 채(투명도만 낮춰) flex 레이아웃 계산에 계속 참여시키고 있었다. 그래서 매 pointermove마다
+   "그 타일 자신의 너비"가 줄바꿈·이웃 타일 위치에 영향을 주고, 그 변화가 다시 다음 판정에
+   영향을 주는 피드백 루프가 생겨 — 폭이 넓은 타일일수록(예: "the analog hobby") 목표 지점
+   근처에서 튕기거나(자리를 못 잡음), 짧은 타일(예: "revival") 왼쪽으로 넣으려 해도 그 순간
+   줄바꿈이 다시 계산되며 제자리로 돌아가는 문제가 있었다.
+   해결: 드래그 시작 시 실제 타일을 트레이(flex 레이아웃)에서 완전히 분리해 document.body에
+   position:fixed 로 띄운 "고스트"로 만든다 — 남은 타일들은 그 순간 한 번만 재배치되고, 이후
+   드래그 내내 완전히 고정된다(더 이상 드래그 중인 타일의 폭이 판정에 영향을 주지 않음).
+   목표 위치는 남은(고정된) 타일만 보고 "줄(row) 우선"으로 계산한다: 손끝의 y좌표로 어느 줄인지
+   먼저 찾고, 그 줄 안에서 x좌표로 삽입 지점을 정한다 — 가는 삽입선(caret)으로 미리 보여준다.
+   드롭 시점에 그 위치로 실제 타일을 되돌려 넣는다. */
+function rowsOf(tr){
+  var els=[].slice.call(tr.querySelectorAll('.tile:not(.dragging)'));
+  var rows=[];
+  els.forEach(function(el){
+    var b=el.getBoundingClientRect();
+    var row=null;
+    for(var i=0;i<rows.length;i++){ if(Math.abs(rows[i].top-b.top)<4){row=rows[i];break;} }
+    if(!row){row={top:b.top,bottom:b.bottom,items:[]};rows.push(row);}
+    row.bottom=Math.max(row.bottom,b.bottom);
+    row.items.push({el:el,rect:b});
+  });
+  rows.forEach(function(r){r.items.sort(function(a,b){return a.rect.left-b.rect.left;});});
+  rows.sort(function(a,b){return a.top-b.top;});
+  return rows;
+}
+function insertionRef(tr,x,y){
+  var rows=rowsOf(tr);
+  if(!rows.length)return null; // 트레이가 비었으면 맨 끝(=시작)에 삽입
+  var row=rows[rows.length-1];
+  for(var i=0;i<rows.length;i++){ if(y<rows[i].bottom){row=rows[i];break;} }
+  var items=row.items;
+  for(var k=0;k<items.length;k++){
+    if(x < items[k].rect.left+items[k].rect.width/2) return items[k].el;
+  }
+  var last=items[items.length-1];
+  return last?last.el.nextElementSibling:null;
+}
+document.addEventListener('pointerdown',function(e){
+  var t=e.target.closest&&e.target.closest('.tile');
+  if(!t)return;
+  if(t.closest('.q-locked'))return; // 재시험 잠금 문항은 드래그 비활성
+  var tr=t.closest('.arrange-tray');
+  if(!tr)return;
+  dragEl=t;tray=tr;moved=false;startX=e.clientX;startY=e.clientY;pid=e.pointerId;
+  try{t.setPointerCapture(e.pointerId);}catch(_){}
+});
+document.addEventListener('pointermove',function(e){
+  if(!dragEl||e.pointerId!==pid)return;
+  if(!moved&&(Math.abs(e.clientX-startX)>4||Math.abs(e.clientY-startY)>4)){
+    moved=true;
+    var r=dragEl.getBoundingClientRect();
+    ghostW=r.width;ghostH=r.height;
+    ghostOffsetX=startX-r.left;ghostOffsetY=startY-r.top;
+    dragEl.style.width=ghostW+'px';dragEl.style.height=ghostH+'px';
+    dragEl.style.left=r.left+'px';dragEl.style.top=r.top+'px';
+    document.body.appendChild(dragEl);
+    dragEl.classList.add('dragging','tile-ghost');
+    caret=document.createElement('span');
+    caret.className='arrange-caret';
+    caret.style.height=ghostH+'px';
+    tray.appendChild(caret);
+  }
+  if(!moved)return;
+  e.preventDefault();
+  dragEl.style.left=(e.clientX-ghostOffsetX)+'px';
+  dragEl.style.top=(e.clientY-ghostOffsetY)+'px';
+  var ref=insertionRef(tray,e.clientX,e.clientY);
+  if(caret.nextSibling!==ref){ if(ref==null)tray.appendChild(caret);else tray.insertBefore(caret,ref); }
+},{passive:false});
+function endDrag(e){
+  if(!dragEl||(e&&e.pointerId!==pid))return;
+  if(moved){
+    dragEl.classList.remove('dragging','tile-ghost');
+    dragEl.style.position='';dragEl.style.left='';dragEl.style.top='';
+    dragEl.style.width='';dragEl.style.height='';
+    if(caret&&caret.parentNode){ caret.parentNode.insertBefore(dragEl,caret); }
+    else if(tray){ tray.appendChild(dragEl); } // 안전망: caret이 사라진 예외 상황에도 타일이 허공에 남지 않도록 트레이 끝에 복귀
+    if(tray)_renumberTray(tray);
+  }
+  if(caret&&caret.parentNode)caret.parentNode.removeChild(caret);
+  caret=null;dragEl=null;tray=null;pid=null;moved=false;
+}
+document.addEventListener('pointerup',endDrag);
+document.addEventListener('pointercancel',endDrag);
+})();
+function _p2(n){return(n<10?'0':'')+n;}
+function _fmtRange(a,b){function dd(x){return x.getFullYear()+'-'+_p2(x.getMonth()+1)+'-'+_p2(x.getDate());}function tt(x){return _p2(x.getHours())+':'+_p2(x.getMinutes());}var ds=dd(a),de=dd(b);return ds===de?(ds+' '+tt(a)+'~'+tt(b)):(ds+' '+tt(a)+'~'+de+' '+tt(b));}
+function _collect(){var locked=window.__WS_LOCKED||{};var rows=[].slice.call(document.querySelectorAll('[data-qid]')).filter(function(r){return !locked[r.getAttribute('data-qid')];});var out=[];var objEarned=0,objMax=0,subjMax=0,subjCount=0;
+rows.forEach(function(r){var qid=r.getAttribute('data-qid');var type=r.getAttribute('data-qtype');var pts=+(r.getAttribute('data-points')||0);var rec={qid:qid,type:type,max:pts};
+if(type==='interp'){var i=r.querySelector('[data-role=answer]');rec.student=i?i.value.trim():'';rec.answer=r.getAttribute('data-answer')||'';rec.autoGraded=false;var hraw=r.getAttribute('data-hints');if(hraw){try{rec.hints=JSON.parse(hraw);}catch(_){rec.hints=hraw.split(',').map(function(x){return x.trim();}).filter(Boolean);}}subjMax+=pts;subjCount++;}
+else if(type==='arrange'){var toks=[].slice.call(r.querySelectorAll('.tile')).map(function(t){return t.getAttribute('data-tok');});rec.student=toks.join(' | ');rec.answer=r.getAttribute('data-answer')||'';rec.autoGraded=true;rec.correct=(rec.student===rec.answer);rec.awarded=rec.correct?pts:0;objEarned+=rec.awarded;objMax+=pts;}
+else if(type==='match'){var m=r.querySelector('[data-role=match]');rec.student=m?m.value:'';rec.answer=r.getAttribute('data-answer-match')||'';rec.autoGraded=true;rec.correct=(rec.student!==''&&rec.student===rec.answer);rec.awarded=rec.correct?pts:0;objEarned+=rec.awarded;objMax+=pts;}
+else if(type==='topic-num'){var s=r.querySelector('[data-role=answer]');rec.student=s?s.value:'';rec.answer=r.getAttribute('data-answer');rec.answerAlt=r.getAttribute('data-answer-alt')||null;rec.autoGraded=true;var ap=+(r.getAttribute('data-points-alt')||0);if(rec.student===rec.answer){rec.awarded=pts;rec.correct=true;}else if(rec.answerAlt&&rec.student===rec.answerAlt){rec.awarded=ap;rec.correct='alt';}else{rec.awarded=0;rec.correct=false;}objEarned+=rec.awarded;objMax+=pts;}
+else if(type==='choice'){var sc=r.querySelector('[data-role=choice]:checked');rec.student=sc?sc.value:'';rec.answer=r.getAttribute('data-answer')||'';rec.autoGraded=true;rec.correct=(rec.student!==''&&rec.student===rec.answer);rec.awarded=rec.correct?pts:0;objEarned+=rec.awarded;objMax+=pts;}
+else if(type==='multichoice'){var ck=[].slice.call(r.querySelectorAll('[data-role=mc]:checked')).map(function(x){return x.value;});rec.student=ck.slice().sort().join(',');rec.answer=(r.getAttribute('data-answer')||'').split(',').map(function(x){return x.trim();}).filter(Boolean).sort().join(',');rec.autoGraded=true;rec.correct=(rec.student!==''&&rec.student===rec.answer);rec.awarded=rec.correct?pts:0;objEarned+=rec.awarded;objMax+=pts;}
+else if(type==='contentmatch'){var isMatch=(r.getAttribute('data-match')==='true');var wAns=(r.getAttribute('data-word')||'').trim().toLowerCase().replace(/[^a-z']/g,'');var cAns=(r.getAttribute('data-correct')||'').trim().toLowerCase().replace(/[^a-z']/g,'');var ox=r.querySelector('[data-role=cmchoice]:checked');var oxVal=ox?ox.value:'';var wi=r.querySelector('[data-role=cmword]');var wVal=(wi?wi.value:'').trim().toLowerCase().replace(/[^a-z']/g,'');var ci=r.querySelector('[data-role=cmcorrect]');var cVal=(ci?ci.value:'').trim().toLowerCase().replace(/[^a-z']/g,'');rec.student=oxVal+((wVal||cVal)?(' / '+wVal+' → '+cVal):'');rec.answer=(isMatch?'O':'X')+(isMatch?'':(' / '+wAns+' → '+cAns));var half=Math.round(pts*0.5);var awarded=0;if(isMatch){awarded=(oxVal==='O')?pts:0;}else{var judgeOk=(oxVal==='X');if(judgeOk)awarded+=half;if(judgeOk&&wVal&&cVal&&wVal===wAns&&cVal===cAns)awarded+=(pts-half);}rec.autoGraded=true;rec.correct=(awarded===pts);rec.awarded=awarded;objEarned+=awarded;objMax+=pts;}
+out.push(rec);});
+return {answers:out,objEarned:objEarned,objMax:objMax,subjMax:subjMax,subjCount:subjCount};}
+function _payload(){var d=_collect();var cfg=window.WS_CONFIG||{};var nm=document.querySelector('[data-role=studentName]');var gr=document.querySelector('[data-role=grade]');var end=new Date();var start=window.__WS_START||end;
+return {testName:cfg.testName||document.title,level:cfg.level||'',student:nm?nm.value.trim():'',grade:gr?gr.value:'',threshold:(cfg.threshold!=null?cfg.threshold:80),startedAt:start.toISOString(),submittedAt:end.toISOString(),timeRange:_fmtRange(start,end),objectiveEarned:d.objEarned,objectiveMax:d.objMax,subjectiveMax:d.subjMax,questions:d.answers};}
+function _banner(html){var box=document.getElementById('gradeBox');var body=document.getElementById('gradeBody');if(body)body.innerHTML=html;if(box){box.classList.add('show');box.scrollIntoView({behavior:'smooth',block:'nearest'});}}
+function _scoreBanner(mainHtml, subHtml, cls){var box=document.getElementById('scoreBanner');if(!box)return;var m=document.getElementById('sbMain'),s=document.getElementById('sbSub');if(m)m.innerHTML=mainHtml;if(s)s.innerHTML=subHtml||'';box.className='score-banner show'+(cls?(' '+cls):'');box.scrollIntoView({behavior:'smooth',block:'start'});}
+function _qHost(qid){return document.querySelector('[data-qid="'+String(qid).replace(/"/g,'')+'"]');}
+function _badgeCls(awarded,max){if(max<=0)return 'ok';if(awarded>=max)return 'ok';if(awarded<=0)return 'bad';return 'partial';}
+function _setBadge(qid,cls,text){var host=_qHost(qid);if(!host)return;var tag=host.querySelector('.qtag');if(!tag)return;var b=tag.parentNode.querySelector('.qgrade[data-for="'+String(qid).replace(/"/g,'')+'"]');if(!b){b=document.createElement('span');b.setAttribute('data-for',qid);tag.parentNode.insertBefore(b,tag.nextSibling);}b.className='qgrade show '+cls;b.textContent=text;}
+function _clearBadges(){[].slice.call(document.querySelectorAll('.qgrade')).forEach(function(b){b.parentNode.removeChild(b);});}
+function _markObjective(answers){answers.forEach(function(rec){if(rec.autoGraded===false)return;var cls=_badgeCls(rec.awarded,rec.max);var icon=cls==='ok'?' ✅':(cls==='bad'?' ❌':' ▲');_setBadge(rec.qid,cls,(rec.awarded||0)+'/'+rec.max+'점'+icon);});}
+function _markSubjectivePending(answers){answers.forEach(function(rec){if(rec.autoGraded!==false)return;if(!String(rec.student||'').trim()){_setBadge(rec.qid,'bad','0/'+rec.max+'점 ❌ (무응답)');}else{_setBadge(rec.qid,'pending','⏳ 채점중');}});}
+function _markSubjectiveResult(grades){(grades||[]).forEach(function(g){var max=Number(g.max)||0,awarded=Number(g.awarded)||0;if(g.note){_setBadge(g.qid,'bad','⚠ '+g.note);return;}var cls=_badgeCls(awarded,max);var icon=cls==='ok'?' ✅':(cls==='bad'?' ❌':' ▲');_setBadge(g.qid,cls,awarded+'/'+max+'점'+icon);});}
+/* ===== 재시험(오답·부분점수만 다시 풀기) =====
+   설계: 백엔드(Apps Script)는 수정하지 않는다 — 잠긴(만점) 문항은 _collect()가 애초에
+   payload(items)에서 제외하므로, 서버는 그때그때 "다시 푼 문항"만 받는 평소와 동일한 요청으로 본다.
+   전체 누적 결과(어떤 문항이 잠겼는지·이전 점수)는 이 브라우저의 localStorage에만 저장한다. */
+function _wsTotalMax(){var sum=0;[].slice.call(document.querySelectorAll('[data-qid]')).forEach(function(h){sum+=(+(h.getAttribute('data-points')||0));});return sum;}
+function _wsStoreKey(){var cfg=window.WS_CONFIG||{};var nm=document.querySelector('[data-role=studentName]');var name=(nm?nm.value.trim():'')||'(익명)';return 'wsRetry::'+(cfg.testName||document.title)+'::'+(cfg.level||'')+'::'+name;}
+function _wsLoadAttempt(){try{var raw=localStorage.getItem(_wsStoreKey());return raw?JSON.parse(raw):null;}catch(_){return null;}}
+function _wsSaveAttempt(rec){try{localStorage.setItem(_wsStoreKey(),JSON.stringify(rec));}catch(_){}}
+function _wsClearAttempt(){try{localStorage.removeItem(_wsStoreKey());}catch(_){}}
+function _setRetryBanner(html){var b=document.getElementById('retryBanner');if(b)b.innerHTML=html||'';}
+// 이전 답안을 문항 타입에 맞게 화면에 다시 채워 넣는다 (재시험 대상 문항을 수정하기 쉽도록)
+function _wsFillAnswer(host,type,val){val=val||'';
+if(type==='interp'){var i=host.querySelector('[data-role=answer]');if(i)i.value=val;var gw=host.querySelector('[data-role=gfixWrong]'),gc=host.querySelector('[data-role=gfixCorrect]');if(gw||gc){var gp=val.split(' → ');if(gw)gw.value=(gp[0]||'').trim();if(gc)gc.value=(gp[1]||'').trim();}}
+else if(type==='arrange'){var tray=host.querySelector('.arrange-tray');if(!tray)return;var toks=val.split(' | ');var pool={};[].slice.call(tray.querySelectorAll('.tile')).forEach(function(t){var k=t.getAttribute('data-tok');(pool[k]=pool[k]||[]).push(t);});var ordered=[],ok=true;toks.forEach(function(k){var arr=pool[k];if(arr&&arr.length){ordered.push(arr.shift());}else{ok=false;}});if(ok&&ordered.length===tray.querySelectorAll('.tile').length){ordered.forEach(function(t){tray.appendChild(t);});_renumberTray(tray);}}
+else if(type==='match'){var m=host.querySelector('[data-role=match]');if(m)m.value=val;}
+else if(type==='topic-num'){var s=host.querySelector('[data-role=answer]');if(s)s.value=val;}
+else if(type==='choice'){[].slice.call(host.querySelectorAll('[data-role=choice]')).forEach(function(r){r.checked=(r.value===val);});}
+else if(type==='multichoice'){var vs=(val||'').split(',').map(function(x){return x.trim();}).filter(Boolean);[].slice.call(host.querySelectorAll('[data-role=mc]')).forEach(function(c){c.checked=vs.indexOf(c.value)>=0;});}
+else if(type==='contentmatch'){var parts=val.split(' / ');var ox=parts[0];[].slice.call(host.querySelectorAll('[data-role=cmchoice]')).forEach(function(r){r.checked=(r.value===ox);});if(parts[1]){var wc=parts[1].split(' → ');var wi=host.querySelector('[data-role=cmword]');if(wi)wi.value=(wc[0]||'').trim();var ci=host.querySelector('[data-role=cmcorrect]');if(ci)ci.value=(wc[1]||'').trim();}}}
+// 문항을 잠금(이전 만점 → 재채점 제외) 또는 재시험 대상(수정 가능)으로 표시
+function _wsSetLocked(host,locked,info){host.classList.toggle('q-locked',locked);host.classList.toggle('q-retry-target',!locked);
+if(locked){host.setAttribute('data-lock-label','🔒 '+(info?info.awarded:0)+'/'+(info?info.max:0)+'점 (이전 만점)');host.removeAttribute('data-retry-label');}
+else{host.removeAttribute('data-lock-label');var prev=(info&&!info.pending)?(' (이전 '+info.awarded+'/'+info.max+'점)'):'';host.setAttribute('data-retry-label','🎯 재시험 대상'+prev);}
+[].slice.call(host.querySelectorAll('input,select,textarea')).forEach(function(el){el.disabled=locked;});}
+// 이번 회차 채점 결과(grades)를 이전에 잠긴 문항(prevLocked)과 합쳐 누적 결과로 저장하고 총점을 반환
+function _wsSaveMergedAttempt(prevLocked,roundQuestions,grades){
+var items={};Object.keys(prevLocked||{}).forEach(function(qid){items[qid]=prevLocked[qid];});
+var gmap={};(grades||[]).forEach(function(g){gmap[g.qid]=g;});
+(roundQuestions||[]).forEach(function(rec){var awarded,pending=false,reason='';
+if(gmap[rec.qid]){awarded=Number(gmap[rec.qid].awarded)||0;reason=gmap[rec.qid].reason||'';}
+else if(rec.autoGraded){awarded=Number(rec.awarded)||0;}
+else{awarded=0;pending=true;} // 서술형인데 구글시트 미연결 → 판정 불가, 항상 재시험 대상으로 열어둠
+items[rec.qid]={max:rec.max,awarded:awarded,student:rec.student,reason:reason,pending:pending};});
+var totalMax=0,totalEarned=0,anyOpen=false;
+Object.keys(items).forEach(function(qid){var it=items[qid];totalMax+=Number(it.max)||0;var full=!it.pending&&it.max>0&&it.awarded>=it.max;if(full){totalEarned+=it.max;}else{totalEarned+=(Number(it.awarded)||0);anyOpen=true;}});
+_wsSaveAttempt({items:items,updatedAt:new Date().toISOString()});
+return {totalEarned:totalEarned,totalMax:totalMax,anyOpen:anyOpen};}
+function _wsRefreshRetryButton(){var btn=document.getElementById('bRetryWrong');if(!btn)return;var prev=_wsLoadAttempt();var anyOpen=false;
+if(prev&&prev.items){Object.keys(prev.items).forEach(function(qid){var it=prev.items[qid];var full=!it.pending&&it.max>0&&it.awarded>=it.max;if(!full)anyOpen=true;});}
+btn.classList.toggle('show',!!(prev&&anyOpen));}
+function startRetryMode(){var prev=_wsLoadAttempt();
+if(!prev||!prev.items){alert('이전 제출 기록을 찾을 수 없습니다. 이름을 이전 제출 때와 똑같이 입력했는지 확인해주세요.');return;}
+var items=prev.items;var lockedMap={},anyOpen=false;
+Object.keys(items).forEach(function(qid){var it=items[qid];var full=!it.pending&&it.max>0&&it.awarded>=it.max;if(full){lockedMap[qid]=it;}else{anyOpen=true;}});
+if(!anyOpen){alert('🎉 모든 문항이 이미 만점입니다! 재시험이 필요 없어요.');return;}
+window.__WS_LOCKED=lockedMap;
+_setReveal(false);
+var gb=document.getElementById('gradeBox');if(gb)gb.classList.remove('show');
+var sb=document.getElementById('scoreBanner');if(sb)sb.className='score-banner';
+_clearBadges();
+Object.keys(items).forEach(function(qid){var host=_qHost(qid);if(!host)return;var type=host.getAttribute('data-qtype');var it=items[qid];_wsFillAnswer(host,type,it.student||'');_wsSetLocked(host,!!lockedMap[qid],it);});
+var root=document.getElementById('wsRoot');if(root)root.classList.add('retry-mode');
+var btn=document.getElementById('bSubmit');if(btn){btn.textContent='✅ 재시험 제출';btn.disabled=false;btn.classList.remove('active');}
+var rw=document.getElementById('bRetryWrong');if(rw)rw.classList.remove('show');
+window.__WS_START=new Date();
+_setRetryBanner('🎯 <b>재시험 모드</b> — 🔒 표시된 문항은 이전에 만점을 받아 잠겼습니다(다시 채점하지 않습니다). 나머지 🎯 표시된 문항만 다시 풀고 아래 <b>재시험 제출</b> 버튼을 누르세요.');}
+function submitTest(){var wsRoot=document.getElementById('wsRoot');if(wsRoot&&wsRoot.classList.contains('answer-mode')){_banner('<div style="color:#b23a48;font-weight:700;">⚠ 이미 제출된 테스트입니다.</div><div style="font-size:13px;margin-top:4px;color:#555;">정답이 공개된 상태에서는 다시 제출할 수 없습니다. 위 🔁 전체 초기화 버튼을 눌러 처음부터 다시 풀거나, 🎯 오답만 재시험 버튼을 이용하세요.</div>');return;}
+var nmEl=document.querySelector('[data-role=studentName]');if(nmEl&&!nmEl.value.trim()){alert('이름을 입력해주세요. (이름으로 이전 결과를 저장해두었다가 재시험 때 불러옵니다)');return;}
+var locked=window.__WS_LOCKED||{};
+_setReveal(true);var p=_payload();var cfg=window.WS_CONFIG||{};var objPct=p.objectiveMax?Math.round(p.objectiveEarned/p.objectiveMax*100):0;var subjN=p.questions.filter(function(q){return q.autoGraded===false;}).length;
+_markObjective(p.questions);_markSubjectivePending(p.questions);
+if(!cfg.endpoint){
+var merged=_wsSaveMergedAttempt(locked,p.questions,null);
+var pct=merged.totalMax?Math.round(merged.totalEarned/merged.totalMax*100):0;
+_scoreBanner('현재까지 자동 채점: '+merged.totalEarned+' / '+merged.totalMax+'점 ('+pct+'%)','서술형 '+subjN+'문항은 문항 옆에 공개된 정답과 비교해 확인하세요. (구글시트 URL을 연결하면 Gemini가 서술형까지 자동채점하고 재시험도 정확히 판정합니다.)'+(merged.anyOpen?' · 🎯 만점 못 받은 문항이 있으면 위 버튼으로 재시험할 수 있습니다.':' · 🎉 모든 문항 만점입니다!'));
+_wsRefreshRetryButton();return;}
+_scoreBanner('⏳ 채점 중…','서술형 AI 채점 · 시트 기록 중입니다.');
+fetch(cfg.endpoint,{method:'POST',body:JSON.stringify(p)}).then(function(r){return r.json();}).then(function(res){
+if(res&&res.ok){_markSubjectiveResult(res.grades);
+var merged=_wsSaveMergedAttempt(locked,p.questions,res.grades);
+var pct=merged.totalMax?Math.round(merged.totalEarned/merged.totalMax*100):0;
+var pass=pct>=p.threshold;
+var warn=res.warning?('<div style="font-size:12px;margin-top:4px;">⚠ '+res.warning+'</div>'):'';
+_scoreBanner((pass?'✅ 통과':'❌ 미통과')+' — '+merged.totalEarned+' / '+merged.totalMax+'점 ('+pct+'%)','기준 '+p.threshold+'% · 결과가 구글시트에 기록되었습니다.'+warn+(merged.anyOpen?' · 🎯 아직 만점 못 받은 문항이 있어 재시험이 가능합니다.':' · 🎉 모든 문항 만점입니다!'),pass?'pass':'fail');
+_wsRefreshRetryButton();}
+else{_banner('<div style="color:#b23a48;font-weight:700;">채점 응답 오류'+(res&&res.error?(': '+res.error):'')+'</div><div style="font-size:13px;margin-top:4px;">객관식 자동: '+p.objectiveEarned+'/'+p.objectiveMax+'점. 서술형은 문항 옆 공개 정답으로 확인하세요.</div>');}
+}).catch(function(e){_banner('<div style="color:#b23a48;font-weight:700;">시트 응답을 읽지 못했습니다.</div><div style="font-size:13px;margin-top:4px;">(전송 자체는 되었을 수 있습니다.) 객관식 자동: '+p.objectiveEarned+'/'+p.objectiveMax+'점 ('+objPct+'%).</div>');});}
+function retryTest(){_setReveal(false);var box=document.getElementById('gradeBox');if(box)box.classList.remove('show');
+var sb=document.getElementById('scoreBanner');if(sb)sb.className='score-banner';
+_clearBadges();
+window.__WS_LOCKED={};_wsClearAttempt();
+var root=document.getElementById('wsRoot');if(root)root.classList.remove('retry-mode');
+_setRetryBanner('');
+[].slice.call(document.querySelectorAll('[data-qid]')).forEach(function(h){h.classList.remove('q-locked','q-retry-target');h.removeAttribute('data-lock-label');h.removeAttribute('data-retry-label');[].slice.call(h.querySelectorAll('input,select,textarea')).forEach(function(el){el.disabled=false;});});
+[].slice.call(document.querySelectorAll('input.ws-input[data-role=answer], input[type=hidden][data-role=answer], input.ws-input[data-role=cmword], input.ws-input[data-role=cmcorrect], input.ws-input[data-role=gfixWrong], input.ws-input[data-role=gfixCorrect]')).forEach(function(i){i.value='';});
+[].slice.call(document.querySelectorAll('select.ws-select[data-role=match], select.ws-select[data-role=answer]')).forEach(function(s){s.value='';});
+[].slice.call(document.querySelectorAll('input[type=radio][data-role=choice], input[type=checkbox][data-role=mc], input[type=radio][data-role=cmchoice]')).forEach(function(r){r.checked=false;});
+[].slice.call(document.querySelectorAll('.arrange-tray')).forEach(function(tray){var ts=[].slice.call(tray.querySelectorAll('.tile'));for(var a=ts.length-1;a>0;a--){var b=Math.floor(Math.random()*(a+1));tray.insertBefore(ts[a],ts[b]);}_renumberTray(tray);});
+var btn=document.getElementById('bSubmit');if(btn)btn.textContent='✅ 테스트 제출';
+var rw=document.getElementById('bRetryWrong');if(rw)rw.classList.remove('show');
+window.__WS_START=new Date();}
+</script>
+</body>
+</html>
