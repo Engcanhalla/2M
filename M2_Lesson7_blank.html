@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<title>M2_Lesson7_blank - Vocab Practice</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:"Segoe UI","Malgun Gothic",sans-serif;background:#f5f6fa;color:#222;font-size:16px;line-height:1.8;padding:0;min-height:100vh;}
+.header{background:linear-gradient(135deg,#1a237e,#3949ab);color:#fff;padding:16px 20px;text-align:center;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.2);}
+.header h1{font-size:18px;font-weight:700;}
+.header .level-info{font-size:14px;opacity:.85;margin-top:4px;}
+.header .sentence-info{font-size:12px;opacity:.7;margin-top:2px;}
+.progress-bar{height:6px;background:rgba(255,255,255,.2);border-radius:3px;margin-top:8px;overflow:hidden;}
+.progress-fill{height:100%;background:#81c784;border-radius:3px;transition:width .3s;}
+.content{max-width:700px;margin:0 auto;padding:20px 16px;}
+.ref-toggle-row{text-align:right;margin-bottom:10px;}
+.btn-ref{background:#fff;border:2px solid #3949ab;color:#3949ab;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer;}
+.ref-box{background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:12px 16px;margin-bottom:14px;font-size:14px;color:#5d4037;}
+.ref-box strong{display:block;font-size:12px;color:#e65100;margin-bottom:4px;}
+.passage{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,.06);line-height:2.5;font-size:16px;margin-bottom:16px;}
+.blank-select{display:inline-block;position:relative;}
+.blank-select select{appearance:none;-webkit-appearance:none;background:#e3f2fd;border:2px solid #90caf9;border-radius:6px;padding:4px 28px 4px 10px;font-size:16px;font-weight:600;color:#1565c0;cursor:pointer;min-width:100px;font-family:inherit;}
+.blank-select select:focus{border-color:#1565c0;outline:none;box-shadow:0 0 0 3px rgba(21,101,192,.15);}
+.blank-select.correct select{background:#c8e6c9;border-color:#66bb6a;color:#2e7d32;}
+.blank-select.wrong select{background:#ffcdd2;border-color:#ef5350;color:#c62828;animation:shake .3s;}
+.blank-input{display:inline-block;}
+.blank-input input{background:#e3f2fd;border:2px solid #90caf9;border-radius:6px;padding:4px 10px;font-size:16px;font-weight:600;color:#1565c0;font-family:inherit;width:auto;min-width:80px;max-width:100%;box-sizing:border-box;vertical-align:middle;}
+.blank-input input::placeholder{color:#90a4ae;font-weight:700;letter-spacing:2px;}
+.blank-input input:focus{border-color:#1565c0;outline:none;box-shadow:0 0 0 3px rgba(21,101,192,.15);}
+.blank-input.correct input{background:#c8e6c9;border-color:#66bb6a;color:#2e7d32;}
+.blank-input.wrong input{background:#ffcdd2;border-color:#ef5350;color:#c62828;animation:shake .3s;}
+.check-btn{font-size:12px;padding:4px 8px;margin-left:2px;border:1px solid #90caf9;border-radius:4px;background:#e3f2fd;cursor:pointer;}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-4px);}75%{transform:translateX(4px);}}
+.retry-badge{display:inline-block;background:#fff3e0;color:#e65100;font-size:12px;padding:2px 8px;border-radius:10px;margin-left:6px;font-weight:600;}
+.action-bar{text-align:center;padding:16px;position:sticky;bottom:0;background:#f5f6fa;}
+.btn{padding:12px 28px;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:8px;}
+.btn:active{transform:scale(.97);}
+.btn-retry{background:#f57c00;color:#fff;box-shadow:0 4px 12px rgba(245,124,0,.3);}
+.btn-next{background:#2e7d32;color:#fff;box-shadow:0 4px 12px rgba(46,125,50,.3);}
+.btn-outline2{background:#eee;color:#333;}
+.result-card{background:#fff;border-radius:12px;padding:24px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,.1);margin:10px 0;}
+.result-card h2{font-size:20px;margin-bottom:8px;color:#1a237e;}
+.result-card .score{font-size:48px;font-weight:800;margin:12px 0;}
+.result-card .score.pass{color:#2e7d32;}
+.result-card .score.fail{color:#c62828;}
+.result-card p{font-size:15px;color:#666;margin:4px 0;}
+.congrats{background:linear-gradient(135deg,#1a237e,#3949ab);color:#fff;border-radius:12px;padding:32px;text-align:center;margin:16px 0;}
+.congrats h2{font-size:22px;margin-bottom:10px;}
+.congrats .emoji{font-size:44px;margin-bottom:10px;}
+.congrats p{font-size:15px;opacity:.9;}
+.mode-selector{background:transparent;box-shadow:none;padding:0;}
+.mode-selector h2{font-size:18px;color:#1a237e;text-align:center;margin-bottom:16px;}
+.mode-grid{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;}
+.mode-card{background:#fff;border:2px solid #e0e0e0;border-radius:14px;padding:24px 20px;width:220px;text-align:center;cursor:pointer;transition:.15s;box-shadow:0 2px 10px rgba(0,0,0,.05);}
+.mode-card:hover{border-color:#3949ab;transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.1);}
+.mode-icon{font-size:36px;margin-bottom:8px;}
+.mode-title{font-size:16px;font-weight:700;color:#1a237e;margin-bottom:6px;}
+.mode-desc{font-size:13px;color:#777;margin-bottom:10px;}
+.mode-status{font-size:12px;color:#2e7d32;font-weight:700;}
+.back-btn{background:none;border:none;color:#3949ab;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:14px;padding:0;}
+.level-selector{text-align:center;margin:10px 0;}
+.level-btn{padding:14px 24px;margin:6px;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;transition:.15s;min-width:140px;}
+.level-btn.easy-btn{background:#e8f5e9;color:#2e7d32;border:2px solid #a5d6a7;}
+.level-btn.med-btn{background:#fff3e0;color:#e65100;border:2px solid #ffcc80;}
+.level-btn.hard-btn{background:#fce4ec;color:#c62828;border:2px solid #ef9a9a;}
+.level-btn.locked{opacity:.4;cursor:not-allowed;}
+.level-btn.done::after{content:"\2713";margin-left:6px;}
+.student-info-box{background:#fff;border-radius:14px;padding:28px 24px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.06);max-width:360px;margin:0 auto;}
+.student-name-input{width:100%;padding:12px 14px;border:2px solid #c5cae9;border-radius:10px;font-size:16px;font-family:inherit;margin-bottom:12px;}
+.student-name-input:focus{border-color:#3949ab;outline:none;}
+.student-grade-select{width:100%;padding:11px 10px;border:1.5px solid #c5cae9;border-radius:10px;background:#fff;color:#222;font-size:16px;font-family:inherit;margin-bottom:16px;}
+.btn-start-app{width:100%;padding:13px;border:none;border-radius:10px;background:#3949ab;color:#fff;font-size:15px;font-weight:700;cursor:pointer;}
+.btn-start-app:disabled{opacity:.4;cursor:not-allowed;}
+.submit-box{background:#fff;border-radius:12px;padding:18px;text-align:center;margin:14px 0;box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.btn-submit{padding:12px 26px;border:none;border-radius:10px;background:#2e7d32;color:#fff;font-size:15px;font-weight:700;cursor:pointer;}
+.btn-submit:disabled{opacity:.6;cursor:not-allowed;}
+.submit-status{font-size:13px;color:#666;margin-top:8px;}
+</style></head><body>
+<div class="header" id="header">
+<h1 id="headerTitle">M2_Lesson7_blank</h1>
+<div class="level-info" id="levelInfo"></div>
+<div class="sentence-info" id="sentenceInfo"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+</div>
+<div class="content" id="content"></div>
+<div class="action-bar" id="actionBar"></div>
+<script>
+var DATA={"sentences":[{"en":{"words":[{"t":"National","c":"National","tr":"","l":""},{"t":"parks","c":"parks","tr":"","l":""},{"t":"are","c":"are","tr":"","l":""},{"t":"special","c":"special","tr":"","l":""},{"t":"places","c":"places","tr":"","l":""},{"t":"for","c":"for","tr":"","l":""},{"t":"preserving","c":"preserving","tr":"","l":""},{"t":"nature.","c":"nature","tr":".","l":""}],"blanks":{"easy":[6],"medium":[],"hard":[6]},"choices":{"6":{"choices":["destroying","borrowing","painting","preserving"],"correct":3}},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{"6":"preserving"}},"kr":{"words":[{"t":"국립공원은","c":"국립공원은","tr":"","l":""},{"t":"자연을","c":"자연을","tr":"","l":""},{"t":"보존하기","c":"보존하기","tr":"","l":""},{"t":"위한","c":"위한","tr":"","l":""},{"t":"특별한","c":"특별한","tr":"","l":""},{"t":"장소입니다.","c":"장소입니다","tr":".","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}}},{"en":{"words":[{"t":"They","c":"They","tr":"","l":""},{"t":"keep","c":"keep","tr":"","l":""},{"t":"many","c":"many","tr":"","l":""},{"t":"animal","c":"animal","tr":"","l":""},{"t":"and","c":"and","tr":"","l":""},{"t":"plant","c":"plant","tr":"","l":""},{"t":"species","c":"species","tr":"","l":""},{"t":"safe.","c":"safe","tr":".","l":""}],"blanks":{"easy":[],"medium":[1,7],"hard":[1,7]},"choices":{"1":{"choices":["destroy","table","keep","quickly"],"correct":2},"7":{"choices":["safe","endangered","window","carefully"],"correct":0}},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{"1":"keep","7":"safe"}},"kr":{"words":[{"t":"그것들은","c":"그것들은","tr":"","l":""},{"t":"많은","c":"많은","tr":"","l":""},{"t":"동물과","c":"동물과","tr":"","l":""},{"t":"식물","c":"식물","tr":"","l":""},{"t":"종을","c":"종을","tr":"","l":""},{"t":"안전하게","c":"안전하게","tr":"","l":""},{"t":"지킵니다.","c":"지킵니다","tr":".","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}}},{"en":{"words":[{"t":"At","c":"At","tr":"","l":""},{"t":"the","c":"the","tr":"","l":""},{"t":"same","c":"same","tr":"","l":""},{"t":"time,","c":"time","tr":",","l":""},{"t":"they","c":"they","tr":"","l":""},{"t":"let","c":"let","tr":"","l":""},{"t":"people","c":"people","tr":"","l":""},{"t":"enjoy","c":"enjoy","tr":"","l":""},{"t":"the","c":"the","tr":"","l":""},{"t":"beauty","c":"beauty","tr":"","l":""},{"t":"of","c":"of","tr":"","l":""},{"t":"nature.","c":"nature","tr":".","l":""}],"blanks":{"easy":[5],"medium":[],"hard":[5]},"choices":{"5":{"choices":["lets people enjoy","let people enjoyed","let enjoy people","let people enjoy"],"correct":3}},"mediumGroupSkip":[],"easyGroupSkip":[6,7],"hardGroupSkip":[6,7],"hardAnswers":{"5":"let people enjoy"}},"kr":{"words":[{"t":"동시에,","c":"동시에","tr":",","l":""},{"t":"그것들은","c":"그것들은","tr":"","l":""},{"t":"사람들이","c":"사람들이","tr":"","l":""},{"t":"자연의","c":"자연의","tr":"","l":""},{"t":"아름다움을","c":"아름다움을","tr":"","l":""},{"t":"즐기게","c":"즐기게","tr":"","l":""},{"t":"해","c":"해","tr":"","l":""},{"t":"줍니다.","c":"줍니다","tr":".","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}}},{"en":{"words":[{"t":"Let’s","c":"Let’s","tr":"","l":""},{"t":"take","c":"take","tr":"","l":""},{"t":"a","c":"a","tr":"","l":""},{"t":"look","c":"look","tr":"","l":""},{"t":"at","c":"at","tr":"","l":""},{"t":"two","c":"two","tr":"","l":""},{"t":"famous","c":"famous","tr":"","l":""},{"t":"national","c":"national","tr":"","l":""},{"t":"parks","c":"parks","tr":"","l":""},{"t":"in","c":"in","tr":"","l":""},{"t":"South","c":"South","tr":"","l":""},{"t":"America","c":"America","tr":"","l":""},{"t":"and","c":"and","tr":"","l":""},{"t":"Africa.","c":"Africa","tr":".","l":""}],"blanks":{"easy":[1],"medium":[],"hard":[1]},"choices":{"1":{"choices":["take a look at","took a look at","taking a look at","take look a at"],"correct":0}},"mediumGroupSkip":[],"easyGroupSkip":[2,3,4],"hardGroupSkip":[2,3,4],"hardAnswers":{"1":"take a look at"}},"kr":{"words":[{"t":"남아메리카와","c":"남아메리카와","tr":"","l":""},{"t":"아프리카에","c":"아프리카에","tr":"","l":""},{"t":"있는","c":"있는","tr":"","l":""},{"t":"두","c":"두","tr":"","l":""},{"t":"개의","c":"개의","tr":"","l":""},{"t":"유명한","c":"유명한","tr":"","l":""},{"t":"국립공원을","c":"국립공원을","tr":"","l":""},{"t":"살펴봅시다.","c":"살펴봅시다","tr":".","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}}},{"en":{"words":[{"t":"Can","c":"Can","tr":"","l":""},{"t":"you","c":"you","tr":"","l":""},{"t":"believe","c":"believe","tr":"","l":""},{"t":"you","c":"you","tr":"","l":""},{"t":"can","c":"can","tr":"","l":""},{"t":"experience","c":"experience","tr":"","l":""},{"t":"four","c":"four","tr":"","l":""},{"t":"seasons","c":"seasons","tr":"","l":""},{"t":"in","c":"in","tr":"","l":""},{"t":"one","c":"one","tr":"","l":""},{"t":"day?","c":"day","tr":"?","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}},"kr":{"words":[{"t":"하루에","c":"하루에","tr":"","l":""},{"t":"사계절을","c":"사계절을","tr":"","l":""},{"t":"경험할","c":"경험할","tr":"","l":""},{"t":"수","c":"수","tr":"","l":""},{"t":"있다는","c":"있다는","tr":"","l":""},{"t":"것을","c":"것을","tr":"","l":""},{"t":"믿을","c":"믿을","tr":"","l":""},{"t":"수","c":"수","tr":"","l":""},{"t":"있나요?","c":"있나요","tr":"?","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}}},{"en":{"words":[{"t":"Torres","c":"Torres","tr":"","l":""},{"t":"del","c":"del","tr":"","l":""},{"t":"Paine","c":"Paine","tr":"","l":""},{"t":"National","c":"National","tr":"","l":""},{"t":"Park","c":"Park","tr":"","l":""},{"t":"in","c":"in","tr":"","l":""},{"t":"Chile","c":"Chile","tr":"","l":""},{"t":"is","c":"is","tr":"","l":""},{"t":"the","c":"the","tr":"","l":""},{"t":"perfect","c":"perfect","tr":"","l":""},{"t":"place","c":"place","tr":"","l":""},{"t":"for","c":"for","tr":"","l":""},{"t":"this.","c":"this","tr":".","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}},"kr":{"words":[{"t":"칠레의","c":"칠레의","tr":"","l":""},{"t":"토레스","c":"토레스","tr":"","l":""},{"t":"델","c":"델","tr":"","l":""},{"t":"파이네","c":"파이네","tr":"","l":""},{"t":"국립공원은","c":"국립공원은","tr":"","l":""},{"t":"이것을","c":"이것을","tr":"","l":""},{"t":"위한","c":"위한","tr":"","l":""},{"t":"완벽한","c":"완벽한","tr":"","l":""},{"t":"장소입니다.","c":"장소입니다","tr":".","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}}},{"en":{"words":[{"t":"It","c":"It","tr":"","l":""},{"t":"is","c":"is","tr":"","l":""},{"t":"famous","c":"famous","tr":"","l":""},{"t":"for","c":"for","tr":"","l":""},{"t":"its","c":"its","tr":"","l":""},{"t":"dynamic","c":"dynamic","tr":"","l":""},{"t":"weather.","c":"weather","tr":".","l":""}],"blanks":{"easy":[],"medium":[5],"hard":[5]},"choices":{"5":{"choices":["dynamically weather","weather dynamic","dynamic weathers are","dynamic weather"],"correct":3}},"mediumGroupSkip":[6],"easyGroupSkip":[],"hardGroupSkip":[6],"hardAnswers":{"5":"dynamic weather"}},"kr":{"words":[{"t":"그곳은","c":"그곳은","tr":"","l":""},{"t":"역동적인","c":"역동적인","tr":"","l":""},{"t":"날씨로","c":"날씨로","tr":"","l":""},{"t":"유명합니다.","c":"유명합니다","tr":".","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}}},{"en":{"words":[{"t":"It","c":"It","tr":"","l":""},{"t":"can","c":"can","tr":"","l":""},{"t":"be","c":"be","tr":"","l":""},{"t":"sunny,","c":"sunny","tr":",","l":""},{"t":"rainy,","c":"rainy","tr":",","l":""},{"t":"or","c":"or","tr":"","l":""},{"t":"snowy","c":"snowy","tr":"","l":""},{"t":"in","c":"in","tr":"","l":""},{"t":"a","c":"a","tr":"","l":""},{"t":"single","c":"single","tr":"","l":""},{"t":"day!","c":"day","tr":"!","l":""}],"blanks":{"easy":[],"medium":[7],"hard":[7]},"choices":{"7":{"choices":["in a single days","on a single day for","in single a day","in a single day"],"correct":3}},"mediumGroupSkip":[8,9,10],"easyGroupSkip":[],"hardGroupSkip":[8,9,10],"hardAnswers":{"7":"in a single day"}},"kr":{"words":[{"t":"하루","c":"하루","tr":"","l":""},{"t":"만에","c":"만에","tr":"","l":""},{"t":"맑을","c":"맑을","tr":"","l":""},{"t":"수도,","c":"수도","tr":",","l":""},{"t":"비가","c":"비가","tr":"","l":""},{"t":"올","c":"올","tr":"","l":""},{"t":"수도,","c":"수도","tr":",","l":""},{"t":"눈이","c":"눈이","tr":"","l":""},{"t":"올","c":"올","tr":"","l":""},{"t":"수도","c":"수도","tr":"","l":""},{"t":"있습니다!","c":"있습니다","tr":"!","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}}},{"en":{"words":[{"t":"Also,","c":"Also","tr":",","l":""},{"t":"you","c":"you","tr":"","l":""},{"t":"can","c":"can","tr":"","l":""},{"t":"see","c":"see","tr":"","l":""},{"t":"mountains,","c":"mountains","tr":",","l":""},{"t":"lakes,","c":"lakes","tr":",","l":""},{"t":"and","c":"and","tr":"","l":""},{"t":"even","c":"even","tr":"","l":""},{"t":"a","c":"a","tr":"","l":""},{"t":"big","c":"big","tr":"","l":""},{"t":"ice","c":"ice","tr":"","l":""},{"t":"field","c":"field","tr":"","l":""},{"t":"in","c":"in","tr":"","l":""},{"t":"this","c":"this","tr":"","l":""},{"t":"park.","c":"park","tr":".","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}},"kr":{"words":[{"t":"또한,","c":"또한","tr":",","l":""},{"t":"당신은","c":"당신은","tr":"","l":""},{"t":"이","c":"이","tr":"","l":""},{"t":"공원에서","c":"공원에서","tr":"","l":""},{"t":"산,","c":"산","tr":",","l":""},{"t":"호수,","c":"호수","tr":",","l":""},{"t":"그리고","c":"그리고","tr":"","l":""},{"t":"심지어","c":"심지어","tr":"","l":""},{"t":"큰","c":"큰","tr":"","l":""},{"t":"빙원까지도","c":"빙원까지도","tr":"","l":""},{"t":"볼","c":"볼","tr":"","l":""},{"t":"수","c":"수","tr":"","l":""},{"t":"있습니다.","c":"있습니다","tr":".","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}}},{"en":{"words":[{"t":"For","c":"For","tr":"","l":""},{"t":"example,","c":"example","tr":",","l":""},{"t":"Grey","c":"Grey","tr":"","l":""},{"t":"Glacier,","c":"Glacier","tr":",","l":""},{"t":"one","c":"one","tr":"","l":""},{"t":"of","c":"of","tr":"","l":""},{"t":"the","c":"the","tr":"","l":""},{"t":"most","c":"most","tr":"","l":""},{"t":"wonderful","c":"wonderful","tr":"","l":""},{"t":"glaciers","c":"glaciers","tr":"","l":""},{"t":"in","c":"in","tr":"","l":""},{"t":"Chile,","c":"Chile","tr":",","l":""},{"t":"welcomes","c":"welcomes","tr":"","l":""},{"t":"you","c":"you","tr":"","l":""},{"t":"in","c":"in","tr":"","l":""},{"t":"the","c":"the","tr":"","l":""},{"t":"park.","c":"park","tr":".","l":""}],"blanks":{"easy":[0,4,9],"medium":[12],"hard":[0,4,9,12]},"choices":{"0":{"choices":["For examples","For example","Example for","Of example"],"correct":1},"4":{"choices":["ones of","one of","one off","of one"],"correct":1},"9":{"choices":["deserts","pencils","glaciers","tickets"],"correct":2},"12":{"choices":["rejects","pencil","happily","welcomes"],"correct":3}},"mediumGroupSkip":[],"easyGroupSkip":[1,5],"hardGroupSkip":[1,5],"hardAnswers":{"0":"For example","4":"one of","9":"glaciers","12":"welcomes"}},"kr":{"words":[{"t":"예를","c":"예를","tr":"","l":""},{"t":"들어,","c":"들어","tr":",","l":""},{"t":"칠레에서","c":"칠레에서","tr":"","l":""},{"t":"가장","c":"가장","tr":"","l":""},{"t":"멋진","c":"멋진","tr":"","l":""},{"t":"빙하들","c":"빙하들","tr":"","l":""},{"t":"중","c":"중","tr":"","l":""},{"t":"하나인","c":"하나인","tr":"","l":""},{"t":"그레이","c":"그레이","tr":"","l":""},{"t":"빙하가","c":"빙하가","tr":"","l":""},{"t":"공원에서","c":"공원에서","tr":"","l":""},{"t":"당신을","c":"당신을","tr":"","l":""},{"t":"환영합니다.","c":"환영합니다","tr":".","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}}},{"en":{"words":[{"t":"It","c":"It","tr":"","l":""},{"t":"is","c":"is","tr":"","l":""},{"t":"exciting","c":"exciting","tr":"","l":""},{"t":"to","c":"to","tr":"","l":""},{"t":"walk","c":"walk","tr":"","l":""},{"t":"on","c":"on","tr":"","l":""},{"t":"the","c":"the","tr":"","l":""},{"t":"glacier","c":"glacier","tr":"","l":""},{"t":"and","c":"and","tr":"","l":""},{"t":"enjoy","c":"enjoy","tr":"","l":""},{"t":"the","c":"the","tr":"","l":""},{"t":"icy","c":"icy","tr":"","l":""},{"t":"view.","c":"view","tr":".","l":""}],"blanks":{"easy":[],"medium":[0,9],"hard":[0,9]},"choices":{"0":{"choices":["It is exciting to walk","It is exciting walk","It exciting is to walk","That is exciting walked"],"correct":0},"9":{"choices":["dislike","mountain","enjoying to","enjoy"],"correct":3}},"mediumGroupSkip":[1,2,3,4],"easyGroupSkip":[],"hardGroupSkip":[1,2,3,4],"hardAnswers":{"0":"It is exciting to walk","9":"enjoy"}},"kr":{"words":[{"t":"빙하","c":"빙하","tr":"","l":""},{"t":"위를","c":"위를","tr":"","l":""},{"t":"걷고","c":"걷고","tr":"","l":""},{"t":"얼음으로","c":"얼음으로","tr":"","l":""},{"t":"된","c":"된","tr":"","l":""},{"t":"경치를","c":"경치를","tr":"","l":""},{"t":"즐기는","c":"즐기는","tr":"","l":""},{"t":"것은","c":"것은","tr":"","l":""},{"t":"신납니다.","c":"신납니다","tr":".","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}}},{"en":{"words":[{"t":"The","c":"The","tr":"","l":""},{"t":"park","c":"park","tr":"","l":""},{"t":"is","c":"is","tr":"","l":""},{"t":"making","c":"making","tr":"","l":""},{"t":"efforts","c":"efforts","tr":"","l":""},{"t":"to","c":"to","tr":"","l":""},{"t":"preserve","c":"preserve","tr":"","l":""},{"t":"its","c":"its","tr":"","l":""},{"t":"natural","c":"natural","tr":"","l":""},{"t":"beauty.","c":"beauty","tr":".","l":""}],"blanks":{"easy":[3],"medium":[],"hard":[3]},"choices":{"3":{"choices":["made efforts","making efforts","make efforts","efforts making"],"correct":1}},"mediumGroupSkip":[],"easyGroupSkip":[4],"hardGroupSkip":[4],"hardAnswers":{"3":"making efforts"}},"kr":{"words":[{"t":"그","c":"그","tr":"","l":""},{"t":"공원은","c":"공원은","tr":"","l":""},{"t":"자연의","c":"자연의","tr":"","l":""},{"t":"아름다움을","c":"아름다움을","tr":"","l":""},{"t":"보존하기","c":"보존하기","tr":"","l":""},{"t":"위해","c":"위해","tr":"","l":""},{"t":"노력하고","c":"노력하고","tr":"","l":""},{"t":"있습니다.","c":"있습니다","tr":".","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}}},{"en":{"words":[{"t":"First,","c":"First","tr":",","l":""},{"t":"it","c":"it","tr":"","l":""},{"t":"controls","c":"controls","tr":"","l":""},{"t":"the","c":"the","tr":"","l":""},{"t":"number","c":"number","tr":"","l":""},{"t":"of","c":"of","tr":"","l":""},{"t":"visitors,","c":"visitors","tr":",","l":""},{"t":"so","c":"so","tr":"","l":""},{"t":"they","c":"they","tr":"","l":""},{"t":"should","c":"should","tr":"","l":""},{"t":"book","c":"book","tr":"","l":""},{"t":"to","c":"to","tr":"","l":""},{"t":"enter","c":"enter","tr":"","l":""},{"t":"the","c":"the","tr":"","l":""},{"t":"park.","c":"park","tr":".","l":""}],"blanks":{"easy":[10],"medium":[3],"hard":[3,10]},"choices":{"3":{"choices":["the number of","the number","a number the","number of the of"],"correct":0},"10":{"choices":["cancel","swim","book","borrow"],"correct":2}},"mediumGroupSkip":[4,5],"easyGroupSkip":[],"hardGroupSkip":[4,5],"hardAnswers":{"3":"the number of","10":"book"}},"kr":{"words":[{"t":"첫째,","c":"첫째","tr":",","l":""},{"t":"그것은","c":"그것은","tr":"","l":""},{"t":"방문객의","c":"방문객의","tr":"","l":""},{"t":"수를","c":"수를","tr":"","l":""},{"t":"통제하며,","c":"통제하며","tr":",","l":""},{"t":"그래서","c":"그래서","tr":"","l":""},{"t":"그들은","c":"그들은","tr":"","l":""},{"t":"공원에","c":"공원에","tr":"","l":""},{"t":"입장하기","c":"입장하기","tr":"","l":""},{"t":"위해","c":"위해","tr":"","l":""},{"t":"예약해야","c":"예약해야","tr":"","l":""},{"t":"합니다.","c":"합니다","tr":".","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}}},{"en":{"words":[{"t":"Second,","c":"Second","tr":",","l":""},{"t":"only","c":"only","tr":"","l":""},{"t":"some","c":"some","tr":"","l":""},{"t":"park","c":"park","tr":"","l":""},{"t":"trails","c":"trails","tr":"","l":""},{"t":"are","c":"are","tr":"","l":""},{"t":"open","c":"open","tr":"","l":""},{"t":"to","c":"to","tr":"","l":""},{"t":"visitors","c":"visitors","tr":"","l":""},{"t":"for","c":"for","tr":"","l":""},{"t":"hiking.","c":"hiking","tr":".","l":""}],"blanks":{"easy":[],"medium":[6],"hard":[6]},"choices":{"6":{"choices":["open to visitors","opening to visitors","open to visiting","opened at visitors"],"correct":0}},"mediumGroupSkip":[7,8],"easyGroupSkip":[],"hardGroupSkip":[7,8],"hardAnswers":{"6":"open to visitors"}},"kr":{"words":[{"t":"둘째,","c":"둘째","tr":",","l":""},{"t":"공원","c":"공원","tr":"","l":""},{"t":"산책로의","c":"산책로의","tr":"","l":""},{"t":"일부만이","c":"일부만이","tr":"","l":""},{"t":"하이킹을","c":"하이킹을","tr":"","l":""},{"t":"위해","c":"위해","tr":"","l":""},{"t":"방문객들에게","c":"방문객들에게","tr":"","l":""},{"t":"개방되어","c":"개방되어","tr":"","l":""},{"t":"있습니다.","c":"있습니다","tr":".","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}}},{"en":{"words":[{"t":"Third,","c":"Third","tr":",","l":""},{"t":"the","c":"the","tr":"","l":""},{"t":"park","c":"park","tr":"","l":""},{"t":"makes","c":"makes","tr":"","l":""},{"t":"visitors","c":"visitors","tr":"","l":""},{"t":"take","c":"take","tr":"","l":""},{"t":"their","c":"their","tr":"","l":""},{"t":"trash","c":"trash","tr":"","l":""},{"t":"with","c":"with","tr":"","l":""},{"t":"them","c":"them","tr":"","l":""},{"t":"when","c":"when","tr":"","l":""},{"t":"they","c":"they","tr":"","l":""},{"t":"leave.","c":"leave","tr":".","l":""}],"blanks":{"easy":[],"medium":[5,8],"hard":[5,8]},"choices":{"5":{"choices":["leave","bridge","take","taking"],"correct":2},"8":{"choices":["with them","with they","with their","them with"],"correct":0}},"mediumGroupSkip":[9],"easyGroupSkip":[],"hardGroupSkip":[9],"hardAnswers":{"5":"take","8":"with them"}},"kr":{"words":[{"t":"셋째,","c":"셋째","tr":",","l":""},{"t":"공원은","c":"공원은","tr":"","l":""},{"t":"방문객들이","c":"방문객들이","tr":"","l":""},{"t":"떠날","c":"떠날","tr":"","l":""},{"t":"때","c":"때","tr":"","l":""},{"t":"그들의","c":"그들의","tr":"","l":""},{"t":"쓰레기를","c":"쓰레기를","tr":"","l":""},{"t":"가지고","c":"가지고","tr":"","l":""},{"t":"가게","c":"가게","tr":"","l":""},{"t":"만듭니다.","c":"만듭니다","tr":".","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}}},{"en":{"words":[{"t":"There’s","c":"There’s","tr":"","l":""},{"t":"one","c":"one","tr":"","l":""},{"t":"more","c":"more","tr":"","l":""},{"t":"thing:","c":"thing","tr":":","l":""},{"t":"the","c":"the","tr":"","l":""},{"t":"hotels","c":"hotels","tr":"","l":""},{"t":"in","c":"in","tr":"","l":""},{"t":"the","c":"the","tr":"","l":""},{"t":"park","c":"park","tr":"","l":""},{"t":"do","c":"do","tr":"","l":""},{"t":"not","c":"not","tr":"","l":""},{"t":"use","c":"use","tr":"","l":""},{"t":"plastic","c":"plastic","tr":"","l":""},{"t":"and","c":"and","tr":"","l":""},{"t":"only","c":"only","tr":"","l":""},{"t":"use","c":"use","tr":"","l":""},{"t":"eco-friendly","c":"eco-friendly","tr":"","l":""},{"t":"products.","c":"products","tr":".","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}},"kr":{"words":[{"t":"한","c":"한","tr":"","l":""},{"t":"가지","c":"가지","tr":"","l":""},{"t":"더","c":"더","tr":"","l":""},{"t":"있습니다:","c":"있습니다","tr":":","l":""},{"t":"공원","c":"공원","tr":"","l":""},{"t":"안의","c":"안의","tr":"","l":""},{"t":"호텔들은","c":"호텔들은","tr":"","l":""},{"t":"플라스틱을","c":"플라스틱을","tr":"","l":""},{"t":"사용하지","c":"사용하지","tr":"","l":""},{"t":"않고","c":"않고","tr":"","l":""},{"t":"친환경","c":"친환경","tr":"","l":""},{"t":"제품만","c":"제품만","tr":"","l":""},{"t":"사용합니다.","c":"사용합니다","tr":".","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}}},{"en":{"words":[{"t":"Have","c":"Have","tr":"","l":""},{"t":"you","c":"you","tr":"","l":""},{"t":"heard","c":"heard","tr":"","l":""},{"t":"about","c":"about","tr":"","l":""},{"t":"the","c":"the","tr":"","l":""},{"t":"Big","c":"Big","tr":"","l":""},{"t":"Five?","c":"Five","tr":"?","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}},"kr":{"words":[{"t":"빅","c":"빅","tr":"","l":""},{"t":"파이브에","c":"파이브에","tr":"","l":""},{"t":"대해","c":"대해","tr":"","l":""},{"t":"들어","c":"들어","tr":"","l":""},{"t":"본","c":"본","tr":"","l":""},{"t":"적이","c":"적이","tr":"","l":""},{"t":"있나요?","c":"있나요","tr":"?","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}}},{"en":{"words":[{"t":"They","c":"They","tr":"","l":""},{"t":"are","c":"are","tr":"","l":""},{"t":"lions,","c":"lions","tr":",","l":""},{"t":"leopards,","c":"leopards","tr":",","l":""},{"t":"elephants,","c":"elephants","tr":",","l":""},{"t":"rhinos,","c":"rhinos","tr":",","l":""},{"t":"and","c":"and","tr":"","l":""},{"t":"buffaloes.","c":"buffaloes","tr":".","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}},"kr":{"words":[{"t":"그것들은","c":"그것들은","tr":"","l":""},{"t":"사자,","c":"사자","tr":",","l":""},{"t":"표범,","c":"표범","tr":",","l":""},{"t":"코끼리,","c":"코끼리","tr":",","l":""},{"t":"코뿔소,","c":"코뿔소","tr":",","l":""},{"t":"그리고","c":"그리고","tr":"","l":""},{"t":"들소입니다.","c":"들소입니다","tr":".","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}}},{"en":{"words":[{"t":"You","c":"You","tr":"","l":""},{"t":"can","c":"can","tr":"","l":""},{"t":"see","c":"see","tr":"","l":""},{"t":"them","c":"them","tr":"","l":""},{"t":"all","c":"all","tr":"","l":""},{"t":"in","c":"in","tr":"","l":""},{"t":"Kruger","c":"Kruger","tr":"","l":""},{"t":"National","c":"National","tr":"","l":""},{"t":"Park","c":"Park","tr":"","l":""},{"t":"in","c":"in","tr":"","l":""},{"t":"South","c":"South","tr":"","l":""},{"t":"Africa.","c":"Africa","tr":".","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}},"kr":{"words":[{"t":"당신은","c":"당신은","tr":"","l":""},{"t":"남아프리카공화국의","c":"남아프리카공화국의","tr":"","l":""},{"t":"크루거","c":"크루거","tr":"","l":""},{"t":"국립공원에서","c":"국립공원에서","tr":"","l":""},{"t":"그것들을","c":"그것들을","tr":"","l":""},{"t":"모두","c":"모두","tr":"","l":""},{"t":"볼","c":"볼","tr":"","l":""},{"t":"수","c":"수","tr":"","l":""},{"t":"있습니다.","c":"있습니다","tr":".","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}}},{"en":{"words":[{"t":"Many","c":"Many","tr":"","l":""},{"t":"wild","c":"wild","tr":"","l":""},{"t":"animals","c":"animals","tr":"","l":""},{"t":"move","c":"move","tr":"","l":""},{"t":"around","c":"around","tr":"","l":""},{"t":"this","c":"this","tr":"","l":""},{"t":"park","c":"park","tr":"","l":""},{"t":"freely.","c":"freely","tr":".","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}},"kr":{"words":[{"t":"많은","c":"많은","tr":"","l":""},{"t":"야생","c":"야생","tr":"","l":""},{"t":"동물들이","c":"동물들이","tr":"","l":""},{"t":"이","c":"이","tr":"","l":""},{"t":"공원을","c":"공원을","tr":"","l":""},{"t":"자유롭게","c":"자유롭게","tr":"","l":""},{"t":"돌아다닙니다.","c":"돌아다닙니다","tr":".","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}}},{"en":{"words":[{"t":"If","c":"If","tr":"","l":""},{"t":"you","c":"you","tr":"","l":""},{"t":"are","c":"are","tr":"","l":""},{"t":"lucky,","c":"lucky","tr":",","l":""},{"t":"you","c":"you","tr":"","l":""},{"t":"can","c":"can","tr":"","l":""},{"t":"see","c":"see","tr":"","l":""},{"t":"rhinos","c":"rhinos","tr":"","l":""},{"t":"which","c":"which","tr":"","l":""},{"t":"are","c":"are","tr":"","l":""},{"t":"sleeping","c":"sleeping","tr":"","l":""},{"t":"under","c":"under","tr":"","l":""},{"t":"baobab","c":"baobab","tr":"","l":""},{"t":"trees.","c":"trees","tr":".","l":""}],"blanks":{"easy":[8],"medium":[],"hard":[8]},"choices":{"8":{"choices":["which is","which are","which were","are which"],"correct":1}},"mediumGroupSkip":[],"easyGroupSkip":[9],"hardGroupSkip":[9],"hardAnswers":{"8":"which are"}},"kr":{"words":[{"t":"운이","c":"운이","tr":"","l":""},{"t":"좋다면,","c":"좋다면","tr":",","l":""},{"t":"당신은","c":"당신은","tr":"","l":""},{"t":"바오바브나무","c":"바오바브나무","tr":"","l":""},{"t":"아래에서","c":"아래에서","tr":"","l":""},{"t":"자고","c":"자고","tr":"","l":""},{"t":"있는","c":"있는","tr":"","l":""},{"t":"코뿔소들을","c":"코뿔소들을","tr":"","l":""},{"t":"볼","c":"볼","tr":"","l":""},{"t":"수","c":"수","tr":"","l":""},{"t":"있습니다.","c":"있습니다","tr":".","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}}},{"en":{"words":[{"t":"However,","c":"However","tr":",","l":""},{"t":"the","c":"the","tr":"","l":""},{"t":"Big","c":"Big","tr":"","l":""},{"t":"Five","c":"Five","tr":"","l":""},{"t":"are","c":"are","tr":"","l":""},{"t":"in","c":"in","tr":"","l":""},{"t":"danger","c":"danger","tr":"","l":""},{"t":"because","c":"because","tr":"","l":""},{"t":"of","c":"of","tr":"","l":""},{"t":"too","c":"too","tr":"","l":""},{"t":"much","c":"much","tr":"","l":""},{"t":"hunting.","c":"hunting","tr":".","l":""}],"blanks":{"easy":[],"medium":[4],"hard":[4]},"choices":{"4":{"choices":["is in danger because of","are in danger because","are in dangerous because of","are in danger because of"],"correct":3}},"mediumGroupSkip":[5,6,7,8],"easyGroupSkip":[],"hardGroupSkip":[5,6,7,8],"hardAnswers":{"4":"are in danger because of"}},"kr":{"words":[{"t":"그러나,","c":"그러나","tr":",","l":""},{"t":"빅","c":"빅","tr":"","l":""},{"t":"파이브는","c":"파이브는","tr":"","l":""},{"t":"지나친","c":"지나친","tr":"","l":""},{"t":"사냥","c":"사냥","tr":"","l":""},{"t":"때문에","c":"때문에","tr":"","l":""},{"t":"위험에","c":"위험에","tr":"","l":""},{"t":"처해","c":"처해","tr":"","l":""},{"t":"있습니다.","c":"있습니다","tr":".","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}}},{"en":{"words":[{"t":"To","c":"To","tr":"","l":""},{"t":"protect","c":"protect","tr":"","l":""},{"t":"the","c":"the","tr":"","l":""},{"t":"Big","c":"Big","tr":"","l":""},{"t":"Five,","c":"Five","tr":",","l":""},{"t":"the","c":"the","tr":"","l":""},{"t":"park","c":"park","tr":"","l":""},{"t":"has","c":"has","tr":"","l":""},{"t":"been","c":"been","tr":"","l":""},{"t":"a","c":"a","tr":"","l":""},{"t":"“no-hunting”","c":"no-hunting","tr":"”","l":"“"},{"t":"area","c":"area","tr":"","l":""},{"t":"from","c":"from","tr":"","l":""},{"t":"the","c":"the","tr":"","l":""},{"t":"start.","c":"start","tr":".","l":""}],"blanks":{"easy":[],"medium":[7],"hard":[7]},"choices":{"7":{"choices":["have been","has be","has being","has been"],"correct":3}},"mediumGroupSkip":[8],"easyGroupSkip":[],"hardGroupSkip":[8],"hardAnswers":{"7":"has been"}},"kr":{"words":[{"t":"빅","c":"빅","tr":"","l":""},{"t":"파이브를","c":"파이브를","tr":"","l":""},{"t":"보호하기","c":"보호하기","tr":"","l":""},{"t":"위해,","c":"위해","tr":",","l":""},{"t":"그","c":"그","tr":"","l":""},{"t":"공원은","c":"공원은","tr":"","l":""},{"t":"처음부터","c":"처음부터","tr":"","l":""},{"t":"'사냥","c":"'사냥","tr":"","l":""},{"t":"금지'","c":"금지'","tr":"","l":""},{"t":"구역이었습니다.","c":"구역이었습니다","tr":".","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}}},{"en":{"words":[{"t":"These","c":"These","tr":"","l":""},{"t":"days,","c":"days","tr":",","l":""},{"t":"drones","c":"drones","tr":"","l":""},{"t":"and","c":"and","tr":"","l":""},{"t":"helicopters","c":"helicopters","tr":"","l":""},{"t":"are","c":"are","tr":"","l":""},{"t":"used","c":"used","tr":"","l":""},{"t":"to","c":"to","tr":"","l":""},{"t":"monitor","c":"monitor","tr":"","l":""},{"t":"hunting","c":"hunting","tr":"","l":""},{"t":"activities.","c":"activities","tr":".","l":""}],"blanks":{"easy":[5],"medium":[],"hard":[5]},"choices":{"5":{"choices":["is used to monitor","are used to monitor","were used to monitor","are used to monitoring"],"correct":1}},"mediumGroupSkip":[],"easyGroupSkip":[6,7,8],"hardGroupSkip":[6,7,8],"hardAnswers":{"5":"are used to monitor"}},"kr":{"words":[{"t":"요즘에는,","c":"요즘에는","tr":",","l":""},{"t":"드론과","c":"드론과","tr":"","l":""},{"t":"헬리콥터가","c":"헬리콥터가","tr":"","l":""},{"t":"사냥","c":"사냥","tr":"","l":""},{"t":"활동을","c":"활동을","tr":"","l":""},{"t":"감시하기","c":"감시하기","tr":"","l":""},{"t":"위해","c":"위해","tr":"","l":""},{"t":"사용됩니다.","c":"사용됩니다","tr":".","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}}},{"en":{"words":[{"t":"Also,","c":"Also","tr":",","l":""},{"t":"the","c":"the","tr":"","l":""},{"t":"park","c":"park","tr":"","l":""},{"t":"runs","c":"runs","tr":"","l":""},{"t":"many","c":"many","tr":"","l":""},{"t":"nature","c":"nature","tr":"","l":""},{"t":"volunteer","c":"volunteer","tr":"","l":""},{"t":"programs.","c":"programs","tr":".","l":""}],"blanks":{"easy":[],"medium":[3],"hard":[3]},"choices":{"3":{"choices":["runs","stops","ceiling","running to"],"correct":0}},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{"3":"runs"}},"kr":{"words":[{"t":"또한,","c":"또한","tr":",","l":""},{"t":"공원은","c":"공원은","tr":"","l":""},{"t":"많은","c":"많은","tr":"","l":""},{"t":"자연","c":"자연","tr":"","l":""},{"t":"봉사","c":"봉사","tr":"","l":""},{"t":"프로그램을","c":"프로그램을","tr":"","l":""},{"t":"운영합니다.","c":"운영합니다","tr":".","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}}},{"en":{"words":[{"t":"Volunteers","c":"Volunteers","tr":"","l":""},{"t":"monitor","c":"monitor","tr":"","l":""},{"t":"signs","c":"signs","tr":"","l":""},{"t":"of","c":"of","tr":"","l":""},{"t":"illegal","c":"illegal","tr":"","l":""},{"t":"hunting","c":"hunting","tr":"","l":""},{"t":"activities","c":"activities","tr":"","l":""},{"t":"and","c":"and","tr":"","l":""},{"t":"remove","c":"remove","tr":"","l":""},{"t":"animal","c":"animal","tr":"","l":""},{"t":"traps.","c":"traps","tr":".","l":""}],"blanks":{"easy":[4],"medium":[],"hard":[4]},"choices":{"4":{"choices":["illegal hunting activity","hunting illegal activities","illegal hunting activities","illegally hunting activities"],"correct":2}},"mediumGroupSkip":[],"easyGroupSkip":[5,6],"hardGroupSkip":[5,6],"hardAnswers":{"4":"illegal hunting activities"}},"kr":{"words":[{"t":"봉사자들은","c":"봉사자들은","tr":"","l":""},{"t":"불법","c":"불법","tr":"","l":""},{"t":"사냥","c":"사냥","tr":"","l":""},{"t":"활동의","c":"활동의","tr":"","l":""},{"t":"징후를","c":"징후를","tr":"","l":""},{"t":"감시하고","c":"감시하고","tr":"","l":""},{"t":"동물","c":"동물","tr":"","l":""},{"t":"덫을","c":"덫을","tr":"","l":""},{"t":"제거합니다.","c":"제거합니다","tr":".","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}}},{"en":{"words":[{"t":"National","c":"National","tr":"","l":""},{"t":"parks","c":"parks","tr":"","l":""},{"t":"preserve","c":"preserve","tr":"","l":""},{"t":"the","c":"the","tr":"","l":""},{"t":"Earth’s","c":"Earth’s","tr":"","l":""},{"t":"past,","c":"past","tr":",","l":""},{"t":"present,","c":"present","tr":",","l":""},{"t":"and","c":"and","tr":"","l":""},{"t":"future.","c":"future","tr":".","l":""}],"blanks":{"easy":[2],"medium":[],"hard":[2]},"choices":{"2":{"choices":["destroy","jump","preserve","cook"],"correct":2}},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{"2":"preserve"}},"kr":{"words":[{"t":"국립공원은","c":"국립공원은","tr":"","l":""},{"t":"지구의","c":"지구의","tr":"","l":""},{"t":"과거,","c":"과거","tr":",","l":""},{"t":"현재,","c":"현재","tr":",","l":""},{"t":"그리고","c":"그리고","tr":"","l":""},{"t":"미래를","c":"미래를","tr":"","l":""},{"t":"보존합니다.","c":"보존합니다","tr":".","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}}},{"en":{"words":[{"t":"Thanks","c":"Thanks","tr":"","l":""},{"t":"to","c":"to","tr":"","l":""},{"t":"them,","c":"them","tr":",","l":""},{"t":"future","c":"future","tr":"","l":""},{"t":"generations","c":"generations","tr":"","l":""},{"t":"will","c":"will","tr":"","l":""},{"t":"also","c":"also","tr":"","l":""},{"t":"be","c":"be","tr":"","l":""},{"t":"able","c":"able","tr":"","l":""},{"t":"to","c":"to","tr":"","l":""},{"t":"experience","c":"experience","tr":"","l":""},{"t":"many","c":"many","tr":"","l":""},{"t":"natural","c":"natural","tr":"","l":""},{"t":"wonders.","c":"wonders","tr":".","l":""}],"blanks":{"easy":[0],"medium":[7],"hard":[0,7]},"choices":{"0":{"choices":["Thank to","Thanks to","Thanks for","To thanks"],"correct":1},"7":{"choices":["be able experience","be able to experience","able to be experience","being able to experienced"],"correct":1}},"mediumGroupSkip":[8,9,10],"easyGroupSkip":[1],"hardGroupSkip":[1,8,9,10],"hardAnswers":{"0":"Thanks to","7":"be able to experience"}},"kr":{"words":[{"t":"그것들","c":"그것들","tr":"","l":""},{"t":"덕분에,","c":"덕분에","tr":",","l":""},{"t":"미래","c":"미래","tr":"","l":""},{"t":"세대","c":"세대","tr":"","l":""},{"t":"또한","c":"또한","tr":"","l":""},{"t":"많은","c":"많은","tr":"","l":""},{"t":"자연의","c":"자연의","tr":"","l":""},{"t":"경이로움을","c":"경이로움을","tr":"","l":""},{"t":"경험할","c":"경험할","tr":"","l":""},{"t":"수","c":"수","tr":"","l":""},{"t":"있을","c":"있을","tr":"","l":""},{"t":"것입니다.","c":"것입니다","tr":".","l":""}],"blanks":{"easy":[],"medium":[],"hard":[]},"choices":{},"mediumGroupSkip":[],"easyGroupSkip":[],"hardGroupSkip":[],"hardAnswers":{}}}],"thresholds":{"en":{"easy":90,"medium":90,"hard":90},"kr":{"easy":80,"medium":80,"hard":80}},"includeKR":false,"title":"M2_Lesson7_blank","sheetUrl":"https://script.google.com/macros/s/AKfycbxmFjMCPdfk7wNNREKnnvDnmtWjJ2n74titBUtUMtVzmbSjbcc3_LxRJ7YS4Fz-Dis/exec","unlockAll":true,"hardFirstLetterHint":true};
+
+var CHO=['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+function choseong(str){
+  var out='';
+  for(var i=0;i<str.length;i++){
+    var code=str.charCodeAt(i)-0xAC00;
+    if(code>=0&&code<=11171) out+=CHO[Math.floor(code/588)];
+    else out+=str[i];
+  }
+  return out;
+}
+
+var MODE_NAMES={en:'영어 빈칸',kr:'한글 해석 빈칸'};
+var LEVEL_NAMES={easy:'쉬움',medium:'중간',hard:'심화'};
+
+var currentMode=null, currentLevel=null, currentSentence=0;
+var blankStates={}, sentenceResults=[], sentenceRecorded={}, showRef=false;
+var levelBlankLog=[], reviewSnapshotBySentence=[], reviewWrongBySentence=[], reviewHasWrong=false, reviewModeActive=false;
+var hardOriginalWrongTotal=null;
+var progress={
+  en:{unlocked:{easy:true,medium:!!DATA.unlockAll,hard:!!DATA.unlockAll}, completed:{easy:false,medium:false,hard:false}},
+  kr:{unlocked:{easy:true,medium:!!DATA.unlockAll,hard:!!DATA.unlockAll}, completed:{easy:false,medium:false,hard:false}}
+};
+
+/* ===== 학생 정보 / 소요시간 추적 (구글시트 결과 제출용) ===== */
+var studentName='', studentGrade='', testStartTime=null;
+var stageTimes={easy:0, medium:0, hard:0};
+var curStage=null, stageStart=null;
+var resultSubmitted=false, resultSubmitting=false;
+
+/* ===== 진행상황 로컬 저장/복원 =====
+   모바일 브라우저(특히 아이폰 사파리)는 메모리가 부족하면 백그라운드 탭을 강제로
+   새로고침하는 일이 흔해, 학생이 다른 앱을 켰다 돌아오면 풀던 내용이 사라질 수 있습니다.
+   그래서 답을 매길 때마다 localStorage에 진행상황을 자동 저장하고, 다시 열었을 때 이어서
+   풀 수 있게 합니다. (같은 브라우저의 같은 기기에서만 유효하며, 다른 학생과는 공유되지 않습니다.) */
+var PROGRESS_KEY = (function(){
+  var raw = 'vtprogress_' + (DATA.title||'') + '_' + DATA.sentences.length + '_' + JSON.stringify(DATA.sentences).length;
+  var h = 0;
+  for (var i=0; i<raw.length; i++){ h = ((h<<5)-h+raw.charCodeAt(i))|0; }
+  return 'vtprogress_' + h;
+})();
+var SAVED_PROGRESS = null;
+
+function saveProgress(){
+  try{
+    var data = {
+      studentName: studentName, studentGrade: studentGrade,
+      testStartTime: testStartTime ? testStartTime.toISOString() : null,
+      stageTimes: stageTimes, resultSubmitted: resultSubmitted,
+      hardOriginalWrongTotal: hardOriginalWrongTotal, progress: progress,
+      currentMode: currentMode, currentLevel: currentLevel, currentSentence: currentSentence,
+      blankStates: blankStates, levelBlankLog: levelBlankLog,
+      reviewSnapshotBySentence: reviewSnapshotBySentence, reviewWrongBySentence: reviewWrongBySentence,
+      reviewHasWrong: reviewHasWrong, reviewModeActive: reviewModeActive,
+      sentenceResults: sentenceResults, sentenceRecorded: sentenceRecorded
+    };
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(data));
+  }catch(e){ /* localStorage 사용 불가(프라이빗 모드 등) 시 조용히 무시 */ }
+}
+
+function loadProgress(){
+  try{
+    var raw = localStorage.getItem(PROGRESS_KEY);
+    return raw ? JSON.parse(raw) : null;
+  }catch(e){ return null; }
+}
+
+function clearProgress(){
+  try{ localStorage.removeItem(PROGRESS_KEY); }catch(e){}
+}
+
+function restoreAndContinue(){
+  var saved = SAVED_PROGRESS;
+  if(!saved) return;
+  studentName = saved.studentName||'';
+  studentGrade = saved.studentGrade||'';
+  testStartTime = saved.testStartTime ? new Date(saved.testStartTime) : null;
+  stageTimes = saved.stageTimes || {easy:0, medium:0, hard:0};
+  resultSubmitted = !!saved.resultSubmitted;
+  hardOriginalWrongTotal = (typeof saved.hardOriginalWrongTotal==='number') ? saved.hardOriginalWrongTotal : null;
+  progress = saved.progress || progress;
+  currentMode = saved.currentMode || null;
+  currentLevel = saved.currentLevel || null;
+  currentSentence = saved.currentSentence || 0;
+  blankStates = saved.blankStates || {};
+  levelBlankLog = saved.levelBlankLog || [];
+  reviewSnapshotBySentence = saved.reviewSnapshotBySentence || [];
+  reviewWrongBySentence = saved.reviewWrongBySentence || [];
+  reviewHasWrong = !!saved.reviewHasWrong;
+  reviewModeActive = !!saved.reviewModeActive;
+  sentenceResults = saved.sentenceResults || [];
+  sentenceRecorded = saved.sentenceRecorded || {};
+  showRef = false;
+
+  if (currentMode && currentLevel){
+    enterStage(currentLevel);
+    renderSentence();
+  } else if (currentMode){
+    showLevelSelector(currentMode);
+  } else if (DATA.includeKR){
+    showModeSelector();
+  } else {
+    showLevelSelector('en');
+  }
+}
+
+function renderResumeGate(saved){
+  SAVED_PROGRESS = saved;
+  document.getElementById('levelInfo').textContent='이어서 풀기';
+  document.getElementById('sentenceInfo').textContent='';
+  document.getElementById('progressFill').style.width='0%';
+  document.getElementById('actionBar').innerHTML='';
+  var h='<div class="student-info-box">';
+  h+='<h2 style="margin-bottom:10px;">이전 풀이 기록이 있어요</h2>';
+  h+='<p style="font-size:13px;color:#777;margin-bottom:18px;">'+esc(saved.studentName||'')+' 님, 저장된 진행 상황을 이어서 풀까요?</p>';
+  h+='<button class="btn-start-app" style="margin-bottom:10px;" onclick="restoreAndContinue()">이어서 풀기</button>';
+  h+='<button class="btn-start-app" style="background:#eee;color:#333;" onclick="clearProgress();renderStudentInfoGate();">처음부터 다시 시작</button>';
+  h+='</div>';
+  document.getElementById('content').innerHTML=h;
+}
+
+function esc(s){ var d=document.createElement('div'); d.textContent=(s==null?'':String(s)); return d.innerHTML; }
+// 모바일/PC 키보드의 "스마트 따옴표" 자동 변환(' -> ' 또는 " -> ")으로 인해
+// 학생이 실제로는 정답을 맞게 입력했는데도 문장부호 모양 차이로 오답 처리되는 것을 막기 위한 정규화.
+// 채점 비교 시 양쪽 모두 이 함수를 거쳐 표준 따옴표로 통일합니다.
+function normalizeQuotes(s){
+  return String(s==null?'':s)
+    .replace(/[‘’ʼ′´`]/g, "'")
+    .replace(/[“”″]/g, '"')
+    .replace(/[‐‑‒–—―−]/g, '-');
+}
+function enterStage(stage){ stopStage(); curStage=stage; stageStart=Date.now(); }
+function stopStage(){ if(curStage && stageStart){ stageTimes[curStage]=(stageTimes[curStage]||0)+(Date.now()-stageStart); } stageStart=null; curStage=null; }
+function fmtTime(ms){ ms=Math.max(0,ms|0); var s=Math.floor(ms/1000); var m=Math.floor(s/60); s=s%60; return (m<10?'0':'')+m+':'+(s<10?'0':'')+s; }
+function fmtDateTime(d){ d=d||new Date(); var p=function(n){return (n<10?'0':'')+n;}; return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes()); }
+function studentInfoReady(){ return !!(studentName && studentName.trim() && studentGrade); }
+function markTestStart(){ if(!testStartTime) testStartTime=new Date(); }
+
+function renderStudentInfoGate(){
+  document.getElementById('levelInfo').textContent='학생 정보 입력';
+  document.getElementById('sentenceInfo').textContent='';
+  document.getElementById('progressFill').style.width='0%';
+  document.getElementById('actionBar').innerHTML='';
+  var grades=['고3','고2','고1','중3','중2','중1','초6','초5','초4'];
+  var gradeOpts='<option value=""'+(studentGrade?'':' selected')+' disabled>학년을 선택하세요</option>'
+    + grades.map(function(g){return '<option value="'+g+'"'+(studentGrade===g?' selected':'')+'>'+g+'</option>';}).join('');
+  var h='<div class="student-info-box">';
+  h+='<h2 style="margin-bottom:14px;">시작하기 전에</h2>';
+  h+='<input type="text" id="studentNameInput" class="student-name-input" placeholder="이름을 입력하세요" value="'+esc(studentName)+'" maxlength="20">';
+  h+='<select id="studentGradeInput" class="student-grade-select">'+gradeOpts+'</select>';
+  h+='<button class="btn-start-app" id="startAppBtn"'+(studentInfoReady()?'':' disabled')+' onclick="confirmStudentInfoAndStart()">시작하기</button>';
+  h+='</div>';
+  document.getElementById('content').innerHTML=h;
+  var ni=document.getElementById('studentNameInput');
+  ni.addEventListener('input', function(){ studentName=ni.value; document.getElementById('startAppBtn').disabled=!studentInfoReady(); });
+  var gi=document.getElementById('studentGradeInput');
+  gi.addEventListener('change', function(){ studentGrade=gi.value; document.getElementById('startAppBtn').disabled=!studentInfoReady(); });
+}
+
+function confirmStudentInfoAndStart(){
+  if(!studentInfoReady()) return;
+  markTestStart();
+  if(!DATA.includeKR){ showLevelSelector('en'); } else { showModeSelector(); }
+}
+
+function init(){
+  var saved = loadProgress();
+  if (saved && (saved.studentName || saved.currentMode)){
+    renderResumeGate(saved);
+  } else {
+    renderStudentInfoGate();
+  }
+}
+
+function submitResultToSheet(){
+  if(!DATA.sheetUrl){ return; }
+  var statusEl=document.getElementById('submitStatus');
+  var btnEl=document.getElementById('submitResultBtn');
+  if(resultSubmitted){ if(statusEl) statusEl.textContent='✅ 이미 제출됐어요!'; return; }
+  if(resultSubmitting) return;
+  resultSubmitting=true;
+  if(btnEl) btnEl.disabled=true;
+  if(statusEl) statusEl.textContent='저장 중...';
+
+  var easyMediumMs=(stageTimes.easy||0)+(stageTimes.medium||0);
+  var hardMs=stageTimes.hard||0;
+  var totalMs=easyMediumMs+hardMs;
+  var hardCorrect=0, hardTotal=0;
+  (reviewSnapshotBySentence||[]).forEach(function(snap){
+    Object.keys(snap||{}).forEach(function(k){
+      hardTotal++; if(snap[k].correct) hardCorrect++;
+    });
+  });
+  var hardPct= hardTotal>0 ? Math.round(hardCorrect/hardTotal*100) : 0;
+  var retryStr='';
+  if(hardOriginalWrongTotal){
+    var stillWrong=(reviewWrongBySentence||[]).reduce(function(a,arr){return a+arr.length;},0);
+    var fixed=hardOriginalWrongTotal-stillWrong;
+    retryStr=fixed+'/'+hardOriginalWrongTotal;
+  }
+  var payload={
+    '이름': studentName,
+    '학년': studentGrade,
+    '테스트명': DATA.title||'',
+    '날짜시각': fmtDateTime(testStartTime||new Date()),
+    '쉬움중간시간': fmtTime(easyMediumMs),
+    '심화%': hardPct,
+    '심화오답재도전': retryStr,
+    '총공부시간': fmtTime(totalMs)
+  };
+
+  fetch(DATA.sheetUrl, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(payload) })
+    .then(function(){
+      resultSubmitted=true; resultSubmitting=false;
+      saveProgress();
+      if(statusEl) statusEl.textContent='✅ 저장 완료 ('+fmtDateTime(new Date())+')';
+      if(btnEl) btnEl.disabled=false;
+    })
+    .catch(function(){
+      resultSubmitting=false;
+      if(statusEl) statusEl.textContent='❌ 저장 실패 — 네트워크를 확인하고 다시 눌러주세요.';
+      if(btnEl) btnEl.disabled=false;
+    });
+}
+
+function modeCard(mode,icon,title,desc){
+  var p=progress[mode];
+  var done=['easy','medium','hard'].filter(function(l){return p.completed[l];}).length;
+  var h='<div class="mode-card"';
+  h+=' onclick="showLevelSelector(\''+mode+'\')"';
+  h+='>';
+  h+='<div class="mode-icon">'+icon+'</div>';
+  h+='<div class="mode-title">'+title+'</div>';
+  h+='<div class="mode-desc">'+desc+'</div>';
+  h+='<div class="mode-status">완료 '+done+'/3</div></div>';
+  return h;
+}
+
+function showModeSelector(){
+  stopStage();
+  currentMode=null;
+  document.getElementById('levelInfo').textContent='모드를 선택하세요';
+  document.getElementById('sentenceInfo').textContent='';
+  document.getElementById('progressFill').style.width='0%';
+  document.getElementById('actionBar').innerHTML='';
+  var h='<div class="mode-selector"><h2>연습 모드를 선택하세요</h2><div class="mode-grid">';
+  h+=modeCard('en','🔤','영어 빈칸','영어 단어·표현을 채워보세요');
+  h+=modeCard('kr','🇰🇷','한글 해석 빈칸','문장의 한글 해석을 채워보세요');
+  h+='</div></div>';
+  document.getElementById('content').innerHTML=h;
+  saveProgress();
+}
+
+function showLevelSelector(mode){
+  stopStage();
+  currentMode=mode;
+  document.getElementById('levelInfo').textContent=MODE_NAMES[mode];
+  document.getElementById('sentenceInfo').textContent='';
+  document.getElementById('progressFill').style.width='0%';
+  document.getElementById('actionBar').innerHTML='';
+  var p=progress[mode];
+  var h='';
+  if(DATA.includeKR) h+='<button class="back-btn" onclick="showModeSelector()">← 모드 선택으로</button>';
+  h+='<div class="mode-selector"><h2>단계를 선택하세요</h2><div class="level-selector">';
+  ['easy','medium','hard'].forEach(function(lv){
+    var locked=!p.unlocked[lv], done=p.completed[lv];
+    var cls=lv==='medium'?'med':lv;
+    h+='<button class="level-btn '+cls+'-btn'+(locked?' locked':'')+(done?' done':'')+'"';
+    if(!locked) h+=' onclick="startLevel(\''+mode+'_'+lv+'\')"';
+    h+='>'+LEVEL_NAMES[lv]+'</button><br>';
+  });
+  h+='</div></div>';
+  document.getElementById('content').innerHTML=h;
+  saveProgress();
+}
+
+function getLevelBlanks(blanksObj, level){
+  // 이전 단계를 이미 통과해야만 다음 단계에 진입할 수 있는 구조이므로,
+  // 쉬움/중간 단계는 그 단계에서 새로 추가된 빈칸만 테스트합니다.
+  // 심화 단계는 쉬움+중간 단계에서 다룬 모든 빈칸(+심화 자체 빈칸)을, 레벨 구분 없이 인접한 것끼리
+  // 이미 하나로 합친 blanksObj.hard(빌드 시 getHardMergedGroups로 계산됨)를 그대로 사용합니다.
+  return blanksObj[level].slice();
+}
+
+function startLevel(key){
+  var parts=key.split('_');
+  var mode=parts[0], level=parts[1];
+  if(!progress[mode].unlocked[level]) return;
+  currentMode=mode; currentLevel=level; currentSentence=0;
+  blankStates={}; sentenceResults=[]; sentenceRecorded={}; showRef=false;
+  levelBlankLog=[]; reviewSnapshotBySentence=[]; reviewWrongBySentence=[]; reviewHasWrong=false; reviewModeActive=false;
+  if(level==='hard'){ hardOriginalWrongTotal=null; resultSubmitted=false; }
+  enterStage(level);
+  renderSentence();
+}
+
+// 재도전 시 특정 문장으로 이동할 때, 이전에 맞췄던 빈칸은 정답으로 미리 채우고
+// 틀렸던 빈칸만 다시 풀 수 있도록 blankStates를 세팅합니다.
+function loadSentenceReviewState(si){
+  var snap=reviewSnapshotBySentence[si]||{};
+  var wrongIdx=reviewWrongBySentence[si]||[];
+  var wrongSet={}; wrongIdx.forEach(function(i){ wrongSet[i]=true; });
+  blankStates={};
+  Object.keys(snap).forEach(function(k){
+    if(!wrongSet[k]) blankStates[k]={answered:true, correct:true, attempts:1};
+  });
+}
+
+// 재도전 모드에서, fromIdx부터 시작해 틀린 빈칸이 하나라도 있는 다음 문장의 인덱스를 찾습니다.
+// 없으면 -1을 반환합니다.
+function findNextReviewSentence(fromIdx){
+  for (var i=fromIdx; i<DATA.sentences.length; i++){
+    if (reviewWrongBySentence[i] && reviewWrongBySentence[i].length>0) return i;
+  }
+  return -1;
+}
+
+function startLevelReview(){
+  if(!reviewHasWrong) return;
+  reviewModeActive=true;
+  levelBlankLog=[];
+  var startIdx=findNextReviewSentence(0);
+  if(startIdx===-1) startIdx=0;
+  currentSentence=startIdx;
+  loadSentenceReviewState(currentSentence);
+  sentenceResults=[]; sentenceRecorded={}; showRef=false;
+  enterStage(currentLevel);
+  renderSentence();
+}
+
+function getChoicesFor(idx){ return DATA.sentences[currentSentence][currentMode].choices[idx]; }
+
+function renderSentence(){
+  var s=DATA.sentences[currentSentence];
+  var track=s[currentMode];
+  var blanks=getLevelBlanks(track.blanks, currentLevel);
+  var total=blanks.length, answered=0;
+  blanks.forEach(function(idx){ var st=blankStates[idx]; if(st&&st.answered) answered++; });
+
+  var otherWords = currentMode==='en' ? (s.kr && s.kr.words) : (s.en && s.en.words);
+  var showRefBtn = !!(otherWords && otherWords.length>0);
+  var h='';
+  if(showRefBtn) h+='<div class="ref-toggle-row"><button class="btn-ref" id="refBtn" onclick="toggleRef()"></button></div>';
+  h+='<div class="ref-box" id="refBox" style="display:none;"></div>';
+  h+='<div class="passage">';
+  var skip;
+  if (currentLevel==='easy') skip = track.easyGroupSkip || [];
+  else if (currentLevel==='medium') skip = track.mediumGroupSkip || [];
+  else skip = track.hardGroupSkip || [];
+  var skipSet = {}; skip.forEach(function(i){ skipSet[i]=true; });
+  for (var wi=0; wi<track.words.length; wi++){
+    if (skipSet[wi]) continue;
+    var w = track.words[wi];
+    if(blanks.indexOf(wi)!==-1){
+      var st=blankStates[wi]||{answered:false,correct:false,attempts:0};
+      if (w.l) h += w.l;
+      h += (currentLevel==='hard') ? renderTypingBlank(wi,w,st) : renderSelectBlank(wi,w,st);
+      var trailing = w.tr || '';
+      var la = wi+1;
+      while (skipSet[la]) {
+        var mw = track.words[la];
+        if (mw && mw.tr) trailing += mw.tr;
+        la++;
+      }
+      if (trailing) h += trailing;
+    } else { h+=w.t; }
+    h+=' ';
+  }
+  h+='</div>';
+  document.getElementById('content').innerHTML=h;
+
+  document.getElementById('levelInfo').textContent=MODE_NAMES[currentMode]+' · '+LEVEL_NAMES[currentLevel]+' 단계';
+  document.getElementById('sentenceInfo').textContent='문장 '+(currentSentence+1)+' / '+DATA.sentences.length;
+  document.getElementById('progressFill').style.width=((currentSentence+(total?answered/total:1))/DATA.sentences.length*100)+'%';
+
+  if(showRefBtn){ updateRefButtonLabel(); renderRefBox(); }
+
+  var ab=document.getElementById('actionBar');
+  if(total===0 || answered===total){
+    recordSentenceResultIfNeeded();
+    var isLastSentence = reviewModeActive
+      ? (findNextReviewSentence(currentSentence+1)===-1)
+      : (currentSentence>=DATA.sentences.length-1);
+    ab.innerHTML='<button class="btn btn-next" onclick="nextSentence()">'+(isLastSentence?'결과 보기':'다음 문장 →')+'</button>';
+  } else {
+    ab.innerHTML='';
+  }
+  saveProgress();
+}
+
+function renderSelectBlank(idx,w,st){
+  var cfg=getChoicesFor(idx);
+  if(st.answered && st.correct){
+    return '<span class="blank-select correct"><select disabled><option>'+cfg.choices[cfg.correct]+'</option></select></span>';
+  }
+  if(st.answered && !st.correct){
+    return '<span class="blank-select wrong"><select disabled><option>'+cfg.choices[cfg.correct]+' ✗</option></select></span>';
+  }
+  // 같은 텍스트의 보기가 중복되지 않도록 정리 (정답 인덱스는 항상 대표값으로 유지)
+  var seen={}, order=[];
+  cfg.choices.forEach(function(c,ci){
+    if(!c) return;
+    var key=c.trim().toLowerCase();
+    if(!(key in seen)){ seen[key]=ci; order.push(key); }
+    else if(ci===cfg.correct){ seen[key]=ci; }
+  });
+  var opts='<option value="">___</option>';
+  order.forEach(function(key){
+    var ci=seen[key];
+    opts+='<option value="'+ci+'">'+cfg.choices[ci]+'</option>';
+  });
+  return '<span class="blank-select" id="bs'+idx+'"><select onchange="checkSelect('+idx+',this.value)">'+opts+'</select></span>';
+}
+
+function getTypingAnswer(idx, w){
+  // 심화 단계는 인접한 쉬움/중간 묶음을 합친 별도 정답(hardAnswers)을 사용합니다.
+  // choices 맵은 쉬움/중간 오답 보기 전용이라 여기서 읽으면 안 됩니다(인덱스가 겹침).
+  var track = DATA.sentences[currentSentence][currentMode];
+  if (currentLevel==='hard' && track.hardAnswers && track.hardAnswers[idx] !== undefined) return track.hardAnswers[idx];
+  var cfg = getChoicesFor(idx);
+  if(cfg && cfg.choices && cfg.choices[cfg.correct]) return cfg.choices[cfg.correct];
+  return w.c;
+}
+
+// 영어(EN) 심화 단계 전용: 정답에 포함된 각 단어의 첫 글자만 그림자(placeholder)로 보여줍니다.
+// 예) "the quick" -> "t... q..."  (학생은 첫 글자를 포함해 전체 단어를 직접 입력해야 정답 처리)
+function firstLetterHint(answer){
+  return answer.split(' ').filter(function(x){ return x.length>0; })
+    .map(function(word){ return word.charAt(0)+'...'; }).join('  ');
+}
+
+function renderTypingBlank(idx,w,st){
+  var answer=getTypingAnswer(idx,w);
+  var hint = currentMode==='kr' ? choseong(answer) : (DATA.hardFirstLetterHint ? firstLetterHint(answer) : '타이핑');
+  if(st.answered && st.correct){
+    return '<span class="blank-input correct"><input disabled value="'+answer+'"></span>';
+  }
+  if(st.answered && !st.correct && st.attempts>=2){
+    return '<span class="blank-input wrong"><input disabled value="'+answer+' ✗"></span>';
+  }
+  var rb = st.attempts===1 ? '<span class="retry-badge">재도전</span>' : '';
+  var sz = Math.max(answer.length+2, 6);
+  return '<span class="blank-input" id="bs'+idx+'">'
+    +'<input size="'+sz+'" placeholder="'+hint+'" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" onkeydown="if(event.key===\'Enter\')checkType('+idx+',this.value)">'
+    +'<button class="check-btn" onclick="checkType('+idx+',this.previousElementSibling.value)">확인</button>'
+    +rb+'</span>';
+}
+
+function focusNextBlank(){
+  var el = document.querySelector('#content .blank-input:not(.correct):not(.wrong) input, #content .blank-select:not(.correct):not(.wrong) select');
+  if(el) el.focus();
+}
+
+function checkSelect(idx,val){
+  if(val==='') return;
+  var cfg=getChoicesFor(idx);
+  var st=blankStates[idx]||{answered:false,correct:false,attempts:0};
+  st.attempts++;
+  st.answered=true;
+  st.correct=(parseInt(val)===cfg.correct);
+  blankStates[idx]=st; renderSentence(); focusNextBlank();
+}
+
+function checkType(idx,val){
+  if(!val.trim()) return;
+  var w=DATA.sentences[currentSentence][currentMode].words[idx];
+  var answer=getTypingAnswer(idx,w);
+  var st=blankStates[idx]||{answered:false,correct:false,attempts:0};
+  st.attempts++;
+  var ok = normalizeQuotes(val.trim()).toLowerCase()===normalizeQuotes(answer).toLowerCase();
+  if(ok){
+    st.answered=true; st.correct=true;
+    blankStates[idx]=st; renderSentence(); focusNextBlank();
+  } else if(st.attempts>=2){
+    st.answered=true; st.correct=false;
+    blankStates[idx]=st; renderSentence(); focusNextBlank();
+  } else {
+    blankStates[idx]=st; shake(idx);
+  }
+}
+
+function shake(idx){
+  var el=document.getElementById('bs'+idx);
+  if(el){ el.classList.add('wrong'); setTimeout(function(){ el.classList.remove('wrong'); renderSentence(); },600); }
+}
+
+function updateRefButtonLabel(){
+  var btn=document.getElementById('refBtn');
+  if(!btn) return;
+  var label = currentMode==='en' ? '해석' : '원문';
+  btn.textContent = showRef ? (label+' 숨기기') : (label+' 보기');
+}
+
+function renderRefBox(){
+  var box=document.getElementById('refBox');
+  if(!box) return;
+  if(!showRef){ box.style.display='none'; box.innerHTML=''; return; }
+  var s=DATA.sentences[currentSentence];
+  var otherMode = currentMode==='en' ? 'kr' : 'en';
+  var label = currentMode==='en' ? '한글 해석 (직역)' : '영어 원문';
+  var text = s[otherMode].words.map(function(w){return w.t;}).join(' ');
+  box.style.display='block';
+  box.innerHTML='<strong>'+label+'</strong><div>'+text+'</div>';
+}
+
+function toggleRef(){
+  showRef=!showRef;
+  updateRefButtonLabel();
+  renderRefBox();
+}
+
+function recordSentenceResultIfNeeded(){
+  if(sentenceRecorded[currentSentence]) return;
+  var s=DATA.sentences[currentSentence];
+  var blanks=getLevelBlanks(s[currentMode].blanks, currentLevel);
+  var correct=0;
+  blanks.forEach(function(idx){ var st=blankStates[idx]; if(st&&st.correct) correct++; });
+  sentenceResults.push({correct:correct,total:blanks.length});
+  sentenceRecorded[currentSentence]=true;
+}
+
+function nextSentence(){
+  levelBlankLog[currentSentence]=Object.assign({},blankStates);
+  if(reviewModeActive){
+    var ni=findNextReviewSentence(currentSentence+1);
+    if(ni!==-1){
+      currentSentence=ni;
+      loadSentenceReviewState(currentSentence);
+      showRef=false;
+      renderSentence();
+    } else {
+      finishLevel();
+    }
+    return;
+  }
+  if(currentSentence<DATA.sentences.length-1){
+    currentSentence++;
+    blankStates={};
+    showRef=false;
+    renderSentence();
+  } else {
+    finishLevel();
+  }
+}
+
+function finishLevel(){
+  stopStage();
+  var totalCorrect=sentenceResults.reduce(function(a,r){return a+r.correct;},0);
+  var totalBlanks=sentenceResults.reduce(function(a,r){return a+r.total;},0);
+  var pct= totalBlanks>0 ? Math.round(totalCorrect/totalBlanks*100) : 100;
+  var threshold=DATA.thresholds[currentMode][currentLevel];
+  var pass=pct>=threshold;
+  if(pass){
+    progress[currentMode].completed[currentLevel]=true;
+    var order=['easy','medium','hard'];
+    var ni=order.indexOf(currentLevel)+1;
+    if(ni<order.length) progress[currentMode].unlocked[order[ni]]=true;
+  }
+  // 다음 "틀린 문제만 재도전"을 위해, 모든 문장에 대해 정답/오답 상태를 문장별로 정리합니다.
+  // (blankStates는 문장을 넘어갈 때마다 초기화되므로, levelBlankLog에 문장별로 남긴 스냅샷을 사용합니다)
+  reviewSnapshotBySentence=levelBlankLog.slice();
+  reviewWrongBySentence=levelBlankLog.map(function(snap){
+    return Object.keys(snap||{})
+      .filter(function(k){ return !snap[k].correct; })
+      .map(Number);
+  });
+  var totalWrongCount=reviewWrongBySentence.reduce(function(a,arr){return a+arr.length;},0);
+  reviewHasWrong=totalWrongCount>0;
+  // 심화 단계는 "N/M 재도전" 기록을 위해 이번 세션 첫 채점 시점의 오답 총개수를 고정해둡니다.
+  if(currentLevel==='hard' && hardOriginalWrongTotal===null){
+    hardOriginalWrongTotal = totalWrongCount;
+  }
+  renderResultScreen(pass,pct,totalCorrect,totalBlanks,threshold);
+}
+
+function renderResultScreen(pass,pct,correct,total,threshold){
+  document.getElementById('sentenceInfo').textContent='';
+  document.getElementById('progressFill').style.width='100%';
+
+  var h='<div class="result-card"><h2>'+MODE_NAMES[currentMode]+' · '+LEVEL_NAMES[currentLevel]+' 단계 결과</h2>';
+  h+='<div class="score '+(pass?'pass':'fail')+'">'+pct+'%</div>';
+  h+='<p>'+total+'개 빈칸 중 '+correct+'개 정답 (기준 '+threshold+'%)</p></div>';
+
+  var order=['easy','medium','hard'];
+  var isLast = currentLevel==='hard';
+  if(pass && pct===100 && isLast){
+    h+='<div class="congrats"><div class="emoji">🎉</div><h2>'+MODE_NAMES[currentMode]+' 트랙 완료!</h2>'
+      +'<p>쉬움 · 중간 · 심화 단계를 모두 통과했습니다.</p></div>';
+  }
+  if(isLast && DATA.sheetUrl){
+    h+='<div class="submit-box">';
+    h+='<button class="btn-submit" id="submitResultBtn" onclick="submitResultToSheet()">📤 결과 제출</button>';
+    h+='<div class="submit-status" id="submitStatus">'+(resultSubmitted?'✅ 이미 제출됐어요!':'제출하면 이름·학년·소요시간·달성률이 선생님께 전달됩니다.')+'</div>';
+    h+='</div>';
+  }
+  document.getElementById('content').innerHTML=h;
+
+  var buttons=[];
+  if(reviewHasWrong){
+    buttons.push('<button class="btn btn-retry" onclick="startLevelReview()">틀린 문제만 재도전 ('+(total-correct)+'개)</button>');
+  }
+  if(pass && !isLast){
+    var next=order[order.indexOf(currentLevel)+1];
+    buttons.push('<button class="btn btn-next" onclick="startLevel(\''+currentMode+'_'+next+'\')">다음 단계 →</button>');
+  }
+  if(pass && isLast && pct===100){
+    buttons.push('<button class="btn btn-outline2" onclick="showModeSelector()">모드 선택으로</button>');
+  } else {
+    buttons.push('<button class="btn btn-outline2" onclick="showLevelSelector(\''+currentMode+'\')">단계 선택으로</button>');
+  }
+  document.getElementById('actionBar').innerHTML=buttons.join(' ');
+  saveProgress();
+}
+
+init();
+</script></body></html>
